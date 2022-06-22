@@ -1,23 +1,18 @@
 import numpy as np
-
+from numba_kdtree import KDTree
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
         self.tab = tab
         self.label = label if not (label is None) else tab.tab["title"]
 
-        (T, P, rho_, K_, G_, _, _), _ = tab.to_ndarray()
-        P *= 1e5                # since stagyy is in Pa (convert P [bar]->[Pa])
-        rho = tab.remove_nans(rho_)
-        K = tab.remove_nans(K_)
-        G = tab.remove_nans(G_)
-        self.T = T
-        self.P = P
-        self.rho = rho
-        self.K = K
-        self.G = G
+      
+        self.rho = None
+        self.K = None
+        self.G = None
 
-    def extract(self, T_grid, P_grid, model_name):
+    def extract(self, T_grid, P_grid, model_name): #, 
+        T, P, rho, K, G, _, _ = self.tab.data
         n_points = len(T_grid)
         # initialize empty arrays
         K_field = np.zeros(n_points)  # these'll be filled based on output
@@ -32,18 +27,29 @@ class ThermoElasticField:
             T_i = T_grid[i]
             P_i = P_grid[i]
             # where are the closest T, P in the table?
-            u = np.argmin(np.abs(T_i - self.T))
-            v = np.argmin(np.abs(P_i - self.P))
+            u = np.argmin(np.abs(T_i - T))
+            # since stagyy is in Pa, convert P [bar]->[Pa])
+            v = np.argmin(np.abs(P_i - P * 1e5))
             # select the corresponding property: f(T, P)
-            K_field[i] = self.K[u, v]
-            G_field[i] = self.G[u, v]
-            rho_field[i] = self.rho[u, v]
-
-        # save arrays
-        fname = './rho_K_G/' + model_name + '_' + self.tab.tab["title"] + '_'
-        print("Saving as %sXYZ_t%.1f.npy" % (fname, t))
-        np.save(fname + ('rho_t%.1f' % t), rho_field)
-        np.save(fname + ('Ks_t%.1f' % t), K_field)
-        np.save(fname + ('Gs_t%.1f' % t), G_field)
+            K_field[i] = rho[u, v]
+            G_field[i] = K[u, v]
+            rho_field[i] = G[u, v]
+            
+        """
+        # Need to test this first
+        kdtree = KDTree(np.c_[T_grid, P_grid], **kdtree_kwargs)
+        _, indices = kdtree.query(np.c_[T, P], **query_kwargs)
+        """
+            
+        self.rho = rho_field
+        self.G = G_field
+        self.K = K_field
+    
+    def save(self, path):
+        fname = path + '_' + self.tab.tab["title"] + '_'
+        print("Saving as %s<parameter>.npy" % fname)
+        np.save(fname + 'rho',  self.rho)
+        np.save(fname + 'K', self.K)
+        np.save(fname + 'G', self.G)
         print("Done for rho, Ks, Gs")
 #

@@ -13,7 +13,6 @@ class TestFields(unittest.TestCase):
         self.field = Field()
         self.stag_path = path
         self.to_polar = to_polar
-        path = "/home/matteo/stagyyRuns/ghostresults/BS_drhoLM350_z1_PrLM100/"
 
     def test_coords(self):
         sdat = syyd.StagyyData(self.stag_path)
