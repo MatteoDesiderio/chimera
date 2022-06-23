@@ -71,23 +71,23 @@ for f in fields:
 # renormalize compositional fields
 set_renormalized_fields(*fields)
 
+# %% Initialize Velocity Model
+v_model = VelocityModel(model_name, field_names)
+
 # %% interpolating stagyy fields on larger axisem grid
 # TODO load the T, P, c directly into the class VelocityModel (class attr?)
-v_array = np.empty((len(variables), n))
-f_array = np.empty((len(fields), n))
+v_model.T = variables[0].interpolate(x, y, p, tree_args, query_args)
+v_model.P = variables[1].interpolate(x, y, p, tree_args, query_args)
 
-for i, v in enumerate(variables):
-    v_array[i] = v.interpolate(x, y, p, tree_args, query_args)
-    
 for i, f in enumerate(fields):
-    f_array[i] = f.interpolate(x, y, p, tree_args, query_args)
+    v_model.C[i] = f.interpolate(x, y, p, tree_args, query_args)
     
 # %% saving moduli and rho from PerpleX table in an edible format (npy)
 # TODO speed up with numba (tab load especially)
 print("Saving the moduli for each composition")
 tabs = []
 thermo_fields = []
-T, P = v_array                                 # thermodyamic variables     
+T, P = v_model.T, v_model.P                            # thermodyamic variables     
 for i, f in enumerate(field_names):
     inpfl = perp_path + proj_names_dict[f] + ".tab"    # where are the tables
     tab = Tab(inpfl)                                   # initialize table
@@ -100,16 +100,13 @@ for i, f in enumerate(field_names):
     thermo_fields.append(thermo_field)
 
 # %%
-v_model = VelocityModel(model_name)
-v_model.average(thermo_path, f_array, 
-                field_names, proj_names_dict)
-
+v_model.average(*v_model.load_moduli(thermo_path, proj_names_dict))
 v_model.compute_velocities()
 v_model.save(vel_model_path)
 
 # %%
 plt.figure()
-plt.scatter(x, y, c=v_model.s, s=1)
+plt.tricontourf(x[::100], y[::100], v_model.s[::100], levels=512)
 plt.axis("tight")
 plt.axis("equal")
 
