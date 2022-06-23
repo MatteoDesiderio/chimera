@@ -21,9 +21,18 @@ def compute_s(rho, G):
 def compute_bulk(rho, K):
     return np.sqrt(K * 1e5 / rho)                    # m / s
 
+
 class VelocityModel:
-    def __init__(self, model_name):
+    
+    def __init__(self, model_name, Cnames=list()):
         self.model_name = model_name
+        # T, P fields
+        self._T = None
+        self._P = None
+        # compositional fields and corresponding names
+        self.Cnames = Cnames
+        self.C = None
+        # velocity fields
         self.s = None
         self.p = None
         self.bulk = None
@@ -32,20 +41,38 @@ class VelocityModel:
         self.G = None
         self.rho = None
         
+    @property
+    def T(self):
+        return self._T
+   
+    @T.setter
+    def T(self, value):
+        self._T = value
+        if self.C is None:
+            self.C = np.empty((len(self.Cnames), len(value)))
+        
+    @property
+    def P(self):
+        return self._P
+    
+    @P.setter
+    def P(self, value):
+        self._P = value    
+   
     def compute_velocities(self):
         rho, K, G = self.rho, self.K, self.G
         self.s = compute_s(rho, G)
         self.p = compute_p(rho, K, G)
         self.bulk = compute_bulk(rho, K)  
-        
-    def average(self, path_moduli, compositions, names, proj_dict):
+    
+    def load_moduli(self, path_moduli, proj_dict):
         name = self.model_name
-        shape = compositions.shape
+        shape = self.C.shape
         K_list = np.empty(shape)
         G_list = np.empty(shape)
         rho_list = np.empty(shape)
         
-        for i, nm in enumerate(names):
+        for i, nm in enumerate(self.Cnames):
             comp = proj_dict[nm]
             # print(nm, comp) # to check correct order of loading
             G_path = path_moduli + name + "_" + comp + "_" + "G" + ".npy"
@@ -55,10 +82,13 @@ class VelocityModel:
             K_list[i] = np.load(K_path)
             G_list[i] = np.load(G_path)
             rho_list[i] = np.load(rho_path)
-        
-        self.K = reuss(K_list, compositions) + voigt(K_list, compositions) / 2
-        self.G = reuss(G_list, compositions) + voigt(G_list, compositions) / 2
-        self.rho = voigt(rho_list, compositions)
+            
+        return K_list, G_list, rho_list
+    
+    def average(self, K_list, G_list, rho_list):        
+        self.K = reuss(K_list, self.C) + voigt(K_list, self.C) / 2
+        self.G = reuss(G_list, self.C) + voigt(G_list, self.C) / 2
+        self.rho = voigt(rho_list, self.C)
     
     def save(self, destination):
         model_name = self.model_name
