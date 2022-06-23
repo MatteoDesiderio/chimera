@@ -1,5 +1,4 @@
 import numpy as np
-from numba_kdtree import KDTree
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
@@ -14,6 +13,8 @@ class ThermoElasticField:
     def extract(self, T_grid, P_grid, model_name): #, 
         T, P, rho, K, G, _, _ = self.tab.data
         n_points = len(T_grid)
+        # since stagyy is in Pa, convert P [bar]->[Pa])
+        P *= 1e5
         # initialize empty arrays
         K_field = np.zeros(n_points)  # these'll be filled based on output
         G_field = np.zeros(n_points)  # from perplex
@@ -22,24 +23,17 @@ class ThermoElasticField:
         print("Retrieving moduli, density as function of P, T")
         # fill arrays: check in every cell of your models
         for i in range(n_points):
-
             # what are T, P conditions in each cell?
             T_i = T_grid[i]
             P_i = P_grid[i]
             # where are the closest T, P in the table?
             u = np.argmin(np.abs(T_i - T))
             # since stagyy is in Pa, convert P [bar]->[Pa])
-            v = np.argmin(np.abs(P_i - P * 1e5))
+            v = np.argmin(np.abs(P_i - P))
             # select the corresponding property: f(T, P)
-            K_field[i] = rho[u, v]
-            G_field[i] = K[u, v]
-            rho_field[i] = G[u, v]
-            
-        """
-        # Need to test this first
-        kdtree = KDTree(np.c_[T_grid, P_grid], **kdtree_kwargs)
-        _, indices = kdtree.query(np.c_[T, P], **query_kwargs)
-        """
+            K_field[i] = K[u, v]
+            G_field[i] = G[u, v]
+            rho_field[i] = rho[u, v]
             
         self.rho = rho_field
         self.G = G_field
@@ -52,4 +46,3 @@ class ThermoElasticField:
         np.save(fname + 'K', self.K)
         np.save(fname + 'G', self.G)
         print("Done for rho, Ks, Gs")
-#
