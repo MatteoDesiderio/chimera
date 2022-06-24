@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from chimera_project import (Project,
-                             initialize_vmodels, extract_thermoelastic,
-                             compute_vmodels)
+from chimera_project import Project
+from functions import (initialize_vmodels, 
+                       geodynamic_to_thermoelastic,
+                       compute_vmodels)
 from velocity_model import VelocityModel
 
 # %%
@@ -19,7 +20,7 @@ interpolation_parameters = dict(
                                 )
 
 initialize_vmodels(proj, **interpolation_parameters)
-extract_thermoelastic(proj)
+geodynamic_to_thermoelastic(proj)
 v_model_paths = compute_vmodels(proj)
 
 v_model = VelocityModel(v_model_paths[0])
