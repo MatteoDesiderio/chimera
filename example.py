@@ -11,13 +11,14 @@ from functions import (initialize_vmodels,
 # load project
 proj_path = "/home/matteo/chimera-projects/Marble-vs-PlumPudding/"
 proj = Project.load(proj_path)
-
+# specify interpolation parameters
 interpolation_parameters = dict(
                                 p = 4,                  
                                 tree_args = {"leafsize": 10},
                                 query_args = {"r": 0.08, 
                                               "return_sorted": True}
                                 )
+
 # 1
 initialize_vmodels(proj, **interpolation_parameters)
 
