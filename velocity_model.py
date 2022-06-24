@@ -104,8 +104,8 @@ class VelocityModel:
     
     def average(self, K_list, G_list, rho_list):        
         print("FIX (VOIGT + REUSS) / 2 != REUSS + VOIGT / 2")
-        self.K = reuss(K_list, self.C) + voigt(K_list, self.C) / 2
-        self.G = reuss(G_list, self.C) + voigt(G_list, self.C) / 2
+        self.K = (reuss(K_list, self.C) + voigt(K_list, self.C)) / 2
+        self.G = (reuss(G_list, self.C) + voigt(G_list, self.C)) / 2
         self.rho = voigt(rho_list, self.C)
     
     def vel_rho_to_npy(self, destination):
