@@ -1,6 +1,7 @@
 import numpy as np
 from numba import prange, njit
 import pickle
+from scipy.spatial import kdtree
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
@@ -53,6 +54,10 @@ class VelocityModel:
         self.s = None
         self.p = None
         self.bulk = None
+        # velocity anomaly fields
+        self.s_a = None
+        self.p_a = None
+        self.bulk_a = None
         # average fields
         self.K = None
         self.G = None
@@ -126,6 +131,11 @@ class VelocityModel:
         print(fname_rho + " for average density")
         np.save(destination + fname_rho, self.rho)
     
+    def anomaly(self):
+        for rr in self.r:
+            
+        
+        
     @staticmethod
     def load(project_path):
         with open(project_path + 'v_model_data.pkl', 'rb') as f:

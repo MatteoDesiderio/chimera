@@ -44,6 +44,6 @@ plt.axis("equal")
 
 r, th = v.r[::100], v.theta[::100]
 fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-ax.scatter(th - np.pi / 2.0, r, s=1, c=v.s[::100])
+ax.scatter(th, r, s=1, c=v.s[::100])
 ax.set_theta_offset(np.pi / 2.0)
 
