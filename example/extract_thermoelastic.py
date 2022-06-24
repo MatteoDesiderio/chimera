@@ -14,16 +14,17 @@ proj = Project.load(proj_path)
 for model_name in proj.stagyy_model_names:
     parent_path = proj.chimera_project_path + proj.project_name + "/" 
     model_path = parent_path + model_name
-    print("Loading velocity models from", model_path)
+    print("Compute thermoelastic properties for geodynamic model", model_path)
     indices, years = proj.t_indices[model_name], proj.time_span_Gy
     print("for each of time steps in", years, 
           "Gy, corresponding to indices", indices)
     
+    print()
     for i_t, t in zip(indices, years):
         snap_path = model_path + "/{}/".format(i_t)
-        
-        v_model = VelocityModel.load(snap_path)
-
+        v_path = snap_path + proj.vel_model_path
+        v_model = VelocityModel.load(v_path)
+        print("Loading P, T from velocity model saved in", v_path)
         T, P = v_model.T, v_model.P                            
         for i, f in enumerate(proj.c_field_names[0]):
             inpfl = proj.perplex_path + proj.proj_names_dict[f] + ".tab" 
@@ -36,3 +37,4 @@ for model_name in proj.stagyy_model_names:
             
         print("Done")
         print("--------------------------------------------------------------")
+        print()

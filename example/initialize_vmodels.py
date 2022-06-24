@@ -57,6 +57,7 @@ for model_name in proj.stagyy_model_names:
           "Gy, corresponding to indices", indices)
     
     for i_t, t in zip(indices, years):
+        print("Loading coords and values with stagpy")
         sdat = stagyydata.StagyyData(proj.stagyy_path + model_name)
 
         for v in variables:
@@ -81,7 +82,9 @@ for model_name in proj.stagyy_model_names:
             v_model.C[i] = f.interpolate(x, y, p, tree_args, query_args)
         
         snap_path = model_path + "/{}/".format(i_t)
-        print("Saving velocity model for", t, "Gy in", snap_path )
-        v_model.save(snap_path)
+        v_path = snap_path + proj.vel_model_path
+        print()
+        print("Saving velocity model for", t, "Gy in", v_path )
+        v_model.save(v_path)
         print("Done")
         print()
