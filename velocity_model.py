@@ -1,4 +1,5 @@
 import numpy as np
+from numba import prange, njit
 import pickle
 
 def voigt(moduli, compositions):
@@ -23,8 +24,16 @@ def compute_bulk(rho, K):
     return np.sqrt(K * 1e5 / rho)                    # m / s
 
 
+@njit(parallel=True)
+def to_polar(x, y):
+    theta = np.empty(x.shape, dtype=x.dtype)
+    r = np.empty(x.shape, dtype=x.dtype)
+    for i in prange(len(x)):
+        r[i] = np.hypot(x[i], y[i])
+        theta[i] = np.arctan2(y[i], x[i])
+    return r, theta
+
 class VelocityModel:
-    
     def __init__(self, model_name, i_t, t, x, y, Cnames=list()):
         self.model_name = model_name
         self.i_t = i_t
@@ -32,6 +41,8 @@ class VelocityModel:
         # spatial coordinates
         self.x = x
         self.y = y
+        self.r, self.theta = to_polar(self.x, self.y)
+        self.theta += np.pi / 2
         # compositional fields and corresponding names
         self.Cnames = Cnames
         self.C = []
@@ -46,7 +57,7 @@ class VelocityModel:
         self.K = None
         self.G = None
         self.rho = None
-        
+
     @property
     def T(self):
         return self._T
@@ -92,6 +103,7 @@ class VelocityModel:
         return K_list, G_list, rho_list
     
     def average(self, K_list, G_list, rho_list):        
+        print("FIX (VOIGT + REUSS) / 2 != REUSS + VOIGT / 2")
         self.K = reuss(K_list, self.C) + voigt(K_list, self.C) / 2
         self.G = reuss(G_list, self.C) + voigt(G_list, self.C) / 2
         self.rho = voigt(rho_list, self.C)
