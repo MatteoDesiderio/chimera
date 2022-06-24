@@ -25,10 +25,13 @@ def compute_bulk(rho, K):
 
 class VelocityModel:
     
-    def __init__(self, model_name, i_t, t, Cnames=list()):
+    def __init__(self, model_name, i_t, t, x, y, Cnames=list()):
         self.model_name = model_name
         self.i_t = i_t
         self.t = t
+        # spatial coordinates
+        self.x = x
+        self.y = y
         # compositional fields and corresponding names
         self.Cnames = Cnames
         self.C = []
