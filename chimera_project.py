@@ -15,25 +15,28 @@ class Project:
         None.
 
         """
-        self._GY = 3600*24*364*1e9
-        self.chimera_project_path = "" # path where you want to save project
-        # self.project_name = "New Project" # path containing your project
-        self.bg_model = "" # name of your axisem bg model
-        self.perplex_path = "" # path to tab files
-        self.stagyy_path = "" # path to your stagyy models 
-        self.thermo_var_names = []                # as read by stagyy
-        self.c_field_names = []           # as read by stagyy
-        # the corresponding perplex projects, order must match
-        self.perplex_proj_names = []
-        # fix this like the other one
-        self.proj_names_dict = {k: v for k, v in zip(self.c_field_names,
-                                                     self.perplex_proj_names)}
+        self._GY = 3600*24*364*1e9                                        # [s]
+        self.chimera_project_path = ""    # path where you want to save project
+        self.bg_model = ""                       # name of your axisem bg model
+        self.perplex_path = ""                              # path to tab files
+        self.stagyy_path = ""                      # path to your stagyy models 
+        self.stagyy_model_names = []
+        self.thermo_var_names = []                          # as read by stagyy
+        # as read by stagyy + corresponding perplex projects, order must match!
+        self.c_field_names = [[], []]         
         self.elastic_path = "/elastic-fields/"
         self.vel_model_path = "/seism_vel-fields/" 
-        self.time_span_Gy = []       
+        self.time_span_Gy = [] # timesteps for which you want to compute vmodel
                 
-        self.stagyy_model_names = []
-        
+    @property
+    def c_field_names(self):
+        return self._c_field_names
+    @c_field_names.setter
+    def c_field_names(self, val):
+        self._c_field_names = val
+        cstagyy, cperplex = val
+        self.proj_names_dict = {k:v for k, v in zip(cstagyy,
+                                                    cperplex)}
     @property
     def stagyy_model_names(self):
         return self._stagyy_model_names
