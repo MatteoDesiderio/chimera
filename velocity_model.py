@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
@@ -24,14 +25,16 @@ def compute_bulk(rho, K):
 
 class VelocityModel:
     
-    def __init__(self, model_name, Cnames=list()):
+    def __init__(self, model_name, i_t, t, Cnames=list()):
         self.model_name = model_name
-        # T, P fields
-        self._T = None
-        self._P = None
+        self.i_t = i_t
+        self.t = t
         # compositional fields and corresponding names
         self.Cnames = Cnames
-        self.C = None
+        self.C = []
+        # T, P fields
+        self.T = []
+        self.P = []
         # velocity fields
         self.s = None
         self.p = None
@@ -48,8 +51,7 @@ class VelocityModel:
     @T.setter
     def T(self, value):
         self._T = value
-        if self.C is None:
-            self.C = np.empty((len(self.Cnames), len(value)))
+        self.C = np.empty((len(self.Cnames), len(value)))
         
     @property
     def P(self):
@@ -90,7 +92,7 @@ class VelocityModel:
         self.G = reuss(G_list, self.C) + voigt(G_list, self.C) / 2
         self.rho = voigt(rho_list, self.C)
     
-    def save(self, destination):
+    def vel_rho_to_npy(self, destination):
         model_name = self.model_name
         
         print('Saving seismic velocity fields in ' + destination)
@@ -107,4 +109,14 @@ class VelocityModel:
         np.save(destination + fname_b, self.bulk)
         print(fname_rho + " for average density")
         np.save(destination + fname_rho, self.rho)
+    
+    @staticmethod
+    def load(project_path):
+        with open(project_path + 'project_data.pkl', 'rb') as f:
+            pickled_class = pickle.load(f)
+        return pickled_class
+
+    def save(self, destination):
+        with open(destination + 'v_model_data.pkl', 'wb') as outp:
+            pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
         
