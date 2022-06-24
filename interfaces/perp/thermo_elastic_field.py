@@ -40,7 +40,7 @@ class ThermoElasticField:
         self.K = K_field
     
     def save(self, path):
-        fname = path + '_' + self.tab.tab["title"] + '_'
+        fname = path + self.tab.tab["title"] + '_'
         print("Saving as %s<parameter>.npy" % fname)
         np.save(fname + 'rho',  self.rho)
         np.save(fname + 'K', self.K)

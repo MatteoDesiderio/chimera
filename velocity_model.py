@@ -77,9 +77,10 @@ class VelocityModel:
         for i, nm in enumerate(self.Cnames):
             comp = proj_dict[nm]
             # print(nm, comp) # to check correct order of loading
-            G_path = path_moduli + name + "_" + comp + "_" + "G" + ".npy"
-            K_path = path_moduli + name + "_" + comp + "_" + "K" + ".npy"
-            rho_path = path_moduli + name + "_" + comp + "_" + "rho" + ".npy"
+            G_path = path_moduli + comp + "_" + "G" + ".npy"
+            K_path = path_moduli + comp + "_" + "K" + ".npy"
+            # TODO check if it's best to load the  from stagyy 
+            rho_path = path_moduli + comp + "_" + "rho" + ".npy"
             
             K_list[i] = np.load(K_path)
             G_list[i] = np.load(G_path)
@@ -112,7 +113,7 @@ class VelocityModel:
     
     @staticmethod
     def load(project_path):
-        with open(project_path + 'project_data.pkl', 'rb') as f:
+        with open(project_path + 'v_model_data.pkl', 'rb') as f:
             pickled_class = pickle.load(f)
         return pickled_class
 
