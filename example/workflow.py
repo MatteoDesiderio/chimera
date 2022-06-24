@@ -19,9 +19,9 @@ proj = Project.load(proj_path)
 
 # %% interpolation parameters
 p = 4                     # parameter of shepherds inv dist weight interp
-# kdtree parameters tree creation
+# kdtree parameters for tree creation
 tree_args = {"leafsize": 10}
-# kdtree parameters for fast closest neighbour 
+# kdtree parameters for fast closest neighbour. r is the max radius for search
 query_args = {"r": 0.08, 
               "return_sorted": True}
 
@@ -32,7 +32,7 @@ y = np.load(path_mody)
 n = len(x)
 
 # %% load data from stagyy with stagpy into fields
-# TODO speed up the process by loading coords and fields ath same time
+# TODO speed up the process by loading coords and fields at the same time
 variables = [Field(v) for v in proj.thermo_var_names]
 fields = [Field(v) for v in proj.c_field_names]
 
