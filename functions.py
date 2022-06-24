@@ -51,11 +51,14 @@ def initialize_vmodels(proj, p, tree_args, query_args):
             set_renormalized_fields(*fields)
             
             print("Initializing velocity model for", t, "Gy")
-            v_model = VelocityModel(model_name, i_t, t, proj.c_field_names[0])
+            v_model = VelocityModel(model_name, i_t, t, x, y, 
+                                    proj.c_field_names[0])
             # interpolating stagyy fields on larger axisem grid
             print("Interpolating stagyy variables and fields on axisem mesh")
-            v_model.T = variables[0].interpolate(x, y, p, tree_args, query_args)
-            v_model.P = variables[1].interpolate(x, y, p, tree_args, query_args)
+            v_model.T = variables[0].interpolate(x, y, p, 
+                                                 tree_args, query_args)
+            v_model.P = variables[1].interpolate(x, y, p, 
+                                                 tree_args, query_args)
     
             for i, f in enumerate(fields):
                 v_model.C[i] = f.interpolate(x, y, p, tree_args, query_args)
@@ -72,7 +75,8 @@ def geodynamic_to_thermoelastic(proj):
     for model_name in proj.stagyy_model_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
-        print("Compute thermoelastic properties for geodynamic model", model_path)
+        print("Compute thermoelastic properties for geodynamic model", 
+              model_path)
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
         print("for each of time steps in", years, 
               "Gy, corresponding to indices", indices)
@@ -94,7 +98,7 @@ def geodynamic_to_thermoelastic(proj):
                 thermo_field.save(snap_path + proj.elastic_path)
                 
             print("Done")
-            print("--------------------------------------------------------------")
+            print("----------------------------------------------------------")
             print()
 
 def compute_vmodels(proj): 
@@ -125,7 +129,7 @@ def compute_vmodels(proj):
             v_model.save(v_path)
             
             print("Done")
-            print("--------------------------------------------------------------")
+            print("----------------------------------------------------------")
             print()
             
     return v_model_paths

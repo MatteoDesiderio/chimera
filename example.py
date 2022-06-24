@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from chimera_project import Project
+from velocity_model import VelocityModel
 from functions import (initialize_vmodels, 
                        geodynamic_to_thermoelastic,
                        compute_vmodels)
-from velocity_model import VelocityModel
 
 # %%
 # load project
@@ -18,16 +18,22 @@ interpolation_parameters = dict(
                                 query_args = {"r": 0.08, 
                                               "return_sorted": True}
                                 )
-
+# 1
 initialize_vmodels(proj, **interpolation_parameters)
+
+# 2
 geodynamic_to_thermoelastic(proj)
+
+# 3
 v_model_paths = compute_vmodels(proj)
 
-v_model = VelocityModel(v_model_paths[0])
 
 # %%
+v = VelocityModel.load(v_model_paths[0])
+
 plt.figure()
-plt.tricontourf(x[::100], y[::100], v_model.s[::100], levels=512)
+plt.tricontourf(v.x[::100], v.y[::100], v.s[::100], levels=512)
+
 plt.axis("tight")
 plt.axis("equal")
 
