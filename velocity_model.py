@@ -62,6 +62,7 @@ class VelocityModel:
         self.K = None
         self.G = None
         self.rho = None
+        self.rho_stagyy = None
 
     @property
     def T(self):
@@ -80,8 +81,13 @@ class VelocityModel:
     def P(self, value):
         self._P = value    
    
-    def compute_velocities(self):
-        rho, K, G = self.rho, self.K, self.G
+    def compute_velocities(self, use_stagyy_rho):
+        if use_stagyy_rho:
+            rho = self.rho_stagyy
+        else:
+            rho = self.rho
+            
+        K, G = self.K, self.G
         self.s = compute_s(rho, G)
         self.p = compute_p(rho, K, G)
         self.bulk = compute_bulk(rho, K)  
@@ -132,8 +138,7 @@ class VelocityModel:
         np.save(destination + fname_rho, self.rho)
     
     def anomaly(self):
-        for rr in self.r:
-            
+        pass
         
         
     @staticmethod
