@@ -1,6 +1,6 @@
 # folder to ignore #
 *_ign/
-__pycache__/
+__*cache__/
 
 # files to ignore # 
 *.npy
