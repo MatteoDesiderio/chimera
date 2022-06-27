@@ -27,23 +27,27 @@ initialize_vmodels(proj, **interpolation_parameters)
 geodynamic_to_thermoelastic(proj)
 
 # 3
-v_model_paths = compute_vmodels(proj)
+v_model_path = compute_vmodels(proj)
 
 
 # %% plotting
-v = VelocityModel.load(v_model_paths[0])
+vmod = VelocityModel.load(v_model_path)
 
+every_n = 100
+x = vmod.x[::every_n]
+y = vmod.y[::every_n]
+vel = vmod.s[::every_n]
 
 plt.figure()
 plt.title("cartesian coordinates")
-plt.tricontourf(v.x[::100], v.y[::100], v.s[::100], levels=512)
+plt.tricontourf(x, y, vel, levels=512)
 
-plt.axis("tight")
-plt.axis("equal")
+#plt.axis("tight")
+#plt.axis("equal")
 
 
-r, th = v.r[::100], v.theta[::100]
+r, th = vmod.r[::every_n], vmod.theta[::every_n]
 fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-ax.scatter(th, r, s=1, c=v.s[::100])
+ax.scatter(th, r, s=1, c=vel)
 ax.set_theta_offset(np.pi / 2.0)
 
