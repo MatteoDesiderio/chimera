@@ -2,6 +2,7 @@ import numpy as np
 from numba import prange, njit
 import pickle
 from scipy.spatial import kdtree
+from field import Field
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
@@ -137,7 +138,7 @@ class VelocityModel:
         np.save(destination + fname_rho, self.rho)
     
     def anomaly(self):
-        pass
+        pass 
         
         
     @staticmethod
