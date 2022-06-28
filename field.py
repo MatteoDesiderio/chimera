@@ -25,6 +25,26 @@ def _inverse_dist_weighting(indices, new, old, z, p):
 
     return znew
 
+@nb.njit(parallel=True)
+def _bilinear_weighting(indices, new, old, z, p):
+    znew = np.empty(new.shape[0], dtype=new.dtype)
+    for i in nb.prange(new.shape[0]):
+        num = 0.0
+        den = 0.0
+        for j in indices[i]:
+            d = np.sqrt((new[i, 0] - old[j, 0]) ** 2 +
+                        (new[i, 1] - old[j, 1]) ** 2)
+            if d > 0.0:
+                num = num + np.power(d, - p) * z[j]
+                den = den + np.power(d, - p)
+            else:
+                num = z[j]
+                den = 1.0
+                break
+        # maybe there's a better way to handle this case
+        znew[i] = num / den if (num > 0 and den > 0) else 0
+
+    return znew
 
 class Field:
     """
@@ -136,8 +156,24 @@ class Field:
         kdtree = KDTree(old, **kdtree_kwargs)
         new = np.c_[xnew, ynew]
         inds = kdtree.query_radius(new, **query_kwargs)
-
+        
         return _inverse_dist_weighting(inds, new, old, z, p)
+        
+    def bil_interpolate(self, xnew, ynew, p=2,
+                    kdtree_kwargs={"leafsize": 10},
+                    query_kwargs={"k":4}):
+
+        self.normalize_radius()
+        x, y = self.to_cartesian()
+        old = np.c_[x, y]
+        z = self.values.flatten()
+        kdtree = KDTree(old, **kdtree_kwargs)
+        new = np.c_[xnew, ynew]
+        _, inds = kdtree.query(new, **query_kwargs)
+
+        return _bilinear_weighting(inds, new, old, z, p)
+
+        
 
     def plot(self):
         fig = plt.figure()
