@@ -21,7 +21,8 @@ def initialize_vmodels(proj, p, tree_args, query_args):
     print("Initializing variables and compositional fields")
     variables = [Field(v) for v in proj.thermo_var_names]
     fields = [Field(v) for v in proj.c_field_names[0]]
-    
+    rho_stagyy = Field("rho")
+        
     print("Variables:", *proj.thermo_var_names)
     print("Compositional Fields:", *proj.c_field_names[0])
     print()
@@ -42,10 +43,14 @@ def initialize_vmodels(proj, p, tree_args, query_args):
             for v in variables:
                 v.coords = loader.load_coords(sdat)
                 v.values = loader.load_field(sdat, v.name, i_t)
+                
+            rho_stagyy.coords = loader.load_coords(sdat)
+            rho_stagyy.values = loader.load_field(sdat, rho_stagyy.name, i_t)
     
             for f in fields:
                 f.coords = loader.load_coords(sdat)
                 f.values = loader.load_field(sdat, f.name, i_t)
+            
     
             # renormalize compositional fields
             set_renormalized_fields(*fields)
@@ -58,6 +63,8 @@ def initialize_vmodels(proj, p, tree_args, query_args):
             v_model.T = variables[0].interpolate(x, y, p, 
                                                  tree_args, query_args)
             v_model.P = variables[1].interpolate(x, y, p, 
+                                                 tree_args, query_args)
+            v_model.rho_stagyy = rho_stagyy.interpolate(x, y, p, 
                                                  tree_args, query_args)
     
             for i, f in enumerate(fields):
@@ -101,7 +108,7 @@ def geodynamic_to_thermoelastic(proj):
             print("----------------------------------------------------------")
             print()
 
-def compute_vmodels(proj): 
+def compute_vmodels(proj, use_stagyy_rho=False): 
     v_model_paths = []
     for model_name in proj.stagyy_model_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
@@ -123,7 +130,7 @@ def compute_vmodels(proj):
                                                  proj.proj_names_dict))
             
             print("Computing seismic velocities")
-            v_model.compute_velocities()
+            v_model.compute_velocities(use_stagyy_rho)
             print("Overwriting velocity model saved in", v_path)
             v_model_paths.append(v_path)
             v_model.save(v_path)
@@ -135,8 +142,25 @@ def compute_vmodels(proj):
     return v_model_paths
  
     
- 
-    
+def export_vmodels(proj):
+    for model_name in proj.stagyy_model_names:
+        parent_path = proj.chimera_project_path + proj.project_name + "/" 
+        model_path = parent_path + model_name
+        print("Loading velocity models from", model_path)
+        indices, years = proj.t_indices[model_name], proj.time_span_Gy
+        print("for each of time steps in", years, 
+              "Gy, corresponding to indices", indices)
+        print()
+        for i_t, t in zip(indices, years):
+            snap_path = model_path + "/{}/".format(i_t)
+            v_path = snap_path + proj.vel_model_path
+            print("Loading velocity model saved in", v_path)
+            v_model = VelocityModel.load(v_path)
+            v_model.export(v_path)
+            print("Exporting to sph format")
+            print("Done")
+            print("----------------------------------------------------------")
+            print()
  
     
  
