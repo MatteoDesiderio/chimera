@@ -142,8 +142,25 @@ def compute_vmodels(proj, use_stagyy_rho=False):
     return v_model_paths
  
     
- 
-    
+def export_vmodels(proj):
+    for model_name in proj.stagyy_model_names:
+        parent_path = proj.chimera_project_path + proj.project_name + "/" 
+        model_path = parent_path + model_name
+        print("Loading velocity models from", model_path)
+        indices, years = proj.t_indices[model_name], proj.time_span_Gy
+        print("for each of time steps in", years, 
+              "Gy, corresponding to indices", indices)
+        print()
+        for i_t, t in zip(indices, years):
+            snap_path = model_path + "/{}/".format(i_t)
+            v_path = snap_path + proj.vel_model_path
+            print("Loading velocity model saved in", v_path)
+            v_model = VelocityModel.load(v_path)
+            v_model.export(v_path)
+            print("Exporting to sph format")
+            print("Done")
+            print("----------------------------------------------------------")
+            print()
  
     
  
