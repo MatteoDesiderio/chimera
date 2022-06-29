@@ -9,7 +9,7 @@ from interfaces.stag import loader
 from interfaces.perp.tab import Tab
 from interfaces.perp.thermo_elastic_field import ThermoElasticField
 
-def initialize_vmodels(proj, p, tree_args, query_args):
+def initialize_vmodels(proj, interp_type, p, tree_args, query_args):
     # load axisem high resolution grid 
     path_modx, path_mody = proj.get_paths()
     x = np.load(path_modx)
@@ -60,15 +60,16 @@ def initialize_vmodels(proj, p, tree_args, query_args):
                                     proj.c_field_names[0])
             # interpolating stagyy fields on larger axisem grid
             print("Interpolating stagyy variables and fields on axisem mesh")
-            v_model.T = variables[0].interpolate(x, y, p, 
+            v_model.T = variables[0].interpolate(interp_type, x, y, p, 
                                                  tree_args, query_args)
-            v_model.P = variables[1].interpolate(x, y, p, 
+            v_model.P = variables[1].interpolate(interp_type, x, y, p, 
                                                  tree_args, query_args)
-            v_model.rho_stagyy = rho_stagyy.interpolate(x, y, p, 
+            v_model.rho_stagyy = rho_stagyy.interpolate(interp_type, x, y, p, 
                                                  tree_args, query_args)
     
             for i, f in enumerate(fields):
-                v_model.C[i] = f.interpolate(x, y, p, tree_args, query_args)
+                v_model.C[i] = f.interpolate(interp_type, x, y, p,
+                                                tree_args, query_args)
             
             snap_path = model_path + "/{}/".format(i_t)
             v_path = snap_path + proj.vel_model_path

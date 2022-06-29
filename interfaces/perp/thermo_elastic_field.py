@@ -1,11 +1,13 @@
 import numpy as np
+#from numba_kdtree import KDTree
+from scipy.spatial import KDTree
+import numba as nb
+
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
         self.tab = tab
         self.label = label if not (label is None) else tab.tab["title"]
-
-      
         self.rho = None
         self.K = None
         self.G = None
@@ -16,12 +18,14 @@ class ThermoElasticField:
         # since stagyy is in Pa, convert P [bar]->[Pa])
         P *= 1e5
         # initialize empty arrays
-        K_field = np.zeros(n_points)  # these'll be filled based on output
-        G_field = np.zeros(n_points)  # from perplex
-        rho_field = np.zeros(n_points)
+        n_points = len(T_grid)
+        K_field = np.empty(n_points, dtype=T.dtype)  # these'll be filled 
+        G_field = np.empty(n_points, dtype=T.dtype)  # from perplex
+        rho_field = np.empty(n_points, dtype=T.dtype)
 
         print("Retrieving moduli, density as function of P, T")
         # fill arrays: check in every cell of your models
+        
         for i in range(n_points):
             # what are T, P conditions in each cell?
             T_i = T_grid[i]

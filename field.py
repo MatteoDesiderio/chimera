@@ -26,34 +26,43 @@ def _inverse_dist_weighting(indices, new, old, z, p):
     return znew
 
 
-@nb.njit(parallel=True)
+@nb.jit(parallel=True)
 def _bilinear_weighting(indices, new, old, z):    
     znew = np.empty(new.shape[0], dtype=new.dtype)
     # for every point in the finer grid
     for i in nb.prange(new.shape[0]):
-        x, y = new[i] # get coordinates of said point
-        # initialize rectangel around said point
-        corners = np.empty((4, 2)) 
-        v_corners = np.empty((4, 2), dtype=z.dtype)
-        # for each of the four closest corners
-        for u, j in enumerate(indices[i]):
-            corners[u] = old[j] # get their coordinates
-            v_corners[u] = z[j] # get the value of the function at corners
+        f = 0.0
+        a = 0.0
+        # the idea is that we weight each point with the area of
+        # opposite corner (see wikipedia)
+        # how do I know which one is the opposite? I dont, I have to check
+        for j in indices[i]:
+            # for each of these four points (explored in an optimistic order)
+            for j_opp in indices[i][::-1]:
+                # I check the coordinates
+                # but that j_opp-th point might be on the same side as j
+                # if it is, I go to next point in the list
+                if (old[j, 0] != old[j_opp, 0] and old[j, 1] != old[j_opp, 1]):
+                    # but if it's not, it actually correspond to 
+                    # the opposig vertex, so I break the loop
+                    break
+                
+            f += z[j] * np.abs(old[j_opp, 0] - new[i, 0]) * \
+                        np.abs(old[j_opp, 1] - new[i, 1])
+                        
+            a += np.abs(old[j_opp, 0] - new[i, 0]) * \
+                 np.abs(old[j_opp, 1] - new[i, 1])
+                 
+        znew[i] = f / a
         
-        # I only need x, y coordinates
-        x1, x2 = np.min(corners[:, 0]), np.max(corners[:, 0])
-        y1, y2 = np.min(corners[:, 1]), np.max(corners[:, 1])
-        
-        # see wikipedia
-        vec = np.array([1, x, y, x*y])
-        mat = np.array([[x2*y2, -y2, -x2, 1.0], 
-                       [-x2*y1, y1,  x2, -1.0], 
-                       [-x1*y2, y2,  x1, -1.0], 
-                       [x1*y1, -y1, -x1,  1.0]])
-        
-        # set the value at the point of the finer grid
-        znew[i] = v_corners @ mat @ vec / (x2 - x1) / (y2 - y1)
-        
+    return znew
+
+@nb.jit(parallel=True)
+def _closest(indices, new, old, z):    
+    znew = np.empty(new.shape[0], dtype=new.dtype)
+    # for every point in the finer grid
+    for i in nb.prange(new.shape[0]):
+        znew[i] = z[indices[i][0]]
     return znew
 
 class Field:
@@ -155,7 +164,7 @@ class Field:
         self.r_max = self.coords[0].max()
         self._coords = self.coords[0] / self.r_max, self.coords[1]
 
-    def interpolate(self, xnew, ynew, p=2,
+    def interpolate(self, interp_type, xnew, ynew, p=2,
                     kdtree_kwargs={"leafsize": 10},
                     query_kwargs={"r": 0.08, "return_sorted": True}):
 
@@ -170,24 +179,46 @@ class Field:
         # if the radius of search, we look at just the 4 closest neighbours
         # p does not matter at that point, query_kwargs["k"] is set to 4
         do_bilinear = False
-        if "r" in query_kwargs.keys():
-            if query_kwargs["r"] == 0.0:
-                do_bilinear = True
-                query_kwargs.pop("r")
-            else:
-                do_bilinear = False
-        else:
+        do_idw = False
+        do_closest = False
+        
+        if interp_type == "bilinear":
             do_bilinear = True
+        elif interp_type == "closest":
+            do_closest = True
+        elif interp_type == "idw" or interp_type == "inverse_dist_weight":
+            do_idw = True
+        else:
+            ValueError("interp_type ust be 'closest', 'bilinear' \
+                       or 'inv_dist_weight' ")
         
         if do_bilinear:
-            query_kwargs["k"] = 4
+            query_kwargs["k"] = 4 # we need the four closest points
+            # TODO for each key, check if acceptable key, if not: pop
+            if "r" in query_kwargs.keys(): # therefore we dont need a radius
+                query_kwargs.pop("r")
+                # getting the indices of those points for each point of axigrid
             _, inds = kdtree.query(new, **query_kwargs)
-            result = _bilinear_weighting(inds, new, old, z)
-        else:
+            # interpolate
+            interpolated = _bilinear_weighting(inds, new, old, z)
+        elif do_idw:
+            if "r" in query_kwargs.keys():
+                if query_kwargs["r"] <= 0.0:
+                    ValueError("Radius of search 'r' for idw must be > 0")
             inds = kdtree.query_radius(new, **query_kwargs)
-            result = _inverse_dist_weighting(inds, new, old, z, p)
+            interpolated = _inverse_dist_weighting(inds, new, old, z, p)
+        else:
+            # we dont need a radius
+            kdtree = KDTree(old, **kdtree_kwargs)
+            # we need the closest point to the point of the axi grid
+            query_kwargs["k"] = 1
+            # therefore we dont need a radius of search
+            if "r" in query_kwargs.keys():
+                query_kwargs.pop("r")
+            _, inds = kdtree.query(new, **query_kwargs)
+            interpolated = _closest(inds, new, old, z)
         
-        return result
+        return interpolated
         
     def bil_interpolate(self, xnew, ynew, p=2,
                     kdtree_kwargs={"leafsize": 10},
@@ -203,6 +234,22 @@ class Field:
 
         return _bilinear_weighting(inds, new, old, z, p)
 
+    def closest_interp(self, xnew, ynew, p=0,
+                       kdtree_kwargs={"leafsize": 10},
+                       query_kwargs={"k":1}):
+        
+        if "r" in query_kwargs.keys():
+            query_kwargs.pop("r")
+            
+        self.normalize_radius()
+        x, y = self.to_cartesian()
+        old = np.c_[x, y]
+        z = self.values.flatten()
+        kdtree = KDTree(old, **kdtree_kwargs)
+        new = np.c_[xnew, ynew]
+        query_kwargs["k"] = 1
+        _, inds = kdtree.query(new, **query_kwargs)
+        return _closest(inds, new, old, z)
         
 
     def plot(self):

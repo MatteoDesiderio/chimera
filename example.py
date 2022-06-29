@@ -13,21 +13,24 @@ proj_path = "/home/matteo/chimera-projects/Marble-vs-PlumPudding/"
 proj = Project.load(proj_path)
 # specify interpolation parameters
 interpolation_parameters = dict(
+    interp_type="bilinear", # closest, bilinear, inv_dist_weight
     p=4,
     tree_args={"leafsize": 10},
-    query_args={"r": 0.008,
-                "return_sorted": True}
+    query_args={"r": 0.0}
 )
+
 
 # %% main
 # 1
 initialize_vmodels(proj, **interpolation_parameters)
 
+# %%
 # 2
 geodynamic_to_thermoelastic(proj)
 
+#%%
 # 3
-v_model_paths = compute_vmodels(proj, True)
+v_model_paths = compute_vmodels(proj, False)
 
 # 4
 export_vmodels(proj)
@@ -54,7 +57,6 @@ pa, p_prof = vmod.anomaly("p")
 rhoa, rho_prof = vmod.anomaly("rho_stagyy")
 r_prof = s_prof["r"] * vmod.r_E_km * 1e3
 
-
 d = "/home/matteo/axisem-9f0be2f/SOLVER/MESHES/test_VERBOSE/1dmodel_axisem.bm"
 rprem,rhoprem,vpprem,vsprem,_,_ = np.loadtxt(d, skiprows=6, unpack=True)
 mantle = rprem >= 3481e3
@@ -65,7 +67,7 @@ zprem_km = (6371e3-rprem) / 1e3
 zprof_km = (6371e3-r_prof) / 1e3
 
 
-fig,axs = plt.subplots(1,3, sharey=True)
+fig, axs = plt.subplots(1,3, sharey=True)
 (ax1,ax2,ax3) = axs
 labels= ["Vp [m/s]", "Vs [m/s]", "rho [kg/m^3]"]
 
@@ -86,7 +88,7 @@ plt.subplots_adjust(wspace=0)
 
 # %%
 plt.figure()
-plt.title("cartesian coordinates")
+plt.title("Vs anomaly")
 plt.tricontourf(vmod.x, vmod.y, sa, levels=512, cmap="RdBu",
                 vmin=-.05, vmax=.05)
 
