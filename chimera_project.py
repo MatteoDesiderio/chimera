@@ -2,6 +2,7 @@ import pickle
 import os
 from stagpy import stagyydata
 
+
 class Project:
     """
     Project class

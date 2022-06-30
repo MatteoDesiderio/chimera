@@ -12,8 +12,7 @@ proj.chimera_project_path = "/home/matteo/chimera-projects/"
 
 # define stagyy models location and model names
 proj.stagyy_path = "/home/matteo/stagyyRuns/ghostresults/"
-proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100", 
-                           "BS_drhoLM230_z1_PrLM100"] 
+proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"] 
 
 # define perplex paths, where tab files are located
 proj.perplex_path = "/home/matteo/PerpleX_scripts/tab-files/"
@@ -35,5 +34,5 @@ proj.time_span_Gy = [4.5]
 
 
 # finally create project with the name
-proj_name = "Marble-vs-PlumPudding"
+proj_name = "Checkerboard"
 proj.new(proj_name)
