@@ -28,6 +28,7 @@ class Project:
         self.elastic_path = "/elastic-fields/"
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
+        self.test_mode_on = False
                 
     @property
     def c_field_names(self):
@@ -67,8 +68,11 @@ class Project:
             path = parent + nm
             os.mkdir(path)
             for t in self.time_span_Gy:
-                sdat = stagyydata.StagyyData(self.stagyy_path + nm)
-                index = sdat.snaps.at_time(t * self._GY).isnap
+                if self.test_mode_on:
+                    index = 0
+                else:
+                    sdat = stagyydata.StagyyData(self.stagyy_path + nm)
+                    index = sdat.snaps.at_time(t * self._GY).isnap
                 path_snap = (path + "/%i") % index
                 os.mkdir(path_snap)
                 os.mkdir(path_snap + self.elastic_path)

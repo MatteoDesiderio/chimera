@@ -14,12 +14,25 @@ def to_polar(x, y):
         theta[i] = np.arctan2(y[i], x[i])
     return r, theta
 
-def set_renormalized_fields(f1, f2, f3):
-    v1, v2, v3 = f1.values, f2.values, f3.values
-    # v2 = 1 - v1 # Is this better?
-    sum_ =  v1 + v2 + v3
-    v1 /= sum_
-    v2 /= sum_
-    v3 /= sum_
-    f1.values, f2.values, f3.values = v1, v2, v3
+def set_renormalized_fields(list_of_fields):
+    values_list = []
+    sum_ = 0.0
+    for f in list_of_fields:
+        sum_ += f.values
+    for f in list_of_fields:
+        f.values /= sum_
     
+def to_cartesian(r, theta):
+    """
+
+
+    Returns
+    -------
+    TYPE tuple of two numpy.array.
+        (x, y). The coordinates are unraveled.
+        len(x) = len(y) = len(r) * len(theta) = self.values.size
+    """
+    r_grid, theta_grid = np.meshgrid(r, theta)
+    z = r_grid * np.exp(1j * theta_grid)
+    x, y = np.real(z).flatten(), np.imag(z).flatten()
+    return x, y
