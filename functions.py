@@ -126,7 +126,7 @@ def initialize_vmodels(proj, interp_type, p, tree_args, query_args,
                 
         
                 # renormalize compositional fields
-                set_renormalized_fields(*fields)
+                set_renormalized_fields(fields)
                 
                 print("Initializing velocity model for", t, "Gy")
                 v_model = VelocityModel(model_name, i_t, t, x, y, 
