@@ -7,7 +7,7 @@ from chimera_project import Project
 
 # %% 
 proj = Project()
-proj.test_mode_on = True 
+proj.test_mode_on = False 
 # directory of project
 proj.chimera_project_path = "/home/matteo/chimera-projects/"
 
@@ -24,9 +24,9 @@ proj.bg_model = "PREM_ISO_2s"
 # thermodynamic variables
 proj.thermo_var_names = ["T", "p_s"]           # as read by stagyy
 # compositional fields
-stagyy_field_names = ["bs", "hz"]      # as read by stagyy
+stagyy_field_names = ["bs", "hz", "prim"]      # as read by stagyy
 # the corresponding perplex projects, order must match with stagyy
-perplex_proj_names = ["bsXu08_1", "hzXu08_1"]
+perplex_proj_names = ["bsXu08_1", "hzXu08_1", "primBr100_1"]
 
 proj.c_field_names = [stagyy_field_names, perplex_proj_names]
 
@@ -35,5 +35,5 @@ proj.time_span_Gy = [4.5]
 
 
 # finally create project with the name
-proj_name = "Checkerboard2"
+proj_name = "PlumPudding"
 proj.new(proj_name)

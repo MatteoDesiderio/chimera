@@ -74,7 +74,7 @@ class Tab:
                 data_ = data_[::nT]
 
             else:
-                # print(i, field)
+                print(i, field)
                 # print(np.any(data == 0))
                 data_ = np.reshape(data_, (nP, nT)).T
                 

@@ -9,12 +9,11 @@ from functions import (initialize_vmodels,
 
 # %% input
 # load project
-proj_path = "/home/matteo/chimera-projects/Marble-vs-PlumPudding/"
+proj_path = "/home/matteo/chimera-projects/PlumPudding/"
 proj = Project.load(proj_path)
-proj.test_mode_on = False
 # specify interpolation parameters
 interpolation_parameters = dict(
-    interp_type="closest", # closest, bilinear, inv_dist_weight
+    interp_type="bilinear", # closest, bilinear, inv_dist_weight
     p=4,
     tree_args={"leafsize": 10},
     query_args={"r": 0.0}
@@ -40,8 +39,8 @@ stag_2_perp = np.sqrt(vmod.rho_stagyy / vmod.rho)
 every_n = 100
 x = vmod.x[::every_n]
 y = vmod.y[::every_n]
-# * stag_2_perp[::every_n] # useful 2 convert btwn them
-vel = vmod.s[::every_n]
+# */ stag_2_perp[::every_n] # useful 2 convert btwn them
+vel = vmod.T[::every_n]
 
 plt.figure()
 plt.title("cartesian coordinates")
