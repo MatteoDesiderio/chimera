@@ -44,7 +44,7 @@ plt.tricontourf(x, y, vel, levels=512)
 # %%
 sa, s_prof = vmod.anomaly("s")
 pa, p_prof = vmod.anomaly("p")
-rhoa, rho_prof = vmod.anomaly("rho_stagyy")
+rhoa, rho_prof = vmod.anomaly("rho")
 r_prof = s_prof["r"] * vmod.r_E_km * 1e3
 
 d = "/home/matteo/axisem-9f0be2f/SOLVER/MESHES/test_VERBOSE/1dmodel_axisem.bm"

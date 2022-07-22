@@ -145,7 +145,20 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 print("Done")
                 print()
             
-def geodynamic_to_thermoelastic(proj):   
+def geodynamic_to_thermoelastic(proj):
+    """
+    
+
+    Parameters
+    ----------
+    proj : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     for model_name in proj.stagyy_model_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
@@ -175,7 +188,23 @@ def geodynamic_to_thermoelastic(proj):
             print("----------------------------------------------------------")
             print()
 
-def compute_vmodels(proj, use_stagyy_rho=False): 
+def compute_vmodels(proj, use_stagyy_rho=False):
+    """
+    
+
+    Parameters
+    ----------
+    proj : TYPE
+        DESCRIPTION.
+    use_stagyy_rho : TYPE, optional
+        DESCRIPTION. The default is False.
+
+    Returns
+    -------
+    v_model_paths : TYPE
+        DESCRIPTION.
+
+    """
     v_model_paths = []
     for model_name in proj.stagyy_model_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
@@ -210,6 +239,19 @@ def compute_vmodels(proj, use_stagyy_rho=False):
  
     
 def export_vmodels(proj):
+    """
+    
+
+    Parameters
+    ----------
+    proj : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     for model_name in proj.stagyy_model_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
