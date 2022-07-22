@@ -23,8 +23,7 @@ def _checker(shape,
     return T_
 
 
-def initialize_vmodels(proj, interp_type, p, tree_args, query_args,
-                       checker_board_params=None):
+def initialize_vmodels(proj, interp_type, checker_board_params=None):
     
     # load axisem high resolution grid 
     path_modx, path_mody = proj.get_paths()
