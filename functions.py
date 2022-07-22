@@ -78,14 +78,11 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                                         proj.c_field_names[0])
                 # interpolating stagyy fields on larger axisem grid
 
-                v_model.T = variables[0].interpolate(interp_type, x, y, p, 
-                                                     tree_args, query_args)
-                v_model.P = variables[1].interpolate(interp_type, x, y, p, 
-                                                     tree_args, query_args)
+                v_model.T = variables[0].interpolate(interp_type, x, y)
+                v_model.P = variables[1].interpolate(interp_type, x, y)
         
                 for i, f in enumerate(fields):
-                    v_model.C[i] = f.interpolate(interp_type, x, y, p,
-                                                    tree_args, query_args)
+                    v_model.C[i] = f.interpolate(interp_type, x, y)
                 
                 snap_path = model_path + "/{}/".format(i_t)
                 v_path = snap_path + proj.vel_model_path
@@ -133,17 +130,12 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 # interpolating stagyy fields on larger axisem grid
                 print("Interpolating stagyy variables ",
                       "and fields on axisem mesh")
-                v_model.T = variables[0].interpolate(interp_type, x, y, p, 
-                                                     tree_args, query_args)
-                v_model.P = variables[1].interpolate(interp_type, x, y, p, 
-                                                     tree_args, query_args)
-                v_model.rho_stagyy = rho_stagyy.interpolate(interp_type, 
-                                                            x, y, p, 
-                                                     tree_args, query_args)
+                v_model.T = variables[0].interpolate(interp_type, x, y)
+                v_model.P = variables[1].interpolate(interp_type, x, y)
+                v_model.rho_stagyy = rho_stagyy.interpolate(interp_type, x, y)
         
                 for i, f in enumerate(fields):
-                    v_model.C[i] = f.interpolate(interp_type, x, y, p,
-                                                    tree_args, query_args)
+                    v_model.C[i] = f.interpolate(interp_type, x, y)
                 
                 snap_path = model_path + "/{}/".format(i_t)
                 v_path = snap_path + proj.vel_model_path
