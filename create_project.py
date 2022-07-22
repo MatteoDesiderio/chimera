@@ -12,7 +12,7 @@ proj.test_mode_on = False
 proj.chimera_project_path = "/home/matteo/chimera-projects/"
 
 # define stagyy models location and model names
-proj.stagyy_path = "/home/matteo/stagyyRuns/ghostresults/"
+proj.stagyy_path = "/media/matteo/seagate_external/"
 proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"] 
 
 # define perplex paths, where tab files are located
