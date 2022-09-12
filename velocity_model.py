@@ -68,9 +68,9 @@ class VelocityModel:
         self.p_a = None
         self.bulk_a = None
         # average radial profiles
-        self.s_prof = {"r": None, "dv": []}
-        self.p_prof = {"r": None, "dv": []}
-        self.bulk_prof = {"r": None, "dv": []}
+        self.s_prof = {"r": None, "val": []}
+        self.p_prof = {"r": None, "val": []}
+        self.bulk_prof = {"r": None, "val": []}
         # average fields
         self.K = None
         self.G = None
