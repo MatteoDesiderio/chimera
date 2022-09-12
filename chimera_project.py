@@ -19,26 +19,15 @@ class Project:
         self._GY = 3600*24*364*1e9                                        # [s]
         self.chimera_project_path = ""    # path where you want to save project
         self.bg_model = ""                       # name of your axisem bg model
-        self.perplex_path = ""                              # path to tab files
+        self.thermo_data_path = ""           # parent path to thermo_data files
+        self.thermo_data_names = ""       # their names. single str of list str 
         self.stagyy_path = ""                      # path to your stagyy models 
         self.stagyy_model_names = []
-        self.thermo_var_names = []                          # as read by stagyy
-        # as read by stagyy + corresponding perplex projects, order must match!
-        self.c_field_names = [[], []]         
         self.elastic_path = "/elastic-fields/"
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
         self.test_mode_on = False
-                
-    @property
-    def c_field_names(self):
-        return self._c_field_names
-    @c_field_names.setter
-    def c_field_names(self, val):
-        self._c_field_names = val
-        cstagyy, cperplex = val
-        self.proj_names_dict = {k:v for k, v in zip(cstagyy,
-                                                    cperplex)}
+
     @property
     def stagyy_model_names(self):
         return self._stagyy_model_names

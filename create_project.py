@@ -16,19 +16,11 @@ proj.stagyy_path = "/media/matteo/seagate_external/"
 proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"] 
 
 # define perplex paths, where tab files are located
-proj.perplex_path = "/home/matteo/PerpleX_scripts/tab-files/"
+proj.thermo_data_path = "/home/matteo/chimera-projects/ThermoData/"
 
 # % define axisem's mesh numpy path
 proj.bg_model = "PREM_ISO_2s"
 
-# thermodynamic variables
-proj.thermo_var_names = ["T", "p_s"]           # as read by stagyy
-# compositional fields
-stagyy_field_names = ["bs", "hz", "prim"]      # as read by stagyy
-# the corresponding perplex projects, order must match with stagyy
-perplex_proj_names = ["bsXu08_1", "hzXu08_1", "primBr100_1"]
-
-proj.c_field_names = [stagyy_field_names, perplex_proj_names]
 
 # define time span in billion years
 proj.time_span_Gy = [4.5]
