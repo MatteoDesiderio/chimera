@@ -9,6 +9,8 @@ from interfaces.stag import loader
 from interfaces.perp.tab import Tab
 from interfaces.perp.thermo_elastic_field import ThermoElasticField
 
+from thermo_data import ThermoData
+
 
 def _checker(shape, 
              a1=1.0, a2=0.0, freq1=10, freq2=10, Tmin=1600.0, Tmax=3100.0):
@@ -31,14 +33,6 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
     y = np.load(path_mody)
     n = len(x)
     
-    print("Initializing variables and compositional fields")
-    variables = [Field(v) for v in proj.thermo_var_names]
-    fields = [Field(v) for v in proj.c_field_names[0]]
-    rho_stagyy = Field("rho")
-    print("Variables:", *proj.thermo_var_names)
-    print("Compositional Fields:", *proj.c_field_names[0])
-    print()
-    
 
     if proj.test_mode_on:
         if checker_board_params is None:
@@ -50,6 +44,16 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
               "while the comp field is all pyrolitic")
         for model_name, thermo_name in zip(proj.stagyy_model_names, 
                                            proj.thermo_data_names):
+            
+            print("Initializing variables and compositional fields")
+            thermo_data = ThermoData.load(proj.thermo_data_path + thermo_name)
+            variables = [Field(v) for v in thermo_data.thermo_var_names]
+            fields = [Field(v) for v in thermo_data.c_field_names[0]]
+            rho_stagyy = Field("rho")
+            print("Variables:", *thermo_data.thermo_var_names)
+            print("Compositional Fields:", *thermo_data.c_field_names[0])
+            print()
+            
             parent_path = proj.chimera_project_path + proj.project_name + "/" 
             model_path = parent_path + model_name
             indices, years = proj.t_indices[model_name], proj.time_span_Gy
@@ -96,9 +100,22 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 print()
                 
     else:
+        
         # load data from stagyy with stagpy into fields
         # TODO speed up the process by loading coords, fields at the same time
-        for model_name in proj.stagyy_model_names:
+        for model_name, thermo_name in zip(proj.stagyy_model_names, 
+                                           proj.thermo_data_names):
+            
+            print("Initializing variables and compositional fields")
+            thermo_data = ThermoData.load(proj.thermo_data_path + thermo_name)
+            
+            variables = [Field(v) for v in thermo_data.thermo_var_names]
+            fields = [Field(v) for v in thermo_data.c_field_names[0]]
+            rho_stagyy = Field("rho")
+            print("Variables:", *thermo_data.thermo_var_names)
+            print("Compositional Fields:", *thermo_data.c_field_names[0])
+            print()
+            
             print("Loading stagyy model:", model_name)
             parent_path = proj.chimera_project_path + proj.project_name + "/" 
             model_path = parent_path + model_name
@@ -106,7 +123,11 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             indices, years = proj.t_indices[model_name], proj.time_span_Gy
             print("for each of time steps in", years, 
                   "Gy, corresponding to indices", indices)
-            
+            print("The thermodynamic dataset '%s' will be used," % thermo_name)
+            print("located in %s and containing reference to the tab files:" %
+                  proj.thermo_data_path)
+            print(*thermo_data.c_field_names[1])
+            print()
             for i_t, t in zip(indices, years):
                 print("Loading coords and values with stagpy")
                 sdat = stagyydata.StagyyData(proj.stagyy_path + model_name)
@@ -129,9 +150,9 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 
                 print("Initializing velocity model for", t, "Gy")
                 v_model = VelocityModel(model_name, i_t, t, x, y, 
-                                        proj.c_field_names[0])
+                                        thermo_data.c_field_names[0])
                 # interpolating stagyy fields on larger axisem grid
-                print("Interpolating stagyy variables ",
+                print("Interpolating stagyy variables",
                       "and fields on axisem mesh")
                 v_model.T = variables[0].interpolate(interp_type, x, y)
                 v_model.P = variables[1].interpolate(interp_type, x, y)
