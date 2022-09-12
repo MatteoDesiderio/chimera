@@ -39,6 +39,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
     print("Compositional Fields:", *proj.c_field_names[0])
     print()
     
+
     if proj.test_mode_on:
         if checker_board_params is None:
             checker_board_params = [1.0, 0.0, 10, 10, 1600.0, 3100.0]
@@ -47,7 +48,8 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
               "were used but bear no meaning. Stagyy model used to load ", 
               "coordinates and P, but T field is a checkerboard, ",
               "while the comp field is all pyrolitic")
-        for model_name in proj.stagyy_model_names:
+        for model_name, thermo_name in zip(proj.stagyy_model_names, 
+                                           proj.thermo_data_names):
             parent_path = proj.chimera_project_path + proj.project_name + "/" 
             model_path = parent_path + model_name
             indices, years = proj.t_indices[model_name], proj.time_span_Gy
@@ -88,6 +90,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 v_path = snap_path + proj.vel_model_path
                 print()
                 print("Saving velocity model for", t, "Gy in", v_path )
+                v_model.thermo_data_name = proj.thermo_data_path + thermo_name
                 v_model.save(v_path)
                 print("Done")
                 print()
@@ -141,6 +144,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 v_path = snap_path + proj.vel_model_path
                 print()
                 print("Saving velocity model for", t, "Gy in", v_path )
+                v_model.thermo_data_name = proj.thermo_data_path + thermo_name
                 v_model.save(v_path)
                 print("Done")
                 print()
