@@ -25,7 +25,6 @@ proj.bg_model = "PREM_ISO_2s"
 # define time span in billion years
 proj.time_span_Gy = [4.5]
 
-
 # finally create project with the name
 proj_name = "PlumPudding"
 proj.new(proj_name)
