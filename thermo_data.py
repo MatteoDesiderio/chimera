@@ -48,3 +48,8 @@ class ThermoData:
         with open(parent + self.description +'.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
     
+    @staticmethod
+    def load(path):
+        with open(path + '.pkl', 'rb') as f:
+            pickled_class = pickle.load(f)
+        return pickled_class
