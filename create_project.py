@@ -17,10 +17,10 @@ proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"]
 
 # define perplex paths, where tab files are located
 proj.thermo_data_path = "/home/matteo/chimera-projects/ThermoData/"
+proj.thermo_data_names = ["MgNum100"]
 
 # % define axisem's mesh numpy path
 proj.bg_model = "PREM_ISO_2s"
-
 
 # define time span in billion years
 proj.time_span_Gy = [4.5]
