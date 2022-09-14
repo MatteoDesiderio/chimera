@@ -112,7 +112,8 @@ class VelocityModel:
         K_list = np.empty(shape)
         G_list = np.empty(shape)
         rho_list = np.empty(shape)
-
+        
+        # TODO transfer the proj_dict from proj class to thermo_data class
         for i, nm in enumerate(self.Cnames):
             comp = proj_dict[nm]
             # print(nm, comp) # to check correct order of loading

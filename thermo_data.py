@@ -1,3 +1,4 @@
+from interfaces.perp.tab import Tab
 import os
 import pickle
 
@@ -12,12 +13,13 @@ class ThermoData:
 
         """
         self.perplex_path = ""                              # path to tab files
-        self.stagyy_path = ""                      # path to your stagyy models 
         self.thermo_var_names = []                          # as read by stagyy
-        # as read by stagyy + corresponding perplex projects, order must match!
+        # c fields of stagyy + corresponding perplex tables, order must match!
         self.c_field_names = [[], []]         
         self.elastic_path = "/elastic-fields/"
-        self.description = ""     # title to describe the set of tab files used 
+        self.description = ""     # title to describe the set of tab files used
+        self.tabs = [] 
+        self.proj_names_dict = {}  # a dictionary associating
                 
     @property
     def c_field_names(self):
@@ -27,7 +29,16 @@ class ThermoData:
         self._c_field_names = val
         cstagyy, cperplex = val
         self.proj_names_dict = {k:v for k, v in zip(cstagyy, cperplex)}
-        
+    
+    def import_tab(self):
+        self.tab_files = [] 
+        for f, tb in zip(*self.c_field_names):
+            inpfl = self.perplex_path + tb + ".tab" 
+            tab = Tab(inpfl)                                   
+            tab.load()                                        
+            tab.remove_nans()     
+            self.tabs.append(tab)
+    
     def save(self, save_path):
         """
         Save a thermo_data somewhere

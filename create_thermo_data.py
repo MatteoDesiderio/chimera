@@ -1,3 +1,7 @@
+"""
+This is the first step before creating the project
+"""
+
 from thermo_data import ThermoData
 
 # %% List of parameters
@@ -32,6 +36,6 @@ for dataset in datasets:
     thermodata.c_field_names = [stagyy_field_names, 
                                 dataset["perplex_proj_names"]
                                 ]
-
+    thermodata.import_tab()
     # finally create thermodata file with the name
     thermodata.save(save_path)

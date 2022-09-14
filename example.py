@@ -28,7 +28,7 @@ export_vmodels(proj)
 # %% loading one model
 vmod = VelocityModel.load(v_model_paths[0])
 
-# %%
+# %% plot quick absolute values
 stag_2_perp = np.sqrt(vmod.rho_stagyy / vmod.rho)
 
 every_n = 100
@@ -41,7 +41,7 @@ plt.figure()
 plt.title("cartesian coordinates")
 plt.tricontourf(x, y, vel, levels=512)
 
-# %%
+# %% plot 1D profiles
 sa, s_prof = vmod.anomaly("s")
 pa, p_prof = vmod.anomaly("p")
 rhoa, rho_prof = vmod.anomaly("rho")
@@ -76,7 +76,7 @@ ax1.set_ylabel("Depth [m]")
 ax3.legend()
 plt.subplots_adjust(wspace=0)
 
-# %%
+# %% plot vel anomaly field
 plt.figure()
 plt.title("Vs anomaly")
 plt.tricontourf(vmod.x, vmod.y, sa, levels=512, cmap="RdBu",

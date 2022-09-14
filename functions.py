@@ -46,12 +46,12 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                                            proj.thermo_data_names):
             
             print("Initializing variables and compositional fields")
-            thermo_data = ThermoData.load(proj.thermo_data_path + thermo_name)
-            variables = [Field(v) for v in thermo_data.thermo_var_names]
-            fields = [Field(v) for v in thermo_data.c_field_names[0]]
+            thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
+            variables = [Field(v) for v in thermodata.thermo_var_names]
+            fields = [Field(v) for v in thermodata.c_field_names[0]]
             rho_stagyy = Field("rho")
-            print("Variables:", *thermo_data.thermo_var_names)
-            print("Compositional Fields:", *thermo_data.c_field_names[0])
+            print("Variables:", *thermodata.thermo_var_names)
+            print("Compositional Fields:", *thermodata.c_field_names[0])
             print()
             
             parent_path = proj.chimera_project_path + proj.project_name + "/" 
@@ -106,14 +106,14 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
         for model_name, thermo_name in zip(proj.stagyy_model_names, 
                                            proj.thermo_data_names):
             
-            print("Initializing variables and compositional fields")
-            thermo_data = ThermoData.load(proj.thermo_data_path + thermo_name)
-            
-            variables = [Field(v) for v in thermo_data.thermo_var_names]
-            fields = [Field(v) for v in thermo_data.c_field_names[0]]
+            print("Initializing variables and compositional fields")            
+            variables = [Field(v) for v in thermodata.thermo_var_names]
+            fields = [Field(v) for v in thermodata.c_field_names[0]]
             rho_stagyy = Field("rho")
-            print("Variables:", *thermo_data.thermo_var_names)
-            print("Compositional Fields:", *thermo_data.c_field_names[0])
+            
+            thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
+            print("Variables:", *thermodata.thermo_var_names)
+            print("Compositional Fields:", *thermodata.c_field_names[0])
             print()
             
             print("Loading stagyy model:", model_name)
@@ -123,10 +123,11 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             indices, years = proj.t_indices[model_name], proj.time_span_Gy
             print("for each of time steps in", years, 
                   "Gy, corresponding to indices", indices)
+            
             print("The thermodynamic dataset '%s' will be used," % thermo_name)
             print("located in %s and containing reference to the tab files:" %
                   proj.thermo_data_path)
-            print(*thermo_data.c_field_names[1])
+            print(*thermodata.c_field_names[1])
             print()
             for i_t, t in zip(indices, years):
                 print("Loading coords and values with stagpy")
@@ -150,7 +151,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 
                 print("Initializing velocity model for", t, "Gy")
                 v_model = VelocityModel(model_name, i_t, t, x, y, 
-                                        thermo_data.c_field_names[0])
+                                        thermodata.c_field_names[0])
                 # interpolating stagyy fields on larger axisem grid
                 print("Interpolating stagyy variables",
                       "and fields on axisem mesh")
@@ -184,7 +185,8 @@ def geodynamic_to_thermoelastic(proj):
     None.
 
     """
-    for model_name in proj.stagyy_model_names:
+    for model_name, thermo_name in zip(proj.stagyy_model_names, 
+                                       proj.thermo_data_names):
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
         print("Compute thermoelastic properties for geodynamic model", 
@@ -194,17 +196,16 @@ def geodynamic_to_thermoelastic(proj):
               "Gy, corresponding to indices", indices)
         
         print()
+        thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
         for i_t, t in zip(indices, years):
             snap_path = model_path + "/{}/".format(i_t)
             v_path = snap_path + proj.vel_model_path
             v_model = VelocityModel.load(v_path)
             print("Loading P, T from velocity model saved in", v_path)
             T, P = v_model.T, v_model.P                            
-            for i, f in enumerate(proj.c_field_names[0]):
-                inpfl = proj.perplex_path + proj.proj_names_dict[f] + ".tab" 
-                tab = Tab(inpfl)                                   
-                tab.load()                                        
-                tab.remove_nans()                                  
+            #for i, f in enumerate(thermo_data.c_field_names[0]):
+            for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
+                print("... working on %s ..." % f)
                 thermo_field = ThermoElasticField(tab, f)  
                 thermo_field.extract(T, P, model_name)     
                 thermo_field.save(snap_path + proj.elastic_path)
@@ -219,10 +220,11 @@ def compute_vmodels(proj, use_stagyy_rho=False):
 
     Parameters
     ----------
-    proj : TYPE
-        DESCRIPTION.
-    use_stagyy_rho : TYPE, optional
-        DESCRIPTION. The default is False.
+    proj : class Proj
+        Your chimera project, from which all relevant information is taken.
+    use_stagyy_rho : bool, optional
+        Uses stagyy density instead of that obtained via Perple_X. 
+        The default is False.
 
     Returns
     -------
@@ -231,14 +233,20 @@ def compute_vmodels(proj, use_stagyy_rho=False):
 
     """
     v_model_paths = []
-    for model_name in proj.stagyy_model_names:
+    for model_name, thermo_name in zip(proj.stagyy_model_names, 
+                                        proj.thermo_data_names):
+        thermo_path = proj.thermo_data_path + thermo_name
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
-        print("Loading velocity models from", model_path)
+        
+        print("Loading velocity models obtained from", model_path)
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
+        print("using the perplex tables saved as ", thermo_path)
         print("for each of time steps in", years, 
               "Gy, corresponding to indices", indices)
         print()
+        
+        thermodata = ThermoData.load(thermo_path)
         for i_t, t in zip(indices, years):
             snap_path = model_path + "/{}/".format(i_t)
             v_path = snap_path + proj.vel_model_path
@@ -248,7 +256,7 @@ def compute_vmodels(proj, use_stagyy_rho=False):
             moduli_location = snap_path + proj.elastic_path
             print("Averaging rho, K, G")
             v_model.average(*v_model.load_moduli(moduli_location, 
-                                                 proj.proj_names_dict))
+                                                 thermodata.proj_names_dict))
             
             print("Computing seismic velocities")
             v_model.compute_velocities(use_stagyy_rho)
