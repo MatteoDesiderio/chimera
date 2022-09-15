@@ -1,6 +1,7 @@
 """ Here I show how to create a new project"""
 
 import sys
+from glob import glob
 sys.path.append('..')
 
 from chimera_project import Project
@@ -17,7 +18,7 @@ proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"]
 
 # define perplex paths, where tab files are located
 proj.thermo_data_path = "/home/matteo/chimera-projects/ThermoData/"
-proj.thermo_data_names = ["MgNum100"]
+proj.thermo_data_names = ["MgNum100"] * len(proj.stagyy_model_names)
 
 # % define axisem's mesh numpy path
 proj.bg_model = "PREM_ISO_2s"
@@ -26,5 +27,5 @@ proj.bg_model = "PREM_ISO_2s"
 proj.time_span_Gy = [4.5]
 
 # finally create project with the name
-proj_name = "PlumPudding2"
+proj_name = "Plum_vs_Marble"
 proj.new(proj_name)
