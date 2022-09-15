@@ -26,5 +26,5 @@ proj.bg_model = "PREM_ISO_2s"
 proj.time_span_Gy = [4.5]
 
 # finally create project with the name
-proj_name = "PlumPudding"
+proj_name = "PlumPudding2"
 proj.new(proj_name)

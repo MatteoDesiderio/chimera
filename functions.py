@@ -106,12 +106,12 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
         for model_name, thermo_name in zip(proj.stagyy_model_names, 
                                            proj.thermo_data_names):
             
+            thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
             print("Initializing variables and compositional fields")            
             variables = [Field(v) for v in thermodata.thermo_var_names]
             fields = [Field(v) for v in thermodata.c_field_names[0]]
             rho_stagyy = Field("rho")
             
-            thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
             print("Variables:", *thermodata.thermo_var_names)
             print("Compositional Fields:", *thermodata.c_field_names[0])
             print()

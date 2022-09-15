@@ -3,7 +3,7 @@ from numba import prange, njit
 import pickle
 from scipy.spatial import KDTree
 from field import Field
-
+from interfaces.axi.inparam_hetero_template import inparam_hetero
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
@@ -76,6 +76,7 @@ class VelocityModel:
         self.G = None
         self.rho = None
         self.rho_stagyy = None
+        self.template = inparam_hetero # inparam_hetero template
 
     @property
     def T(self):
@@ -223,4 +224,11 @@ class VelocityModel:
             rho = self.rho
         s, p = self.s, self.p
         data = np.c_[r, th, p, s, rho]
-        np.savetxt(destination + "/geodynamic_hetfile.sph", data)
+        # save the sph text file
+        fname = destination + "/geodynamic_hetfile.sph"
+        np.savetxt(fname, data)
+        # save a corresponding inparam_hetero, as needed by axisem
+        filled_template = self.template.format(fname)
+        with open(destination + "/inparam_hetero", "w") as inparam_file:
+            inparam_file.write(filled_template)
+        
