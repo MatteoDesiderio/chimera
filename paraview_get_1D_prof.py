@@ -7,11 +7,14 @@ from os import mkdir, remove
 
 # %% directories and profiles we're interested in 
 # where axisem is
-parent_path = '/home/matteo/axisem-9f0be2f/'
-# where your axisem run is
-run_path = '350_1_abs_single_5s_NOCRUST_NOQ'
+# axisem_parent_path = '/home/matteo/axisem-9f0be2f/'
+
 # where you want to save your profiles
-output_parent_path = '/home/matteo/chimera-projects/'
+parent_path = '/home/matteo/chimera-projects/'
+# name of the chimera project
+project_name = 'Plum_vs_Marble'
+# # where your axisem_runS are
+run_paths = glob(parent_path + project_name + '/*/*')
 # what type of 1D profiles would you like?
 fields = ["rho", "vph", "vsh"]
 # if True, will load the data such that they can be visualized 
@@ -24,7 +27,7 @@ radial_resolution = 511
 thetas = np.linspace(-np.pi/2, np.pi/2, lateral_resolution)
 R = 6371e3 
 
-# %% a useful function to 
+# %% a useful function to visualize the data as normal in paraview
 def make_visible(model, lookupTable):
 	SetActiveSource(model)
 	representation = Show()
@@ -34,101 +37,103 @@ def make_visible(model, lookupTable):
 	return representation
 
 # %% loop over fields
-for field in fields:
-	# create a path where you want to store your output
-	output_path = output_parent_path + field
-	# unless it exists already
-	try:
-		mkdir(output_path)
-	except OSError:
-		pass
-
-	# determine name of vtk files
-	vtkname = 'model_{}_0*.vtk'.format(field)
-	# collect corresponding paths into a list
-	paths = glob(parent_path + 'SOLVER/' + run_path + '/Info/' + vtkname)
-
-	# load from list of paths
-	models, representations = [], []
-	for path in paths:
-		model = LegacyVTKReader(FileNames=[path])
-		models.append(model)
-
-		if not(fast):
-			rep = make_visible(model, GetLookupTableForArray("data", 1))
-			representations.append(rep)
-
-	# select all and make a group
-	all_proxies = GetSources().values()
-	group = GroupDatasets(Input=all_proxies)
-
-	# initialize array to store average.
-	# (number of rows is + 1 because paraview is weird) 
-	avg = np.zeros((radial_resolution + 1, 2))
-	# create n radial profiles
-	for i, th in enumerate(thetas):
-
-		x2, y2 = R*np.cos(th), R*np.sin(th)
-
-		# create line
-		plotOverLine = PlotOverLine(group)
-		plotOverLine.Source.Resolution = radial_resolution
-		plotOverLine.Source.Point1 = [0,0,0]
-		plotOverLine.Source.Point2 = [x2,y2,0]
-
-		UpdatePipeline()
-
-		# create window to display this data
-		if i == 0:
-			view = CreateXYPlotView()
-			view.ChartTitle = field
-			view.ShowLegend = 0
-
-		# get a representation of the line data
-		rep = GetDisplayProperties(plotOverLine)
-		# decide what you want on x axis of plot
-		rep.UseIndexForXAxis = 0 # do not use indices
-		rep.XArrayName = 'arc_length'
-		# hide all garbage
-		rep.SeriesVisibility = ['', '', '', '', '', '', '', '', 
-								'data', '1',                  # data
-								'vtkValidPointMask', '0',     # boh
-								'arc_length', '0',            # dist in m
-								'Points (0)', '0',            # dist in m
-								'Points (1)', '0',            # boh
-								'Points (2)', '0',            # boh
-								'Points (Magnitude)', '0',    # dist in m
-								'vtkOriginalIndices', '0'] # indices
-
-		# write each profile into a csv file
-		args = (lateral_resolution, radial_resolution, i) # create name
-		fname = "/data_{}_{}_{}.csv".format(*args)
-		writer = CreateWriter(output_path + fname) # create writer
-		writer.UpdatePipeline() 				   # and it's written
-		# load the csv again. We need values and r coord
-		data, _, arc, _, _, _ = np.genfromtxt(output_path + fname, 
-											  delimiter=',',
-							  				  skip_header=1, unpack=True)
-		# add vel values
-		avg[:, 0] += data
-
-		# we dont need the csv anymore
-		# remove(output_path + fname)
-
-	# compute average and save it
-	avg /= lateral_resolution
-	# store r coordinates
-	avg[:, 1] = arc
-	np.savetxt(output_path + "/mean_post_axi_read.txt", avg)
-	
-	# clean up paraview
-	_ = [Delete(proxy) for proxy in GetSources().values()]
-	_ = [Delete(rep) for rep in representations]
-
-
-	# I thoght the following was necessary but it seems unimportant
-	#for i, mod in enumerate(models):
-	#	try:
-	#		Delete(mod)
-	#	except RuntimeError:
-	#		print("error", str(i))
+for run_path in run_paths:
+    for field in fields:
+    	# create a path where you want to store your output
+    	output_path = run_path +'/' + field
+    	# unless it exists already
+    	try:
+    		mkdir(output_path)
+    	except OSError:
+    		pass
+    
+    	# determine name of vtk files
+    	vtkname = 'model_{}_0*.vtk'.format(field)
+    	# collect corresponding paths into a list
+    	paths = glob(run_path + '/axisem_run/Info/' + vtkname)
+        
+        # here the paraview stuff begins
+    	# load from list of paths
+    	models, representations = [], []
+    	for path in paths:
+    		model = LegacyVTKReader(FileNames=[path])
+    		models.append(model)
+    
+    		if not(fast):
+    			rep = make_visible(model, GetLookupTableForArray("data", 1))
+    			representations.append(rep)
+    
+    	# select all and make a group
+    	all_proxies = GetSources().values()
+    	group = GroupDatasets(Input=all_proxies)
+    
+    	# initialize array to store average.
+    	# (number of rows is + 1 because paraview is weird) 
+    	avg = np.zeros((radial_resolution + 1, 2))
+    	# create n radial profiles
+    	for i, th in enumerate(thetas):
+    
+    		x2, y2 = R*np.cos(th), R*np.sin(th)
+    
+    		# create line
+    		plotOverLine = PlotOverLine(group)
+    		plotOverLine.Source.Resolution = radial_resolution
+    		plotOverLine.Source.Point1 = [0,0,0]
+    		plotOverLine.Source.Point2 = [x2,y2,0]
+    
+    		UpdatePipeline()
+    
+    		# create window to display this data
+    		if i == 0:
+    			view = CreateXYPlotView()
+    			view.ChartTitle = field
+    			view.ShowLegend = 0
+    
+    		# get a representation of the line data
+    		rep = GetDisplayProperties(plotOverLine)
+    		# decide what you want on x axis of plot
+    		rep.UseIndexForXAxis = 0 # do not use indices
+    		rep.XArrayName = 'arc_length'
+    		# hide all garbage
+    		rep.SeriesVisibility = ['', '', '', '', '', '', '', '', 
+    								'data', '1',                  # data
+    								'vtkValidPointMask', '0',     # boh
+    								'arc_length', '0',            # dist in m
+    								'Points (0)', '0',            # dist in m
+    								'Points (1)', '0',            # boh
+    								'Points (2)', '0',            # boh
+    								'Points (Magnitude)', '0',    # dist in m
+    								'vtkOriginalIndices', '0'] # indices
+    
+    		# write each profile into a csv file
+    		args = (lateral_resolution, radial_resolution, i) # create name
+    		fname = "/data_{}_{}_{}.csv".format(*args)
+    		writer = CreateWriter(output_path + fname) # create writer
+    		writer.UpdatePipeline() 				   # and it's written
+    		# load the csv again. We need values and r coord
+    		data, _, arc, _, _, _ = np.genfromtxt(output_path + fname, 
+    											  delimiter=',',
+    							  				  skip_header=1, unpack=True)
+    		# add vel values
+    		avg[:, 0] += data
+    
+    		# we dont need the csv anymore
+    		# remove(output_path + fname)
+    
+    	# compute average and save it
+    	avg /= lateral_resolution
+    	# store r coordinates
+    	avg[:, 1] = arc
+    	np.savetxt(output_path + "/mean_post_axi_read.txt", avg)
+    	
+    	# clean up paraview
+    	_ = [Delete(proxy) for proxy in GetSources().values()]
+    	_ = [Delete(rep) for rep in representations]
+    
+    
+    	# I thoght the following was necessary but it seems unimportant
+    	#for i, mod in enumerate(models):
+    	#	try:
+    	#		Delete(mod)
+    	#	except RuntimeError:
+    	#		print("error", str(i))
