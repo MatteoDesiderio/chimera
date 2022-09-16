@@ -27,7 +27,8 @@ for thermo_info, key in zip(thermo_infos, names):
     for year, index in zip(years, indices):
         line1 = (proj_path + "/%s/%i" % (name, index) + 
                 vel_model_path + "geodynamic_hetfile.sph")
-        line2 = "%s-%s-%1.2f-%i" % (name, thermo_info, year, index) 
+        line2 = "%s-%s-%s-%1.2f-%i" % (proj.bg_model, name, thermo_info, 
+                                    year, index) 
         lines += [line1 + " " + line2]
 
 listname = proj.project_name + "-runList"
@@ -42,7 +43,6 @@ cat %s | while read path run_name
 do
 # copy the heterogeneities model into the directory
 cp $path .
-run_name=$(echo '$name'_'$thermo_info'_'$year'_'$index')
 #./submit.csh $run_name
 done
 """ % listname)    
