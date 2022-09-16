@@ -3,7 +3,7 @@ from chimera_project import Project
 from shutil import copy
 
 SOLVER_path = "/home/matteo/axisem-9f0be2f/SOLVER/"
-proj_path = "/home/matteo/chimera-projects/PlumPudding/"
+proj_path = "/home/matteo/chimera-projects/Plum_vs_Marble/"
 
 snap_list = glob(proj_path + "/*/*/")
 
