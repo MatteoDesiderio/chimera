@@ -217,7 +217,7 @@ class VelocityModel:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
     def export(self, destination):
-        r, th = self.r * self.r_E_km * 1e3, self.theta * 180 / np.pi
+        r, th = self.r * 1e3, self.theta * 180 / np.pi
         if self.stagyy_rho_used:
             rho = self.rho_stagyy
         else:
@@ -226,9 +226,9 @@ class VelocityModel:
         data = np.c_[r, th, p, s, rho]
         # save the sph text file
         fname = destination + "/geodynamic_hetfile.sph"
-        np.savetxt(fname, data)
+        np.savetxt(fname, data, header=str(len(data)), comments='')
         # save a corresponding inparam_hetero, as needed by axisem
-        filled_template = self.template.format(fname)
+        filled_template = self.template.format("geodynamic_hetfile.sph")
         with open(destination + "/inparam_hetero", "w") as inparam_file:
             inparam_file.write(filled_template)
         
