@@ -9,7 +9,7 @@ from functions import (initialize_vmodels,
 
 # %% input
 # load project
-proj_path = "/home/matteo/chimera-projects/PlumPudding2/"
+proj_path = "/home/matteo/chimera-projects/Plum_vs_Marble/"
 proj = Project.load(proj_path)
 # specify interpolation parameters
 interp_type="linear" # closest, linear, cubic
