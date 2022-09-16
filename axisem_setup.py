@@ -1,18 +1,48 @@
+"""
+generate a list of names for the axisem runs that can be read with by the 
+runmanager provided here
+"""
+
 from glob import glob
 from chimera_project import Project
-from shutil import copy
+from numpy import savetxt
 
+# %% provide path of AxiSEM SOLVER and chimera project 
 SOLVER_path = "/home/matteo/axisem-9f0be2f/SOLVER/"
 proj_path = "/home/matteo/chimera-projects/Plum_vs_Marble/"
 
-snap_list = glob(proj_path + "/*/*/")
 
+# %% 
+proj = Project.load(proj_path)
+vel_model_path = proj.vel_model_path
 
-print("Please, copy any of the following commands:")
+thermo_infos = proj.thermo_data_names
+names = proj.stagyy_model_names
+years = proj.time_span_Gy
+
+lines = []
+for thermo_info, key in zip(thermo_infos, names):
+    name = key.rstrip("/") 
+    indices = proj.t_indices[key]
+    for year, index in zip(years, indices):
+        line1 = (proj_path + "/%s/%i" % (name, index) + 
+                vel_model_path + "geodynamic_hetfile.sph")
+        line2 = "%s-%s-%1.2f-%i" % (name, thermo_info, year, index) 
+        lines += [line1 + " " + line2]
+
+listname = proj.project_name + "-runList"
+savetxt(SOLVER_path + listname, lines, fmt="%s")    
+print("A list has been saved in %s with the name %s" % (SOLVER_path, listname))    
+print("Please run AxiSEM by executing the run_manager.sh (provided here)")    
+print("from the SOLVER directory")
 print()
-for snap in snap_list:
-    path_inparam = snap + "seism_vel-fields/inparam_hetero"    
-    
-    print("cp", path_inparam, SOLVER_path, "\\")
-    print("./submit.csh", snap+"axisem_run")
-    print("\n#"+ "-"*30)
+print("Usage example: ./run_manager.sh", listname)
+print("""
+cat %s | while read path run_name
+do
+# copy the heterogeneities model into the directory
+cp $path .
+run_name=$(echo '$name'_'$thermo_info'_'$year'_'$index')
+#./submit.csh $run_name
+done
+""" % listname)    
