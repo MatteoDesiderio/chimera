@@ -74,8 +74,9 @@ class MeshImporter:
         out : ndarray
             An array object with the coordinates of the central points of the
             AxiSEM mesh. First and second col are x and y coordinates,
-            respectively. This array is also saved in the specified path.
-
+            respectively. Note that the AxiSEM grid (corresponding to 
+            a half-circle) is mirrored around the axis to form a complete 
+            circle. This array is also saved in the specified path.
         """
         if autoname:
             path += "/" + self.mesh_name
@@ -85,4 +86,5 @@ class MeshImporter:
         _x, _y = self.x[mantle], self.y[mantle]
         np.save(path + "_x", _x)
         np.save(path + "_y", _y)
-        return _x, _y
+        # mirrored data
+        return np.r_[_x, -_x], np.r_[_y, _y]
