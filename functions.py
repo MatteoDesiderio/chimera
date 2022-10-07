@@ -271,7 +271,7 @@ def compute_vmodels(proj, use_stagyy_rho=False):
     return v_model_paths
  
     
-def export_vmodels(proj, fmt="%.2f"):
+def export_vmodels(proj, fmt="%.18e"):
     """
     
 
