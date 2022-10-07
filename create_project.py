@@ -14,14 +14,14 @@ proj.chimera_project_path = "/home/matteo/chimera-projects/"
 
 # define stagyy models location and model names
 proj.stagyy_path = "/media/matteo/seagate_external/"
-proj.stagyy_model_names = ["BS_drhoLM350_z1_PrLM100"] 
+proj.stagyy_model_names = ['BS_drhoLM350_z1_PrLM100']
 
 # define perplex paths, where tab files are located
 proj.thermo_data_path = "/home/matteo/chimera-projects/ThermoData/"
 proj.thermo_data_names = ["MgNum100"] * len(proj.stagyy_model_names)
 
 # % define axisem's mesh numpy path
-proj.bg_model = "PREM_ISO_2s"
+proj.bg_model = "PREM_ISO_2s_noCRUST"
 
 # define time span in billion years
 proj.time_span_Gy = [4.5]
