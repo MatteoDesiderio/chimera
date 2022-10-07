@@ -84,7 +84,7 @@ class MeshImporter:
         ratio = r_core_km / self.rE_km  # the axi grid is normalized to R_surf
         mantle = np.hypot(self.x, self.y) > ratio
         _x, _y = self.x[mantle], self.y[mantle]
-        np.save(path + "_x", _x)
-        np.save(path + "_y", _y)
-        # mirrored data
+        # notice mirrored data
+        np.save(path + "_x", np.r_[_x, -_x])
+        np.save(path + "_y", np.r_[_y, _y])
         return np.r_[_x, -_x], np.r_[_y, _y]
