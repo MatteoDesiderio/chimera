@@ -4,3 +4,4 @@
 
 # files to ignore # 
 *.npy
+*_ign.py
