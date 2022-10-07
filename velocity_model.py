@@ -217,7 +217,7 @@ class VelocityModel:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
     def export(self, destination, fmt):
-        r, th = self.r * 1e3, self.theta * 180 / np.pi
+        r, th = self.r * 1e3 * self.r_E_km, self.theta * 180 / np.pi
         if self.stagyy_rho_used:
             rho = self.rho_stagyy
         else:
