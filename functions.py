@@ -271,11 +271,14 @@ def compute_vmodels(proj, use_stagyy_rho=False):
     return v_model_paths
  
     
-def export_vmodels(proj):
+def export_vmodels(proj, fmt="%.2f"):
     """
     
 
     Parameters
+    fmt : str 
+        The single format used to save the values with numpy.savetxt 
+        Default is ".2f"
     ----------
     proj : TYPE
         DESCRIPTION.
@@ -298,7 +301,7 @@ def export_vmodels(proj):
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
             v_model = VelocityModel.load(v_path)
-            v_model.export(v_path)
+            v_model.export(v_path, fmt)
             print("Exporting to sph format")
             print("Done")
             print("----------------------------------------------------------")
