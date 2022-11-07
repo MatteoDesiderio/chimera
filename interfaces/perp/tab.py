@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.ma as ma
-from numba import njit
+import matplotlib.pyplot as plt
 import pickle
 
 def _interp_nans(arr, x, y):
@@ -92,35 +92,45 @@ class Tab:
             pickle.dump(self.tab, f)
         
 
-    def plot(self, i_field):
-        # implement later
-        fld = self.tab["fields"][i_field]
-        plt.figure()
-        ax1 = plt.subplot(121)
-        plt.title('Non interp ' + stats['title'] + ' Gs')
-        plt.pcolormesh(T, P * 1e-9, G_.T)
-        plt.colorbar()
-        # after interpolating Nans
-        ax2 = plt.subplot(122, sharex=ax1, sharey=ax1)
-        plt.title('interp ' + stats['title'] + ' Gs')
-        plt.pcolormesh(T, P * 1e-9, G.T)
-        plt.colorbar()
+    def plot(self, i_field, ax=None, exclude_range=None, kwargs={}):
+        if i_field < 2:
+            raise Warning("The specified index pointed to the independent" +
+                          "variables. The index has been automatically" +
+                          "to the minimum acceptable value")
+        i_field = max(2, i_field)
+        if not ax is None:
+            fig = ax.get_figure()
+        else:
+            fig, ax = plt.subplots(1)
+        fld_name = self.tab["fields"][i_field]
+        data = self.data[i_field]
+        T, P = self.data[:2]
+        # plotting
+        arg_given = not exclude_range is None
+        is_modulus = "Ks" in fld_name or "Gs" in fld_name
+        if arg_given and is_modulus:
+            Tmin, Tmax = exclude_range[0]
+            Pmin, Pmax = exclude_range[1]
+            TT, PP = np.meshgrid(T, P)
+            i1 = (TT >= Tmin) & (TT <= Tmax)
+            i2 = (PP >= Pmin) & (PP <= Pmax)
+            data_ininterval = ma.masked_array(data, i1.T & i2.T)
+            vmin, vmax = data_ininterval.min(), data_ininterval.max()
+        else:
+            vmin, vmax = None, None
+        
+        if "vmin" not in kwargs.keys():
+            kwargs["vmin"] = vmin
+        if "vmax" not in kwargs.keys():
+            kwargs["vmax"] = vmax
+        img = ax.pcolormesh(T, P * 1e-1, data.T, **kwargs)
+        fig.suptitle(self.tab["title"])
+        ax.set_title(self.tab["fields"][i_field])
+        ax.set_ylabel("P [MPa]")
+        ax.set_xlabel("T [K]")
+        plt.colorbar(img, ax=ax)
 
-        # Bulk
-        plt.figure()
-        ax3 = plt.subplot(121)
-        plt.title('Non interp ' + stats['title'] + ' Ks')
-        plt.pcolormesh(T, P * 1e-9, np.log(K_.T))
-        plt.colorbar()
-        # after interpolating Nans
-        ax4 = plt.subplot(122, sharex=ax3, sharey=ax3)
-        plt.title('interp ' + stats['title'] + ' Ks')
-        plt.pcolormesh(T, P * 1e-9, np.log(K.T))
-        plt.colorbar()
-
-
-        [ax.set_xlabel("P [GPa]") for ax in [ax1, ax2, ax3, ax4]]
-        [ax.set_ylabel("T [K]") for ax in [ax1, ax3]]
+        return fig, ax
     
     def remove_nans(self):
         for k, (f, n) in enumerate(zip(self.data, self.tab["fields"])):

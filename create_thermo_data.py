@@ -2,6 +2,7 @@
 This is the first step before creating the project
 """
 
+import matplotlib.pyplot as plt
 from thermo_data import ThermoData
 
 # %% List of parameters
@@ -21,7 +22,7 @@ save_path = "/home/matteo/chimera-projects/"
 #
 #
 
-# %% # %% Fill in thermochemical data
+# %% Fill in thermochemical data
 for dataset in datasets: 
     # initialize it
     thermodata = ThermoData()
@@ -31,11 +32,22 @@ for dataset in datasets:
     thermodata.perplex_path = dataset["perplex_path"]
     
     # thermodynamic variables
-    thermodata.thermo_var_names = thermo_var_names    
+    thermodata.thermo_var_names = thermo_var_names
     # compositional fields (must be careful)
     thermodata.c_field_names = [stagyy_field_names, 
                                 dataset["perplex_proj_names"]
                                 ]
     thermodata.import_tab()
     # finally create thermodata file with the name
-    thermodata.save(save_path)
+    # thermodata.save(save_path)
+
+# %% plot
+plt.close("all")
+for tab in thermodata.tabs:
+    fig, axs = plt.subplots(1,3, sharex=True, sharey=True)
+    for ax, var in zip(axs, [2,3,4]):
+        if var == 3:
+            kwargs = {"vmax":8e6}
+        else:
+            kwargs = {}
+        tab.plot(var, ax, kwargs=kwargs)
