@@ -218,6 +218,8 @@ class VelocityModel:
 
     def export(self, destination, fmt):
         r, th = self.r * 1e3 * self.r_E_km, self.theta * 180 / np.pi
+        th -= 180.0 # TODO check if it's always the same shift
+        print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
         if self.stagyy_rho_used:
             rho = self.rho_stagyy
         else:

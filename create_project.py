@@ -27,5 +27,5 @@ proj.bg_model = "PREM_ISO_2s_noCRUST"
 proj.time_span_Gy = [4.5]
 
 # finally create project with the name
-proj_name = "Plum_vs_Marble"
+proj_name = "ProjectName"
 proj.new(proj_name)

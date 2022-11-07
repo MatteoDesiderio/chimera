@@ -95,7 +95,32 @@ class Tab:
     def plot(self, i_field):
         # implement later
         fld = self.tab["fields"][i_field]
-        return None
+        plt.figure()
+        ax1 = plt.subplot(121)
+        plt.title('Non interp ' + stats['title'] + ' Gs')
+        plt.pcolormesh(T, P * 1e-9, G_.T)
+        plt.colorbar()
+        # after interpolating Nans
+        ax2 = plt.subplot(122, sharex=ax1, sharey=ax1)
+        plt.title('interp ' + stats['title'] + ' Gs')
+        plt.pcolormesh(T, P * 1e-9, G.T)
+        plt.colorbar()
+
+        # Bulk
+        plt.figure()
+        ax3 = plt.subplot(121)
+        plt.title('Non interp ' + stats['title'] + ' Ks')
+        plt.pcolormesh(T, P * 1e-9, np.log(K_.T))
+        plt.colorbar()
+        # after interpolating Nans
+        ax4 = plt.subplot(122, sharex=ax3, sharey=ax3)
+        plt.title('interp ' + stats['title'] + ' Ks')
+        plt.pcolormesh(T, P * 1e-9, np.log(K.T))
+        plt.colorbar()
+
+
+        [ax.set_xlabel("P [GPa]") for ax in [ax1, ax2, ax3, ax4]]
+        [ax.set_ylabel("T [K]") for ax in [ax1, ax3]]
     
     def remove_nans(self):
         for k, (f, n) in enumerate(zip(self.data, self.tab["fields"])):
