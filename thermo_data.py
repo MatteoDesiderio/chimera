@@ -56,9 +56,9 @@ class ThermoData:
         parent = save_path + "/ThermoData/"
         try:
             os.mkdir(parent)
-        except os.FileExistsError:
-            raise Warning("Path", parent, "exists. If file", self.description,
-                          "already exists, it will be overwritten.")
+        except FileExistsError:
+            print("Path "+parent+" exists. If file "+self.description+
+                  " already exists, it will be overwritten.")
             
         with open(parent + self.description +'.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
