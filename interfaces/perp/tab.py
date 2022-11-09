@@ -124,8 +124,8 @@ class Tab:
         if "vmax" not in kwargs.keys():
             kwargs["vmax"] = vmax
         img = ax.pcolormesh(T, P * 1e-1, data.T, **kwargs)
-        fig.suptitle(self.tab["title"])
-        ax.set_title(self.tab["fields"][i_field])
+        ax.set_title(self.tab["title"], loc="left")
+        ax.set_title(self.tab["fields"][i_field], loc="right")
         ax.set_ylabel("P [MPa]")
         ax.set_xlabel("T [K]")
         plt.colorbar(img, ax=ax)
