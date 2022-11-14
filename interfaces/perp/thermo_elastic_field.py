@@ -13,7 +13,7 @@ class ThermoElasticField:
         self.G = None
 
     def extract(self, T_grid, P_grid, model_name): #, 
-        T, P, rho, K, G, _, _ = self.tab.data
+        T, P, rho, K, G = self.tab.data
         n_points = len(T_grid)
         # since stagyy is in Pa, convert P [bar]->[Pa])
         P *= 1e5
