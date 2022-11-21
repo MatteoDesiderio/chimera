@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from stagpy import stagyydata
 
@@ -10,7 +11,6 @@ from interfaces.perp.tab import Tab
 from interfaces.perp.thermo_elastic_field import ThermoElasticField
 
 from thermo_data import ThermoData
-
 
 def _checker(shape, 
              a1=1.0, a2=0.0, freq1=10, freq2=10, Tmin=1600.0, Tmax=3100.0):
@@ -189,30 +189,48 @@ def geodynamic_to_thermoelastic(proj):
                                        proj.thermo_data_names):
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
-        print("Compute thermoelastic properties for geodynamic model", 
-              model_path)
+        print("Compute thermoelastic properties for the geodynamic model:") 
+        print(model_path)
+        print("which uses the thermodynamic data saved as:")
+        print(proj.thermo_data_path + thermo_name)
+        print()
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
-        print("for each of time steps in", years, 
+        print("Time steps: ", years, 
               "Gy, corresponding to indices", indices)
-        
         print()
         thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
         for i_t, t in zip(indices, years):
             snap_path = model_path + "/{}/".format(i_t)
             v_path = snap_path + proj.vel_model_path
             v_model = VelocityModel.load(v_path)
-            print("Loading P, T from velocity model saved in", v_path)
-            T, P = v_model.T, v_model.P                            
-            #for i, f in enumerate(thermo_data.c_field_names[0]):
+            save_path = snap_path + proj.elastic_path
+            
+            # checking if there is anything missing 
+            exist = []
             for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
-                print("... working on %s ..." % f)
-                thermo_field = ThermoElasticField(tab, f)  
-                thermo_field.extract(T, P, model_name)     
-                thermo_field.save(snap_path + proj.elastic_path)
+                nm = save_path + tab.tab["title"]
+                for v in ["rho", "K", "G"]:
+                    exist.append(os.path.exists(nm + "_" + v + ".npy"))
+            
+            # conservatively, we will redo the look-up for all elastic
+            # properties and all tab files if even one of these things 
+            # is missing
+            if not np.all(exist):
+                print("Loading P, T from velocity model saved in\n", v_path)
+                T, P = v_model.T, v_model.P                            
+                #for i, f in enumerate(thermo_data.c_field_names[0]):
+                for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0]):
+                    print("... working on %s ..." % f)
+                    thermo_field = ThermoElasticField(tab, f)  
+                    thermo_field.extract(T, P, model_name)     
+                    thermo_field.save(save_path)
+            else:
+                print("It looks like everything was already done for",
+                      "this model at this time step.")
                 
             print("Done")
-            print("----------------------------------------------------------")
-            print()
+            print("-"*76)
+        print("+"*76)
 
 def compute_vmodels(proj, use_stagyy_rho=False):
     """
