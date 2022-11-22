@@ -251,8 +251,8 @@ def compute_vmodels(proj, use_stagyy_rho=False):
 
     """
     v_model_paths = []
-    for model_name, thermo_name in zip(proj.stagyy_model_names, 
-                                        proj.thermo_data_names):
+    zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names)
+    for model_name, thermo_name in zip_names:
         thermo_path = proj.thermo_data_path + thermo_name
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
@@ -283,9 +283,10 @@ def compute_vmodels(proj, use_stagyy_rho=False):
             v_model.save(v_path)
             
             print("Done")
-            print("----------------------------------------------------------")
-            print()
-            
+            print("-"*76)
+        print("%1/%1 models done" % (len(v_model_paths), 
+                                     len(proj.stagyy_model_names)))
+        print("+"*76)        
     return v_model_paths
  
     
