@@ -43,6 +43,9 @@ class ThermoElasticField:
         self.G = G_field
         self.K = K_field
     
+    def extractKD(self, T_grid, P_grid, model_name):  
+        pass
+    
     def save(self, path):
         fname = path + self.tab.tab["title"] + '_'
         print("Saving as %s<parameter>.npy" % fname)
