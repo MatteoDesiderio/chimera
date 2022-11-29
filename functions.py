@@ -100,13 +100,12 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 print()
                 
     else:
-        
+        zipnames = zip(proj.stagyy_model_names, proj.thermo_data_names)
         # load data from stagyy with stagpy into fields
         # TODO speed up the process by loading coords, fields at the same time
-        for model_name, thermo_name in zip(proj.stagyy_model_names, 
-                                           proj.thermo_data_names):
-            
+        for model_name, thermo_name in zipnames:
             thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
+            lims = thermodata.range
             print("Initializing variables and compositional fields")            
             variables = [Field(v) for v in thermodata.thermo_var_names]
             fields = [Field(v) for v in thermodata.c_field_names[0]]
@@ -132,10 +131,14 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             for i_t, t in zip(indices, years):
                 print("Loading coords and values with stagpy")
                 sdat = stagyydata.StagyyData(proj.stagyy_path + model_name)
-        
-                for v in variables:
+                
+                for v, key in zip(variables, lims):
+                    a_min, a_max = lims[key]
                     v.coords = loader.load_coords(sdat)
-                    v.values = loader.load_field(sdat, v.name, i_t)
+                    print("Clamping %s between %.1e and %.1e [SI units]" % 
+                          (key, a_min, a_max) )
+                    v.values = np.clip(loader.load_field(sdat, v.name, i_t),
+                                       a_min, a_max) 
                     
                 rho_stagyy.coords = loader.load_coords(sdat)
                 rho_stagyy.values = loader.load_field(sdat, rho_stagyy.name, 
@@ -145,7 +148,6 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                     f.coords = loader.load_coords(sdat)
                     f.values = loader.load_field(sdat, f.name, i_t)
                 
-        
                 # renormalize compositional fields
                 set_renormalized_fields(fields)
                 
@@ -185,8 +187,8 @@ def geodynamic_to_thermoelastic(proj):
     None.
 
     """
-    for model_name, thermo_name in zip(proj.stagyy_model_names, 
-                                       proj.thermo_data_names):
+    zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names)
+    for model_name, thermo_name in zip_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
         print("Compute thermoelastic properties for the geodynamic model:") 
@@ -213,7 +215,7 @@ def geodynamic_to_thermoelastic(proj):
                     exist.append(os.path.exists(nm + "_" + v + ".npy"))
             
             # conservatively, we will redo the look-up for all elastic
-            # properties and all tab files if even one of these things 
+            # properties and all tab files if even a single 1 of these things 
             # is missing
             if not np.all(exist):
                 print("Loading P, T from velocity model saved in\n", v_path)
@@ -250,6 +252,7 @@ def compute_vmodels(proj, use_stagyy_rho=False):
         DESCRIPTION.
 
     """
+    count = 0
     v_model_paths = []
     zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names)
     for model_name, thermo_name in zip_names:
@@ -284,12 +287,12 @@ def compute_vmodels(proj, use_stagyy_rho=False):
             
             print("Done")
             print("-"*76)
-        print("%1/%1 models done" % (len(v_model_paths), 
+        count += 1
+        print("%i/%i models done" % (count, 
                                      len(proj.stagyy_model_names)))
         print("+"*76)        
     return v_model_paths
  
-    
 def export_vmodels(proj, fmt="%.18e"):
     """
     
@@ -325,8 +328,3 @@ def export_vmodels(proj, fmt="%.18e"):
             print("Done")
             print("----------------------------------------------------------")
             print()
- 
-    
- 
-    
- 

@@ -1,6 +1,7 @@
 from interfaces.perp.tab import Tab
 import os
 import pickle
+import numpy as np
 
 class ThermoData:
     def __init__(self):
@@ -20,10 +21,13 @@ class ThermoData:
         self.description = ""     # title to describe the set of tab files used
         self.tabs = [] 
         self.proj_names_dict = {}  # a dictionary associating
+        self.range = {}
+        
                 
     @property
     def c_field_names(self):
         return self._c_field_names
+    
     @c_field_names.setter
     def c_field_names(self, val):
         self._c_field_names = val
@@ -31,14 +35,38 @@ class ThermoData:
         self.proj_names_dict = {k:v for k, v in zip(cstagyy, cperplex)}
     
     def import_tab(self):
-        self.tab_files = [] 
-        for f, tb in zip(*self.c_field_names):
+        """
+        When called, this method creates a Tab instance for each of the 
+        fields, whose names and corresponding tab file title are stored in the 
+        attribute c_field_names. These tabs are then stored in the attribute 
+        tabs. 
+        The overall P, T range is stored in the attributes Tminmax, Pminmax_Pa.
+        
+        Returns
+        -------
+        None.
+
+        """
+        self.tab_files = []
+        length = len(self.c_field_names[0])
+        Tminmax = np.zeros((length, 2))
+        Pminmax_Pa = np.zeros((length, 2))
+
+        for i, (f, tb) in enumerate(zip(*self.c_field_names)):
             inpfl = self.perplex_path + tb + ".tab" 
             tab = Tab(inpfl)                                   
             tab.load()                                        
             tab.remove_nans()     
             self.tabs.append(tab)
-    
+            Tminmax[i] = tab.data[0].min(), tab.data[0].max()
+            Pminmax_Pa[i] = tab.data[1].min(), tab.data[1].max()
+            
+        Pminmax_Pa *= 1e5
+        Tminmax = Tminmax[:,0].min(), Tminmax[:,1].max()
+        Pminmax_Pa = Pminmax_Pa[:,0].min(), Pminmax_Pa[:,1].max()
+        self.range[self.thermo_var_names[0]] = Tminmax
+        self.range[self.thermo_var_names[1]] = Pminmax_Pa
+            
     def save(self, save_path):
         """
         Save a thermo_data somewhere

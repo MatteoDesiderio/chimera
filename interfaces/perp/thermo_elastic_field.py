@@ -49,4 +49,4 @@ class ThermoElasticField:
         np.save(fname + 'rho',  self.rho)
         np.save(fname + 'K', self.K)
         np.save(fname + 'G', self.G)
-        print("Done for rho, Ks, Gs")
+        print("Done for rho [kg/m^3], Ks [bar], Gs [bar]")
