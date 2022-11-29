@@ -1,8 +1,12 @@
 import numpy as np
-#from numba_kdtree import KDTree
-from scipy.spatial import KDTree
+from numba_kdtree import KDTree
+#from scipy.spatial import KDTree
 import numba as nb
 
+@nb.njit(parallel=True)
+def _fast_loc(indices, new, old):
+    for i in nb.prange(new.shape[0]):
+        pass
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
@@ -43,8 +47,6 @@ class ThermoElasticField:
         self.G = G_field
         self.K = K_field
     
-    def extractKD(self, T_grid, P_grid, model_name):  
-        pass
     
     def save(self, path):
         fname = path + self.tab.tab["title"] + '_'
