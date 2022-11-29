@@ -219,7 +219,8 @@ def geodynamic_to_thermoelastic(proj):
             # is missing
             if not np.all(exist):
                 print("Loading P, T from velocity model saved in\n", v_path)
-                T, P = v_model.T, v_model.P                            
+                T, P = v_model.T, v_model.P
+                #tree = ThermoElasticField.get_tree(thermodata.tabs[0])                
                 #for i, f in enumerate(thermo_data.c_field_names[0]):
                 for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0]):
                     print("... working on %s ..." % f)

@@ -1,12 +1,28 @@
 import numpy as np
+from scipy.interpolate import griddata
 from numba_kdtree import KDTree
-#from scipy.spatial import KDTree
-import numba as nb
+from numba import prange, njit
 
-@nb.njit(parallel=True)
-def _fast_loc(indices, new, old):
-    for i in nb.prange(new.shape[0]):
-        pass
+def _TP_to_xy(T_tab, P_tab):
+    x, y = np.meshgrid(T_tab, P_tab)
+    return x.flatten(), y.flatten()
+
+def _gridder(x, y, T_axi, P_axi, field_tab, kwargs):
+    return griddata(np.c_[x, y], field_tab.flatten(), (T_axi, P_axi), **kwargs)
+
+@njit(parallel=True)
+def order():
+    for value in prange(5):
+        print(value)
+
+@njit(parallel=True)
+def store(inds, fld):
+    lngth = len(inds)
+    arr = np.zeros(lngth, dtype=fld.dtype)
+    for i in prange(lngth):
+        arr[i] = fld[inds[i][0]]
+    return arr
+
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
@@ -15,38 +31,31 @@ class ThermoElasticField:
         self.rho = None
         self.K = None
         self.G = None
-
+        
+    @staticmethod
+    def get_tree(tab):
+        T, P = tab.data[:2]
+        # since stagyy is in Pa, convert P [bar]->[Pa])
+        P *= 1e5  
+        x, y = _TP_to_xy(T, P)
+        kdtree = KDTree(np.c_[x, y], leafsize=10)
+        print("KDTree Created", end=" ")
+        return kdtree
+        
     def extract(self, T_grid, P_grid, model_name): #, 
         T, P, rho, K, G = self.tab.data
-        n_points = len(T_grid)
         # since stagyy is in Pa, convert P [bar]->[Pa])
         P *= 1e5
-        # initialize empty arrays
-        n_points = len(T_grid)
-        K_field = np.empty(n_points, dtype=T.dtype)  # these'll be filled 
-        G_field = np.empty(n_points, dtype=T.dtype)  # from perplex
-        rho_field = np.empty(n_points, dtype=T.dtype)
 
         print("Retrieving moduli, density as function of P, T")
-        # fill arrays: check in every cell of your models
+        x, y = _TP_to_xy(T, P)
+        kdtree = KDTree(np.c_[x, y], leafsize=10)
+        _, ii = kdtree.query(np.c_[T_grid, P_grid])
+        print("KDTree queried")
         
-        for i in range(n_points):
-            # what are T, P conditions in each cell?
-            T_i = T_grid[i]
-            P_i = P_grid[i]
-            # where are the closest T, P in the table?
-            u = np.argmin(np.abs(T_i - T))
-            # since stagyy is in Pa, convert P [bar]->[Pa])
-            v = np.argmin(np.abs(P_i - P))
-            # select the corresponding property: f(T, P)
-            K_field[i] = K[u, v]
-            G_field[i] = G[u, v]
-            rho_field[i] = rho[u, v]
-            
-        self.rho = rho_field
-        self.G = G_field
-        self.K = K_field
-    
+        self.rho = store(ii, rho.flatten())
+        self.K =  store(ii, K.flatten())
+        self.G = store(ii, G.flatten())
     
     def save(self, path):
         fname = path + self.tab.tab["title"] + '_'
