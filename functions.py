@@ -188,6 +188,14 @@ def geodynamic_to_thermoelastic(proj):
 
     """
     zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names)
+    # in principle, there might be a different thermo data set 4 each model
+    if _all_equals(proj.thermo_data_names):
+        _thermodata = ThermoData.load(proj.thermo_data_path + 
+                                      proj.thermo_data_names[0])
+        _tree = ThermoElasticField.get_tree(_thermodata.tabs[0])
+    else:
+        _tree, _thermodata = None, None
+        
     for model_name, thermo_name in zip_names:
         parent_path = proj.chimera_project_path + proj.project_name + "/" 
         model_path = parent_path + model_name
@@ -200,7 +208,14 @@ def geodynamic_to_thermoelastic(proj):
         print("Time steps: ", years, 
               "Gy, corresponding to indices", indices)
         print()
-        thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
+        
+        if _thermodata is None:
+            thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
+            tree = ThermoElasticField.get_tree(thermodata.tabs[0])
+        else:
+            thermodata = _thermodata
+            tree = _tree
+            
         for i_t, t in zip(indices, years):
             snap_path = model_path + "/{}/".format(i_t)
             v_path = snap_path + proj.vel_model_path
@@ -208,28 +223,21 @@ def geodynamic_to_thermoelastic(proj):
             save_path = snap_path + proj.elastic_path
             
             # checking if there is anything missing 
-            exist = []
-            for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
-                nm = save_path + tab.tab["title"]
-                for v in ["rho", "K", "G"]:
-                    exist.append(os.path.exists(nm + "_" + v + ".npy"))
+            all_exist = _check_all_exist(thermodata, save_path)
             
-            # conservatively, we will redo the look-up for all elastic
-            # properties and all tab files if even a single 1 of these things 
-            # is missing
-            if not np.all(exist):
+            if not all_exist:
                 print("Loading P, T from velocity model saved in\n", v_path)
                 T, P = v_model.T, v_model.P
-                #tree = ThermoElasticField.get_tree(thermodata.tabs[0])                
+                inds = ThermoElasticField.get_indices(tree, T, P)               
                 #for i, f in enumerate(thermo_data.c_field_names[0]):
-                for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0]):
+                for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
                     print("... working on %s ..." % f)
                     thermo_field = ThermoElasticField(tab, f)  
-                    thermo_field.extract(T, P, model_name)     
+                    thermo_field.extract(inds, model_name)     
                     thermo_field.save(save_path)
             else:
                 print("It looks like everything was already done for",
-                      "this model at this time step.")
+                      "this model at time step %i" % i_t)
                 
             print("Done")
             print("-"*76)
@@ -329,3 +337,17 @@ def export_vmodels(proj, fmt="%.18e"):
             print("Done")
             print("----------------------------------------------------------")
             print()
+
+def _check_all_exist(thermodata, save_path):
+    exist = []
+    for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
+        nm = save_path + tab.tab["title"]
+        for v in ["rho", "K", "G"]:
+            exist.append(os.path.exists(nm + "_" + v + ".npy"))
+    # conservatively, we will redo the look-up for all elastic
+    # properties and all tab files if even a single 1 of these things 
+    # is missing
+    return np.all(exist)
+
+def _all_equals(x):
+    return x.count(x[0]) == len(x)

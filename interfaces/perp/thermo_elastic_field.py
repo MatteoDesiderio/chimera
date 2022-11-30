@@ -28,17 +28,13 @@ class ThermoElasticField:
         self.K = None
         self.G = None
         
-    def extract(self, tree, T_grid, P_grid, model_name):
+    def extract(self, inds, model_name):
         """
         
 
         Parameters
         ----------
-        tree : TYPE
-            DESCRIPTION.
-        T_grid : TYPE
-            DESCRIPTION.
-        P_grid : TYPE
+        inds : TYPE
             DESCRIPTION.
         model_name : TYPE
             DESCRIPTION.
@@ -49,15 +45,10 @@ class ThermoElasticField:
 
         """
         rho, K, G = self.tab.data[2:]
-        # since stagyy is in Pa, convert P [bar]->[Pa])
 
-        print("Retrieving moduli, density as function of P, T")
-        _, ii = tree.query(np.c_[T_grid, P_grid])
-        print("KDTree queried")
-        
-        self.rho = _store(ii, rho.T.flatten())
-        self.K = _store(ii, K.T.flatten())
-        self.G = _store(ii, G.T.flatten())
+        self.rho = _store(inds, rho.T.flatten())
+        self.K = _store(inds, K.T.flatten())
+        self.G = _store(inds, G.T.flatten())
     
     def save(self, path):   
         fname = path + self.tab.tab["title"] + '_'
@@ -83,6 +74,8 @@ class ThermoElasticField:
             DESCRIPTION.
 
         """
+        print("Creating a tree out of the P, T range of the thermodynamic",
+              "dataset")
         T, P = tab.data[:2]
         # since stagyy is in Pa, convert P [bar]->[Pa])
         P *= 1e5  
@@ -90,3 +83,28 @@ class ThermoElasticField:
         kdtree = KDTree(np.c_[x, y], leafsize=10)
         print("KDTree Created")
         return kdtree
+    
+    @staticmethod
+    def get_indices(tree, T_grid, P_grid):
+        """
+        
+
+        Parameters
+        ----------
+        tree : TYPE
+            DESCRIPTION.
+        T_grid : TYPE
+            DESCRIPTION.
+        P_grid : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        inds : TYPE
+            DESCRIPTION.
+
+        """
+        print("Retrieving moduli, density as function of P, T")
+        _, inds = tree.query(np.c_[T_grid, P_grid])
+        print("KDTree queried")
+        return inds
