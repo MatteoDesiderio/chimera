@@ -4,6 +4,8 @@ from numba_kdtree import KDTree
 from numba import prange, njit
 
 def _TP_to_xy(T_tab, P_tab):
+    lenT, lenP = len(T_tab), len(P_tab)
+    x, y = np.tile(T_tab, lenP), np.tile(P_tab, lenT)
     x, y = np.meshgrid(T_tab, P_tab)
     return x.flatten(), y.flatten()
 
@@ -31,7 +33,10 @@ class ThermoElasticField:
         self.rho = None
         self.K = None
         self.G = None
-        
+    
+    # TODO use this method in the geodynamic_to_thermoelastic function
+    # before loading the tab, so you don't create the same PTtree each time you
+    # load a tab file for a different comp
     @staticmethod
     def get_tree(tab):
         T, P = tab.data[:2]
@@ -53,11 +58,11 @@ class ThermoElasticField:
         _, ii = kdtree.query(np.c_[T_grid, P_grid])
         print("KDTree queried")
         
-        self.rho = store(ii, rho.flatten())
-        self.K =  store(ii, K.flatten())
-        self.G = store(ii, G.flatten())
+        self.rho = store(ii, rho.T.flatten())
+        self.K =  store(ii, K.T.flatten())
+        self.G = store(ii, G.T.flatten())
     
-    def save(self, path):
+    def save(self, path):   
         fname = path + self.tab.tab["title"] + '_'
         print("Saving as %s<parameter>.npy" % fname)
         np.save(fname + 'rho',  self.rho)
