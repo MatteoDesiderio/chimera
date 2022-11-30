@@ -13,18 +13,12 @@ def _gridder(x, y, T_axi, P_axi, field_tab, kwargs):
     return griddata(np.c_[x, y], field_tab.flatten(), (T_axi, P_axi), **kwargs)
 
 @njit(parallel=True)
-def order():
-    for value in prange(5):
-        print(value)
-
-@njit(parallel=True)
-def store(inds, fld):
+def _store(inds, fld):
     lngth = len(inds)
     arr = np.zeros(lngth, dtype=fld.dtype)
     for i in prange(lngth):
         arr[i] = fld[inds[i][0]]
     return arr
-
 
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
@@ -33,34 +27,37 @@ class ThermoElasticField:
         self.rho = None
         self.K = None
         self.G = None
-    
-    # TODO use this method in the geodynamic_to_thermoelastic function
-    # before loading the tab, so you don't create the same PTtree each time you
-    # load a tab file for a different comp
-    @staticmethod
-    def get_tree(tab):
-        T, P = tab.data[:2]
-        # since stagyy is in Pa, convert P [bar]->[Pa])
-        P *= 1e5  
-        x, y = _TP_to_xy(T, P)
-        kdtree = KDTree(np.c_[x, y], leafsize=10)
-        print("KDTree Created", end=" ")
-        return kdtree
         
-    def extract(self, T_grid, P_grid, model_name): #, 
-        T, P, rho, K, G = self.tab.data
+    def extract(self, tree, T_grid, P_grid, model_name):
+        """
+        
+
+        Parameters
+        ----------
+        tree : TYPE
+            DESCRIPTION.
+        T_grid : TYPE
+            DESCRIPTION.
+        P_grid : TYPE
+            DESCRIPTION.
+        model_name : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+        rho, K, G = self.tab.data[2:]
         # since stagyy is in Pa, convert P [bar]->[Pa])
-        P *= 1e5
 
         print("Retrieving moduli, density as function of P, T")
-        x, y = _TP_to_xy(T, P)
-        kdtree = KDTree(np.c_[x, y], leafsize=10)
-        _, ii = kdtree.query(np.c_[T_grid, P_grid])
+        _, ii = tree.query(np.c_[T_grid, P_grid])
         print("KDTree queried")
         
-        self.rho = store(ii, rho.T.flatten())
-        self.K =  store(ii, K.T.flatten())
-        self.G = store(ii, G.T.flatten())
+        self.rho = _store(ii, rho.T.flatten())
+        self.K = _store(ii, K.T.flatten())
+        self.G = _store(ii, G.T.flatten())
     
     def save(self, path):   
         fname = path + self.tab.tab["title"] + '_'
@@ -69,3 +66,27 @@ class ThermoElasticField:
         np.save(fname + 'K', self.K)
         np.save(fname + 'G', self.G)
         print("Done for rho [kg/m^3], Ks [bar], Gs [bar]")
+
+    @staticmethod
+    def get_tree(tab):
+        """
+        
+
+        Parameters
+        ----------
+        tab : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        kdtree : TYPE
+            DESCRIPTION.
+
+        """
+        T, P = tab.data[:2]
+        # since stagyy is in Pa, convert P [bar]->[Pa])
+        P *= 1e5  
+        x, y = _TP_to_xy(T, P)
+        kdtree = KDTree(np.c_[x, y], leafsize=10)
+        print("KDTree Created")
+        return kdtree
