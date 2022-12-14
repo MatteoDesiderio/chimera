@@ -26,14 +26,14 @@ def _checker(shape,
 
 
 def initialize_vmodels(proj, interp_type, checker_board_params=None):
-    
+    if proj.quick_mode_on:
+        print("Quick Mode on: setting interp_type to None.")
+        interp_type = None
+
     # load axisem high resolution grid 
-    path_modx, path_mody = proj.get_paths()
-    x = np.load(path_modx)
-    y = np.load(path_mody)
+    x, y = proj.get_mesh_xy()
     n = len(x)
     
-
     if proj.test_mode_on:
         if checker_board_params is None:
             checker_board_params = [1.0, 0.0, 10, 10, 1600.0, 3100.0]
