@@ -1,7 +1,15 @@
 import pickle
 import os
 from stagpy import stagyydata
+from stagpy.field import get_meshes_fld
 import numpy as np
+
+def _get_mesh_xy(sdat):
+    geom = sdat.snaps[0].geom
+    mesh_x = geom.x_mesh.squeeze().flatten()
+    mesh_y = geom.y_mesh.squeeze().flatten()
+    return mesh_x, mesh_y
+
 
 class Project:
     """
@@ -97,14 +105,13 @@ class Project:
             print("We assume all models are defined on the same grid")
             nm = self.stagyy_model_names[0]
             sdat = stagyydata.StagyyData(self.stagyy_path + nm)
-            mesh_x = sdat.snaps[0].xmesh.flatten()
-            mesh_y = sdat.snaps[0].ymesh.flatten()
+            mesh_x, mesh_y = _get_mesh_xy(sdat)
         else:
             path_x = self.chimera_project_path + self.bg_model + "_x.npy"
             path_y = self.chimera_project_path + self.bg_model + "_y.npy"
             mesh_x = np.load(path_x)
             mesh_y = np.load(path_y)
-        return (mesh_x, mesh_y)
+        return mesh_x, mesh_y
             
     @staticmethod
     def load(project_path):
