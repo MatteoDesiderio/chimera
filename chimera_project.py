@@ -66,6 +66,7 @@ class Project:
         self.project_name = proj_name
         parent = self.chimera_project_path + proj_name + "/"
         os.mkdir(parent)
+        geoms = []
         for nm in self.stagyy_model_names:
             print("Loading", nm)
             path = parent + nm
@@ -76,19 +77,28 @@ class Project:
                 else:
                     sdat = stagyydata.StagyyData(self.stagyy_path + nm)
                     index = sdat.snaps.at_time(t * self._GY).isnap
+                    geom = sdat.par["geometry"]
                 path_snap = (path + "/%i") % index
                 os.mkdir(path_snap)
                 os.mkdir(path_snap + self.elastic_path)
                 os.mkdir(path_snap + self.vel_model_path)
                 self.t_indices[nm].append(index)
-                
+            geoms.append(geom)
+            
+        if not np.all(np.r_[geoms] ==  geom):
+            msg = "All models must share the same geometry parameters"
+            raise NotImplementedError(msg)
+
         with open(parent + 'project_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
     
     def get_mesh_xy(self):
         if self.quick_mode_on:
-            mesh_x = None
-            mesh_y = None
+            print("We assume all models are defined on the same grid")
+            nm = self.stagyy_model_names[0]
+            sdat = stagyydata.StagyyData(self.stagyy_path + nm)
+            mesh_x = sdat.snaps[0].xmesh.flatten()
+            mesh_y = sdat.snaps[0].ymesh.flatten()
         else:
             path_x = self.chimera_project_path + self.bg_model + "_x.npy"
             path_y = self.chimera_project_path + self.bg_model + "_y.npy"
