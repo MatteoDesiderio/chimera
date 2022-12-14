@@ -1,7 +1,7 @@
 import pickle
 import os
 from stagpy import stagyydata
-
+import numpy as np
 
 class Project:
     """
@@ -83,13 +83,15 @@ class Project:
         with open(parent + 'project_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
     
-    def get_paths(self):
+    def get_mesh_xy(self):
         if self.quick_mode_on:
             mesh_x = None
             mesh_y = None
         else:
-            mesh_x = self.chimera_project_path + self.bg_model + "_x.npy"
-            mesh_y = self.chimera_project_path + self.bg_model + "_y.npy"
+            path_x = self.chimera_project_path + self.bg_model + "_x.npy"
+            path_y = self.chimera_project_path + self.bg_model + "_y.npy"
+            mesh_x = np.load(path_x)
+            mesh_y = np.load(path_y)
         return (mesh_x, mesh_y)
             
     @staticmethod
