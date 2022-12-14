@@ -27,6 +27,7 @@ class Project:
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
         self.test_mode_on = False
+        self.quick_mode_on = False
 
     @property
     def stagyy_model_names(self):
@@ -35,6 +36,17 @@ class Project:
     def stagyy_model_names(self, val):
         self._stagyy_model_names = val
         self.t_indices = {k:[] for k in self._stagyy_model_names}
+    
+    # for a quick analysis, we don't need an AxiSEM mesh to begin with
+    @property
+    def bg_model(self):
+        return self._bg_model
+    @stagyy_model_names.setter
+    def bg_model(self, val):
+        if self.quick_mode_on:
+            self._bg_model = None
+        else:
+            self._bg_model = val
         
     def new(self, proj_name="New Project"):
         """
@@ -72,8 +84,12 @@ class Project:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
     
     def get_paths(self):
-        mesh_x = self.chimera_project_path + self.bg_model + "_x.npy"
-        mesh_y = self.chimera_project_path + self.bg_model + "_y.npy"
+        if self.quick_mode_on:
+            mesh_x = None
+            mesh_y = None
+        else:
+            mesh_x = self.chimera_project_path + self.bg_model + "_x.npy"
+            mesh_y = self.chimera_project_path + self.bg_model + "_y.npy"
         return (mesh_x, mesh_y)
             
     @staticmethod
