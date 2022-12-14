@@ -28,6 +28,8 @@ class Project:
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
         self.test_mode_on = False
         self.quick_mode_on = False
+        if self.quick_mode_on:
+            self.bg_model = None
 
     @property
     def stagyy_model_names(self):
@@ -47,7 +49,6 @@ class Project:
             self._bg_model = None
         else:
             self._bg_model = val
-    
         
     def new(self, proj_name="New Project"):
         """
