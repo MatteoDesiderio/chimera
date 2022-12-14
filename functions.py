@@ -30,7 +30,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
         print("Quick Mode on: setting interp_type to None.")
         interp_type = None
 
-    # load axisem high resolution grid 
+    # load axisem high resolution grid, if wanted
     x, y = proj.get_mesh_xy()
     
     if proj.test_mode_on:
