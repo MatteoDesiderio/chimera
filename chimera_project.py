@@ -8,7 +8,7 @@ def _get_mesh_xy(sdat):
     geom = sdat.snaps[0].geom
     mesh_x = geom.x_mesh.squeeze().flatten()
     mesh_y = geom.y_mesh.squeeze().flatten()
-    return mesh_x, mesh_y
+    return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
 
 
 class Project:

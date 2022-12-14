@@ -27,8 +27,8 @@ def _checker(shape,
 
 def initialize_vmodels(proj, interp_type, checker_board_params=None):
     if proj.quick_mode_on:
-        print("Quick Mode on: setting interp_type to None.")
-        interp_type = None
+        print("Quick Mode on: overriding interp_type to 'nearest'.")
+        interp_type = "nearest"
 
     # load axisem high resolution grid, if wanted
     x, y = proj.get_mesh_xy()
@@ -236,7 +236,7 @@ def geodynamic_to_thermoelastic(proj):
                     thermo_field.save(save_path)
             else:
                 print("It looks like everything was already done for",
-                      "this model at time step %i" % i_t)
+                      "this model at time step %i." % i_t)
                 
             print("Done")
             print("-"*76)

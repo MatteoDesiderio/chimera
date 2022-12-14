@@ -16,7 +16,7 @@ class Field:
         self._values = None
         # Name of Stagyy model
         self.name = name
-        # Max radius of StagYY model (e.g. radius of Eath)
+        # Max radius of StagYY model (e.g. radius of Earth)
         self.r_max = None
 
     @property
@@ -110,14 +110,11 @@ class Field:
     def interpolate(self, interp_type, xnew, ynew):
         z = self.values.flatten()
         self.normalize_radius()
-        if interp_type is None:
-            return z
-        else:
-            x, y = self.to_cartesian()
-            old = np.c_[x, y]
-            new = np.c_[xnew, ynew]
-            interpolated = griddata(old, z, new, method=interp_type)
-            return interpolated
+        x, y = self.to_cartesian()
+        old = np.c_[x, y]
+        new = np.c_[xnew, ynew]
+        interpolated = griddata(old, z, new, method=interp_type)
+        return interpolated
         
     def plot(self):
         fig = plt.figure()
