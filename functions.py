@@ -190,6 +190,7 @@ def geodynamic_to_thermoelastic(proj):
     zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names)
     # in principle, there might be a different thermo data set 4 each model
     if _all_equals(proj.thermo_data_names):
+        print("The same thermodynamic dataset was assigned to all models")
         _thermodata = ThermoData.load(proj.thermo_data_path + 
                                       proj.thermo_data_names[0])
         _tree = ThermoElasticField.get_tree(_thermodata.tabs[0])
@@ -209,7 +210,7 @@ def geodynamic_to_thermoelastic(proj):
               "Gy, corresponding to indices", indices)
         print()
         
-        if _thermodata is None:
+        if _thermodata is _tree is None:
             thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
             tree = ThermoElasticField.get_tree(thermodata.tabs[0])
         else:
@@ -229,8 +230,7 @@ def geodynamic_to_thermoelastic(proj):
                 print("Loading P, T from velocity model saved in\n", v_path)
                 T, P = v_model.T, v_model.P
                 inds = ThermoElasticField.get_indices(tree, T, P)               
-                #for i, f in enumerate(thermo_data.c_field_names[0]):
-                for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0]):
+                for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0]):
                     print("... working on %s ..." % f)
                     thermo_field = ThermoElasticField(tab, f)  
                     thermo_field.extract(inds, model_name)     
