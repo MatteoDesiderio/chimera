@@ -108,15 +108,16 @@ class Field:
         self._coords = self.coords[0] / self.r_max, self.coords[1]
 
     def interpolate(self, interp_type, xnew, ynew):
-        
-        self.normalize_radius()
-        x, y = self.to_cartesian()
-        old = np.c_[x, y]
         z = self.values.flatten()
-        new = np.c_[xnew, ynew]
-        interpolated = griddata(old, z, new, method=interp_type)
-        
-        return interpolated
+        self.normalize_radius()
+        if interp_type is xnew is ynew is None:
+            return z
+        else:
+            x, y = self.to_cartesian()
+            old = np.c_[x, y]
+            new = np.c_[xnew, ynew]
+            interpolated = griddata(old, z, new, method=interp_type)
+            return interpolated
         
     def plot(self):
         fig = plt.figure()
