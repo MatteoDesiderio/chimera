@@ -16,6 +16,8 @@ class Project:
         None.
 
         """
+        self.test_mode_on = False
+        self.quick_mode_on = False
         self._GY = 3600*24*364*1e9                                        # [s]
         self.chimera_project_path = ""    # path where you want to save project
         self.bg_model = ""                       # name of your axisem bg model
@@ -26,10 +28,7 @@ class Project:
         self.elastic_path = "/elastic-fields/"
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
-        self.test_mode_on = False
-        self.quick_mode_on = False
-        if self.quick_mode_on:
-            self.bg_model = None
+
 
     @property
     def stagyy_model_names(self):
@@ -68,6 +67,7 @@ class Project:
         parent = self.chimera_project_path + proj_name + "/"
         os.mkdir(parent)
         for nm in self.stagyy_model_names:
+            print("Loading", nm)
             path = parent + nm
             os.mkdir(path)
             for t in self.time_span_Gy:
