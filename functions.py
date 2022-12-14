@@ -32,7 +32,6 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
 
     # load axisem high resolution grid 
     x, y = proj.get_mesh_xy()
-    n = len(x)
     
     if proj.test_mode_on:
         if checker_board_params is None:
