@@ -41,12 +41,13 @@ class Project:
     @property
     def bg_model(self):
         return self._bg_model
-    @stagyy_model_names.setter
+    @bg_model.setter
     def bg_model(self, val):
         if self.quick_mode_on:
             self._bg_model = None
         else:
             self._bg_model = val
+    
         
     def new(self, proj_name="New Project"):
         """
