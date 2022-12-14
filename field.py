@@ -9,9 +9,14 @@ class Field:
     """
 
     def __init__(self, name="T"):
+        # TODO check order
+        # StagYY coordinates r, theta (or theta, r)
         self._coords = (None, None)
+        # Values of StagYY field
         self._values = None
+        # Name of Stagyy model
         self.name = name
+        # Max radius of StagYY model (e.g. radius of Eath)
         self.r_max = None
 
     @property
@@ -54,7 +59,8 @@ class Field:
         z = r_grid * np.exp(1j * theta_grid)
         x, y = np.real(z).flatten(), np.imag(z).flatten()
         return x, y
-
+    
+# TODO remove split, because you need both halves actually. AxiSEM rotates. 
     def split(self, edge_pad_perc=0.25):
         """
         Splits the model in two portions (a left one and right one). 
@@ -102,7 +108,7 @@ class Field:
         self._coords = self.coords[0] / self.r_max, self.coords[1]
 
     def interpolate(self, interp_type, xnew, ynew):
-
+        
         self.normalize_radius()
         x, y = self.to_cartesian()
         old = np.c_[x, y]
@@ -112,7 +118,6 @@ class Field:
         
         return interpolated
         
-
     def plot(self):
         fig = plt.figure()
         ax = fig.gca()
