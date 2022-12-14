@@ -110,7 +110,7 @@ class Field:
     def interpolate(self, interp_type, xnew, ynew):
         z = self.values.flatten()
         self.normalize_radius()
-        if interp_type is xnew is ynew is None:
+        if interp_type is None:
             return z
         else:
             x, y = self.to_cartesian()
