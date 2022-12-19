@@ -23,7 +23,9 @@ class MeshImporter:
         The default is "PREM_ISO_2s"
     """
 
-    def __init__(self, axisem_path, mesh_path="PREM_ISO_2s", rE_km=6371.0):
+    def __init__(self, axisem_path, mesh_path="PREM_ISO_2s", rE_km=6371.0,
+                 dtype="float32"):
+        self.dtype=dtype
         self.axisem_path = axisem_path
         self.mesh_name = mesh_path
         self.x, self.y = self.loader()
@@ -45,8 +47,14 @@ class MeshImporter:
         os.chdir(path)
         reader.SetFileName(_vtkname)
         reader.Update()
-        x, y = np.array(reader.GetOutput().GetPoints().GetData(),
-                        dtype="float64")[:, :-1].T
+        points = reader.GetOutput().GetPoints()
+        data_type = points.GetDataType()
+        # TODO raise an error if choice is not consistent 
+        # or better, load directly in double precision
+        print("The data_type of the vtk points is %i." % data_type, 
+              "Double-check if consistent with your choice of", self.dtype)
+        x, y = np.array(points.GetData(),
+                        dtype=self.dtype)[:, :-1].T
         return x, y
 
     def convert_to_numpy(self, path, autoname=True, exclude_core=True,
