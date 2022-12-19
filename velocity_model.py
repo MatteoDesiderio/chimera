@@ -1,9 +1,27 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from numba import prange, njit
 import pickle
 from scipy.spatial import KDTree
 from field import Field
 from interfaces.axi.inparam_hetero_template import inparam_hetero
+
+
+
+def _create_labels(variables):
+    def define_label(v):
+        if v == "s":
+            return r"$V_s [m/s]$" 
+        elif v == "p":
+            return r"$V_p [m/s]$" 
+        else:
+            return r"$\rho$ [kg/m$^3$]" 
+    
+    labels = []
+    for v in variables:
+        label = define_label(v)
+        labels.append(label)
+    return labels
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
@@ -171,6 +189,7 @@ class VelocityModel:
             DESCRIPTION.
 
         """
+        print(var.capitalize(), "profile for", self.model_name)
         vel = getattr(self, var)
         # hacky way to deal with a serious problem, numerical precision
         rsel = np.sort(list(set(np.around(self.r, round_param))))
@@ -183,7 +202,7 @@ class VelocityModel:
             r1, r2 = r_i - drmin, r_i + drmin
             level = (self.r > r1) & (self.r < r2)
             prof[i] = np.mean(vel[level])
-
+        
         return rsel, prof
 
     def anomaly(self, var="s", round_param=3):
@@ -234,3 +253,39 @@ class VelocityModel:
         with open(destination + "/inparam_hetero", "w") as inparam_file:
             inparam_file.write(filled_template)
         
+    def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None):
+        nv = len(variables)
+        r_prof_km  = self.get_rprofile("s")[0] * self.r_E_km
+        zprof_km = (self.r_E_km - r_prof_km)
+        
+        profs = [self.get_rprofile(v)[-1] for v in variables]
+        labels = _create_labels(variables)
+        if axs is fig is None:
+            fig, axs = plt.subplots(1, nv, sharey=True)
+
+        for ax, prof in zip(axs, profs):
+            handle_mod = ax.plot(prof, zprof_km, c="r")
+        
+        [ax.set_ylim(ax.get_ylim()[::-1]) for ax in axs]
+        [ax.set_xlabel(l) for ax, l in zip(axs, labels)]
+        axs[0].set_ylabel("Depth [m]")
+        axs[-1].legend(handle_mod, ["Model"])
+        plt.subplots_adjust(wspace=0)
+        plt.title(self.model_name)
+        
+        return fig, axs
+    
+    @staticmethod
+    def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, lbl=None):
+        rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
+                                                          skiprows=6, 
+                                                          unpack=True)
+        mantle = rprem >= r_core_m
+        rprem, rhoprem = rprem[mantle], rhoprem[mantle]
+        vpprem, vsprem = vpprem[mantle], vsprem[mantle]
+
+        zprem_km = (r_Earth_m - rprem) / 1e3
+        profs = [vsprem, vpprem, rhoprem]
+        for ax, prof in zip(axs, profs):
+            handle = ax.plot(prof, zprem_km, c="k", label=lbl)
+        axs[0].legend()
