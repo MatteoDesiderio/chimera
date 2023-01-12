@@ -6,7 +6,38 @@ from scipy.spatial import KDTree
 from field import Field
 from interfaces.axi.inparam_hetero_template import inparam_hetero
 
+def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
+    """
+    
 
+    Parameters
+    ----------
+    path : str
+        Path of an external 1D model, an axisem .bm file 
+        (caution: it is assumed that the first 6 lines are the header. 
+         It is also assumed that the model is isotropic, and units are in
+         meters). 
+    r_core_m : float, optional
+        DESCRIPTION. The default is 3481e3.
+    r_Earth_m : float, optional
+        DESCRIPTION. The default is 6371e3.
+
+    Returns
+    -------
+    profs : list
+        A list of vs, vp, density obtained from the profile supplied.
+
+    """
+    rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
+                                                      skiprows=6, 
+                                                      unpack=True)
+    mantle = rprem >= r_core_m
+    rprem, rhoprem = rprem[mantle], rhoprem[mantle]
+    vpprem, vsprem = vpprem[mantle], vsprem[mantle]
+
+    zprem_km = (r_Earth_m - rprem) / 1e3
+    profs = [vsprem, vpprem, rhoprem]
+    return zprem_km, profs
 
 def _create_labels(variables):
     def define_label(v):
@@ -275,20 +306,13 @@ class VelocityModel:
         
         return fig, axs
     
-    def plot_prof_pert(self):
+    def plot_prof_pert(self, ext_prof):
         pass
     
     @staticmethod
     def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, lbl=None):
-        rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
-                                                          skiprows=6, 
-                                                          unpack=True)
-        mantle = rprem >= r_core_m
-        rprem, rhoprem = rprem[mantle], rhoprem[mantle]
-        vpprem, vsprem = vpprem[mantle], vsprem[mantle]
-
-        zprem_km = (r_Earth_m - rprem) / 1e3
-        profs = [vsprem, vpprem, rhoprem]
+        
+        zprem_km, profs = get_ext_prof(path, r_core_m, r_Earth_m)
         for ax, prof in zip(axs, profs):
             handle = ax.plot(prof, zprem_km, c="k", label=lbl)
         axs[0].legend()
