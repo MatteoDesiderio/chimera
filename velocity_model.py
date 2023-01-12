@@ -275,6 +275,9 @@ class VelocityModel:
         
         return fig, axs
     
+    def plot_prof_pert(self):
+        pass
+    
     @staticmethod
     def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, lbl=None):
         rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
