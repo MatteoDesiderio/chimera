@@ -5,10 +5,21 @@ import pickle
 from scipy.spatial import KDTree
 from field import Field
 from interfaces.axi.inparam_hetero_template import inparam_hetero
+from scipy.interpolate import interp1d
+
+def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
+    ext_profs_pert = []
+    for ext_pr, pr in zip(ext_profs, profs):
+        f = interp1d(ext_z, ext_pr, **interp_kwargs)
+        ext_pr_i = f(z)
+        pert = 100 * (pr - ext_pr_i) / pr
+        ext_profs_pert.append(pert)
+    return z, ext_profs_pert
 
 def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
     """
-    
+    Return vs, vp, density out of an external 1D model (an axisem .bm file) and 
+    their depth coordinates in kms.
 
     Parameters
     ----------
@@ -24,8 +35,10 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
 
     Returns
     -------
+    zprem_km  : numpy.ndarray
+        Array containing the depth coordinates in kms.
     profs : list
-        A list of vs, vp, density obtained from the profile supplied.
+        vs, vp, density obtained from the 1D model supplied.
 
     """
     rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
@@ -39,14 +52,17 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
     profs = [vsprem, vpprem, rhoprem]
     return zprem_km, profs
 
-def _create_labels(variables):
+def _create_labels(variables, absolute):
     def define_label(v):
         if v == "s":
-            return r"$V_s [m/s]$" 
+            unit = "[m/s]" if absolute else "[%]" 
+            return r"$V_s$ " + unit
         elif v == "p":
-            return r"$V_p [m/s]$" 
+            unit = "[m/s]" if absolute else "[%]"
+            return r"$V_p$ " + unit
         else:
-            return r"$\rho$ [kg/m$^3$]" 
+            unit = "[kg/m$^3$]" if absolute else "[%]"
+            return r"$\rho$ "  + unit
     
     labels = []
     for v in variables:
@@ -284,13 +300,67 @@ class VelocityModel:
         with open(destination + "/inparam_hetero", "w") as inparam_file:
             inparam_file.write(filled_template)
         
-    def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None):
+    def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None,
+                      absolute=True, external=None,
+                      interp_kwargs={"kind": "linear", "bounds_error": False,
+                                     "fill_value": "extrapolate"}):
+        """
+        
+
+        Parameters
+        ----------
+        variables : list, optional
+            DESCRIPTION. The default is ["s", "p", "rho"].
+        fig : TYPE, optional
+            DESCRIPTION. The default is None.
+        axs : TYPE, optional
+            DESCRIPTION. The default is None.
+        absolute : TYPE, optional
+            If True, the profiles are plotted as they are. Else, they are 
+            compared to the ones from the supplied external 1D model. 
+            The default is True.
+        external : tuple or list, optional
+            depth and (Vs, Vp, rho) profiles from 1D model. The value is 
+            automatically set  to None if the parameter "absolute" = True. 
+            The default is None.
+        interp_kwargs : TYPE, optional
+            DESCRIPTION. The default is {}.
+
+        Raises
+        ------
+        ValueError
+            Will raise an error if absolute=+False and the external
+            model supplied does not conform to [z, (, ,)] or (z, (, ,))
+
+        Returns
+        -------
+        fig : TYPE
+            DESCRIPTION.
+        axs : TYPE
+            DESCRIPTION.
+
+        """
+        if absolute:
+            external = None
+                    
         nv = len(variables)
         r_prof_km  = self.get_rprofile("s")[0] * self.r_E_km
         zprof_km = (self.r_E_km - r_prof_km)
         
-        profs = [self.get_rprofile(v)[-1] for v in variables]
-        labels = _create_labels(variables)
+        labels = _create_labels(variables, absolute)
+        _profs = [self.get_rprofile(v)[-1] for v in variables]
+        if external is None:
+            profs = _profs
+        else:
+            if isinstance(external, (tuple, list)):
+                ext_z, ext_profs = external
+                _, profs = get_prof_pert(ext_z, ext_profs, zprof_km, _profs, 
+                                         interp_kwargs)
+            else:
+                profs = None
+                raise ValueError("External must be of type list or tuple, " +
+                                 "the first element being the z coordinate " + 
+                                 "in km and the second a tuple with s, p, rho")
         if axs is fig is None:
             fig, axs = plt.subplots(1, nv, sharey=True)
 
@@ -306,13 +376,11 @@ class VelocityModel:
         
         return fig, axs
     
-    def plot_prof_pert(self, ext_prof):
-        pass
-    
     @staticmethod
     def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, lbl=None):
         
         zprem_km, profs = get_ext_prof(path, r_core_m, r_Earth_m)
+        
         for ax, prof in zip(axs, profs):
             handle = ax.plot(prof, zprem_km, c="k", label=lbl)
         axs[0].legend()
