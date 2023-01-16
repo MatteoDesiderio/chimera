@@ -27,6 +27,7 @@ def _checker(shape,
 def initialize_vmodels(proj, interp_type, checker_board_params=None):
     if proj.quick_mode_on:
         print("Quick Mode on: overriding interp_type to 'nearest'.")
+        # TO DO: if quick mode, interp_type = "none" and do not interpolate 
         interp_type = "nearest"
 
     # load axisem high resolution grid, if wanted

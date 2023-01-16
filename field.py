@@ -109,11 +109,14 @@ class Field:
 
     def interpolate(self, interp_type, xnew, ynew):
         z = self.values.flatten()
-        self.normalize_radius()
-        x, y = self.to_cartesian()
-        old = np.c_[x, y]
-        new = np.c_[xnew, ynew]
-        interpolated = griddata(old, z, new, method=interp_type)
+        if interp_type.capitalize() == "None":
+            interpolated = z
+        else:
+            self.normalize_radius()
+            x, y = self.to_cartesian()
+            old = np.c_[x, y]
+            new = np.c_[xnew, ynew]
+            interpolated = griddata(old, z, new, method=interp_type)
         return interpolated
         
     def plot(self):
