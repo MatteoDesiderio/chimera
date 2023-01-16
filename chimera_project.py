@@ -36,7 +36,7 @@ class Project:
         self.elastic_path = "/elastic-fields/"
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
-
+        self.geom = None      # geom of the geodynamic models grid (same 4 all)
 
     @property
     def stagyy_model_names(self):
@@ -96,6 +96,8 @@ class Project:
         if not np.all(np.r_[geoms] ==  geom):
             msg = "All models must share the same geometry parameters"
             raise NotImplementedError(msg)
+        else:
+            self.geom = geoms[0]
 
         with open(parent + 'project_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)

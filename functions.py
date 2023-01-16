@@ -24,7 +24,6 @@ def _checker(shape,
     T_[T_ == 1] = Tmax
     return T_
 
-
 def initialize_vmodels(proj, interp_type, checker_board_params=None):
     if proj.quick_mode_on:
         print("Quick Mode on: overriding interp_type to 'nearest'.")
@@ -80,7 +79,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 set_renormalized_fields(fields)
                 
                 v_model = VelocityModel(model_name, i_t, t, x, y, 
-                                        proj.c_field_names[0])
+                                        proj.c_field_names[0], proj)
                 # interpolating stagyy fields on larger axisem grid
 
                 v_model.T = variables[0].interpolate(interp_type, x, y)
@@ -152,7 +151,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 
                 print("Initializing velocity model for", t, "Gy")
                 v_model = VelocityModel(model_name, i_t, t, x, y, 
-                                        thermodata.c_field_names[0])
+                                        thermodata.c_field_names[0], proj)
                 # interpolating stagyy fields on larger axisem grid
                 print("Interpolating stagyy variables",
                       "and fields on axisem mesh")

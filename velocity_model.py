@@ -1,11 +1,13 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from numba import prange, njit
 import pickle
 from scipy.spatial import KDTree
 from field import Field
 from interfaces.axi.inparam_hetero_template import inparam_hetero
 from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.collections import LineCollection
 
 def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
     ext_profs_pert = []
@@ -54,6 +56,9 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
 
 def _create_labels(variables, absolute):
     def define_label(v):
+        if v == "T":
+            unit = "[K]" if absolute else "[%]" 
+            return r"T " + unit
         if v == "s":
             unit = "[m/s]" if absolute else "[%]" 
             return r"$V_s$ " + unit
@@ -107,12 +112,13 @@ def to_polar(x, y):
 
 
 class VelocityModel:
-    def __init__(self, model_name, i_t, t, x, y, Cnames=list()):
-        # model name, time info, radius of earth
+    def __init__(self, model_name, i_t, t, x, y, Cnames=list(), proj=None):
+        # model name, time info, radius of earth, other info
         self.model_name = model_name
         self.i_t = i_t
         self.t = t
         self.r_E_km = 6371.0  # TODO initialize this from proj/field/other info
+        self.proj = proj
         # spatial coordinates
         self.x = x
         self.y = y
@@ -236,21 +242,33 @@ class VelocityModel:
             DESCRIPTION.
 
         """
-        print(var.capitalize(), "profile for", self.model_name)
-        vel = getattr(self, var)
-        # hacky way to deal with a serious problem, numerical precision
-        rsel = np.sort(list(set(np.around(self.r, round_param))))
-
-        diffs = np.diff(rsel)
-        drmin = diffs[diffs > 0].min() / 2
-
-        prof = np.empty(len(rsel))
-        for i, r_i in enumerate(rsel):
-            r1, r2 = r_i - drmin, r_i + drmin
-            level = (self.r > r1) & (self.r < r2)
-            prof[i] = np.mean(vel[level])
-        
-        return rsel, prof
+        # if you have a regular grid, this operation is easier
+        if self.proj.quick_mode_on:
+            # TODO this must become a spearate function, cause is gonna
+            # be useful to compute radial corr matrices and spectra
+            rsel, th, vel = self.r, self.theta, getattr(self, var)
+            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+            shape[0] = shape[0] + 1
+            rsel, th, vel = [ar.reshape(shape) for ar in (rsel, th, vel)]
+            rsel, th = rsel[0], np.unwrap(th[:,0])
+            prof = np.mean(vel, axis=0)
+            return rsel, prof
+        else:
+            # print(var.capitalize(), "profile for", self.model_name)
+            vel = getattr(self, var)
+            # hacky way to deal with a serious problem, numerical precision
+            rsel = np.sort(list(set(np.around(self.r, round_param))))
+    
+            diffs = np.diff(rsel)
+            drmin = diffs[diffs > 0].min() / 2
+    
+            prof = np.empty(len(rsel))
+            for i, r_i in enumerate(rsel):
+                r1, r2 = r_i - drmin, r_i + drmin
+                level = (self.r > r1) & (self.r < r2)
+                prof[i] = np.mean(vel[level])
+            
+            return rsel, prof
 
     def anomaly(self, var="s", round_param=3):
         vel = getattr(self, var)
@@ -303,7 +321,10 @@ class VelocityModel:
     def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None,
                       absolute=True, external=None,
                       interp_kwargs={"kind": "linear", "bounds_error": False,
-                                     "fill_value": "extrapolate"}):
+                                     "fill_value": "extrapolate"}, 
+                      third_variable=None,
+                      plot_kwargs={"color": "r"}, 
+                      cmap_kwargs={"cmap": "hot", "vmin": 300, "vmax": 4000}):
         """
         
 
@@ -323,8 +344,14 @@ class VelocityModel:
             depth and (Vs, Vp, rho) profiles from 1D model. The value is 
             automatically set  to None if the parameter "absolute" = True. 
             The default is None.
-        interp_kwargs : TYPE, optional
+        interp_kwargs : dict, optional
             DESCRIPTION. The default is {}.
+        third_variable : str or float or int, optional
+            If not None, use this variable to color the line. Accepted values:
+                - "T", str to plot as function of Temperature;
+                - float, to plot as function of mean T at that depth;
+                - integers, indicating the composition. 
+            The default is None.
 
         Raises
         ------
@@ -362,12 +389,50 @@ class VelocityModel:
                                  "the first element being the z coordinate " + 
                                  "in km and the second a tuple with s, p, rho")
         if axs is fig is None:
-            fig, axs = plt.subplots(1, nv, sharey=True)
-
-        for ax, prof in zip(axs, profs):
-            handle_mod = ax.plot(prof, zprof_km, c="r")
+            fig, axs = plt.subplots(1, nv, sharey=True, squeeze=False)
+            if axs.shape == (1,1):
+                axs = [axs[1,1]]
         
-        [ax.set_ylim(ax.get_ylim()[::-1]) for ax in axs]
+        handle_mod = [None]
+        
+            
+        for ax, prof in zip(axs, profs):
+            if third_variable is None:
+                handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
+            else:
+                cmap = cmap_kwargs["cmap"]
+                vmin = cmap_kwargs["vmin"]
+                vmax = cmap_kwargs["vmax"] 
+                if third_variable == "T":
+                    vals = self.get_rprofile("T")[-1]
+                    # copied from matplotlib gallery (multicolored_line)
+                    points = np.array([prof, zprof_km]).T.reshape(-1, 1, 2)
+                    segments = np.concatenate([points[:-1], points[1:]], 
+                                              axis=1)
+                    
+                    norm = plt.Normalize(vmin, vmax)
+                    lc = LineCollection(segments, cmap=cmap, norm=norm)
+                    # Set the values used for colormapping
+                    lc.set_array(vals)
+                    lc.set_linewidth(1)
+                    line = ax.add_collection(lc)
+                    # fig.colorbar(line, ax=ax)
+                elif isinstance(third_variable, float):
+                    vals = self.get_rprofile("T")[-1]
+                    val = np.interp(third_variable, 
+                                    zprof_km[::-1], vals[::-1])
+                    # print(val)
+                    val -= vmin
+                    val /= (vmax-vmin)
+                    color = cm.get_cmap(cmap)(val)
+                    plot_kwargs["color"] = color
+                    handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
+                else:
+                    msg = "Composition as color of the line not implemented"
+                    raise NotImplementedError(msg)
+                    
+        
+        [ax.set_ylim((zprof_km.max(), zprof_km.min())) for ax in axs]
         [ax.set_xlabel(l) for ax, l in zip(axs, labels)]
         axs[0].set_ylabel("Depth [m]")
         axs[-1].legend(handle_mod, ["Model"])
@@ -377,10 +442,11 @@ class VelocityModel:
         return fig, axs
     
     @staticmethod
-    def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, lbl=None):
+    def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
+                      c="b", lbl=None):
         
         zprem_km, profs = get_ext_prof(path, r_core_m, r_Earth_m)
         
         for ax, prof in zip(axs, profs):
-            handle = ax.plot(prof, zprem_km, c="k", label=lbl)
+            handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
