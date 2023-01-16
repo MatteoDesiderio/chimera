@@ -1,6 +1,6 @@
 """
 Simple wrappers to load coordinates and field data via stagpy. 
-This assumes 2D spherical geometry.
+This assumes 2D yz spherical geometry.
 """
 
 
