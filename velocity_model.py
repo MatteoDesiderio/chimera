@@ -242,9 +242,16 @@ class VelocityModel:
             DESCRIPTION.
 
         """
+        # HACK to make it work with a previous version where the velocity
+        # model did not have the attribute quick_mode_on
+        try:
+            quick_mode_on = self.proj.quick_mode_on
+        except AttributeError:
+            quick_mode_on = False
+            
         # if you have a regular grid, this operation is easier
-        if self.proj.quick_mode_on:
-            # TODO this must become a spearate function, cause is gonna
+        if quick_mode_on:
+            # TODO this must become a separate function, cause is gonna
             # be useful to compute radial corr matrices and spectra
             rsel, th, vel = self.r, self.theta, getattr(self, var)
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
