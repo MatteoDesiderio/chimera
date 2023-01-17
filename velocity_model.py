@@ -54,19 +54,28 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
     profs = [vsprem, vpprem, rhoprem]
     return zprem_km, profs
 
+def _is_quick_mode_on(_self):
+    quick_mode_on = True
+    try:
+        quick_mode_on = _self.proj.quick_mode_on
+    except AttributeError:
+        quick_mode_on = False
+        
+    return quick_mode_on
+
 def _create_labels(variables, absolute):
     def define_label(v):
         if v == "T":
             unit = "[K]" if absolute else "[%]" 
             return r"T " + unit
         if v == "s":
-            unit = "[m/s]" if absolute else "[%]" 
+            unit = "[m/s]" if absolute else " (V - V1D)/V [%]" 
             return r"$V_s$ " + unit
         elif v == "p":
-            unit = "[m/s]" if absolute else "[%]"
+            unit = "[m/s]" if absolute else " (V - V1D)/V [%]"
             return r"$V_p$ " + unit
         else:
-            unit = "[kg/m$^3$]" if absolute else "[%]"
+            unit = "[kg/m$^3$]" if absolute else " (rho - rho1D)/rho [%]"
             return r"$\rho$ "  + unit
     
     labels = []
@@ -244,22 +253,18 @@ class VelocityModel:
         """
         # HACK to make it work with a previous version where the velocity
         # model did not have the attribute quick_mode_on
-        try:
-            quick_mode_on = self.proj.quick_mode_on
-        except AttributeError:
-            quick_mode_on = False
+        quick_mode_on = _is_quick_mode_on(self)
             
         # if you have a regular grid, this operation is easier
         if quick_mode_on:
-            # TODO this must become a separate function, cause is gonna
-            # be useful to compute radial corr matrices and spectra
-            rsel, th, vel = self.r, self.theta, getattr(self, var)
+            rsel, vel = self.r, getattr(self, var)
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
             shape[0] = shape[0] + 1
-            rsel, th, vel = [ar.reshape(shape) for ar in (rsel, th, vel)]
-            rsel, th = rsel[0], np.unwrap(th[:,0])
+            rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
+            rsel = rsel[0]
             prof = np.mean(vel, axis=0)
             return rsel, prof
+        
         else:
             # print(var.capitalize(), "profile for", self.model_name)
             vel = getattr(self, var)
@@ -278,22 +283,34 @@ class VelocityModel:
             return rsel, prof
 
     def anomaly(self, var="s", round_param=3):
+        
         vel = getattr(self, var)
         rprof, vprof = self.get_rprofile(var, round_param)
-        diffs = np.diff(rprof)
-        drmin = diffs[diffs > 0].min() / 2
-
-        tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
-        other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
-        indices = tree.query_ball_tree(other_tree, r=drmin)
-
-        arr = np.empty(len(self.r))
-        for i, index in enumerate(indices):
-            for j in index:
-                arr[j] = (vel[j] - vprof[i]) / vprof[i]
-
-        setattr(self, var+"_a", arr)
-        setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+        quick_mode_on = _is_quick_mode_on(self)
+        
+        # TODO : change operation when quick mode on
+        if quick_mode_on:
+            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+            shape[0] = shape[0] + 1
+            vel = vel.reshape(shape)
+            arr = (vel - vprof) / vprof
+            setattr(self, var+"_a", arr)
+            setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+        else:
+            diffs = np.diff(rprof)
+            drmin = diffs[diffs > 0].min() / 2
+    
+            tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
+            other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
+            indices = tree.query_ball_tree(other_tree, r=drmin)
+    
+            arr = np.empty(len(self.r))
+            for i, index in enumerate(indices):
+                for j in index:
+                    arr[j] = (vel[j] - vprof[i]) / vprof[i]
+    
+            setattr(self, var+"_a", arr)
+            setattr(self, var+"_prof", {"r": rprof, "val": vprof})
 
         return getattr(self, var+"_a"), getattr(self, var+"_prof")
 
@@ -307,15 +324,22 @@ class VelocityModel:
         with open(destination + 'v_model_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
-    def export(self, destination, fmt):
+    def export(self, destination, fmt, absolute=True):
         r, th = self.r * 1e3 * self.r_E_km, self.theta * 180 / np.pi
         th -= 180.0 # TODO check if it's always the same shift
+        
+        val_type = "" if absolute else "_a"
+        adj = "absolute values" if absolute else "relative perturbations"
+        
+        print("Exporting model as %s" % adj)
         print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
+        
         if self.stagyy_rho_used:
-            rho = self.rho_stagyy
+            rho = getattr(self, "rho_stagyy" + val_type)
         else:
-            rho = self.rho
-        s, p = self.s, self.p
+            rho = getattr(self, "rho" + val_type)
+        s, p = getattr(self, "s" + val_type), getattr(self, "p" + val_type)
+        
         data = np.c_[r, th, p, s, rho]
         # save the sph text file
         fname = destination + "/geodynamic_hetfile.sph"
