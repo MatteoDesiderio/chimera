@@ -3,6 +3,14 @@ import numpy.ma as ma
 import matplotlib.pyplot as plt
 import pickle
 
+def _fix_i_field(i_field):
+    if i_field < 2:
+        raise Warning("The specified index pointed to the independent" +
+                      "variables. The index has been automatically" +
+                      "to the minimum acceptable value")
+    i_field = max(2, i_field)
+    return i_field
+
 def _interp_nans(arr, x, y):
     nr, nc = arr.shape
     # print(x, y)
@@ -93,11 +101,8 @@ class Tab:
         
 
     def plot(self, i_field, ax=None, exclude_range=None, kwargs={}):
-        if i_field < 2:
-            raise Warning("The specified index pointed to the independent" +
-                          "variables. The index has been automatically" +
-                          "to the minimum acceptable value")
-        i_field = max(2, i_field)
+        i_field = _fix_i_field(i_field)
+        
         if not ax is None:
             fig = ax.get_figure()
         else:
@@ -131,6 +136,9 @@ class Tab:
         plt.colorbar(img, ax=ax)
 
         return fig, ax
+    
+    def plot_contour_TP(self, ):
+        pass
     
     def remove_nans(self):
         for k, (f, n) in enumerate(zip(self.data, self.tab["fields"])):
