@@ -137,6 +137,9 @@ class Tab:
 
         return fig, ax
     
+    def get_contour_TP(self, T, P):
+        pass
+    
     def plot_contour_TP(self, ):
         pass
     
