@@ -300,7 +300,7 @@ def compute_vmodels(proj, use_stagyy_rho=False):
         print("+"*76)        
     return v_model_paths
  
-def export_vmodels(proj, fmt="%.18e"):
+def export_vmodels(proj, fmt="%.18e", absolute=True):
     """
     
 
@@ -330,7 +330,7 @@ def export_vmodels(proj, fmt="%.18e"):
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
             v_model = VelocityModel.load(v_path)
-            v_model.export(v_path, fmt)
+            v_model.export(v_path, fmt, absolute)
             print("Exporting to sph format")
             print("Done")
             print("----------------------------------------------------------")

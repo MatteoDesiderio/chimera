@@ -143,11 +143,15 @@ class VelocityModel:
         self.s = None
         self.p = None
         self.bulk = None
-        # velocity anomaly fields
+        # density / velocity anomaly fields
+        self.rho_a = None
+        self.rho_stagyy_a = None
         self.s_a = None
         self.p_a = None
         self.bulk_a = None
         # average radial profiles
+        self.rho_prof = {"r": None, "val": []}
+        self.rho_stagyy_prof = {"r": None, "val": []}
         self.s_prof = {"r": None, "val": []}
         self.p_prof = {"r": None, "val": []}
         self.bulk_prof = {"r": None, "val": []}
@@ -282,7 +286,7 @@ class VelocityModel:
             
             return rsel, prof
 
-    def anomaly(self, var="s", round_param=3):
+    def anomaly(self, var="s", round_param=3, fac=100.0):
         
         vel = getattr(self, var)
         rprof, vprof = self.get_rprofile(var, round_param)
@@ -293,8 +297,8 @@ class VelocityModel:
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
             shape[0] = shape[0] + 1
             vel = vel.reshape(shape)
-            arr = (vel - vprof) / vprof
-            setattr(self, var+"_a", arr)
+            arr = fac * (vel - vprof) / vprof
+            setattr(self, var+"_a", arr.flatten())
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
         else:
             diffs = np.diff(rprof)
@@ -307,7 +311,7 @@ class VelocityModel:
             arr = np.empty(len(self.r))
             for i, index in enumerate(indices):
                 for j in index:
-                    arr[j] = (vel[j] - vprof[i]) / vprof[i]
+                    arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
     
             setattr(self, var+"_a", arr)
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
@@ -324,11 +328,32 @@ class VelocityModel:
         with open(destination + 'v_model_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
-    def export(self, destination, fmt, absolute=True):
+    def export(self, destination, fmt, absolute=True, fac=100):
+        """
+        
+
+        Parameters
+        ----------
+        destination : TYPE
+            DESCRIPTION.
+        fmt : TYPE
+            DESCRIPTION.
+        absolute : TYPE, optional
+            DESCRIPTION. The default is True.
+        fac : TYPE, optional
+            DESCRIPTION. The default is 100.
+
+        Returns
+        -------
+        None.
+
+        """
         r, th = self.r * 1e3 * self.r_E_km, self.theta * 180 / np.pi
         th -= 180.0 # TODO check if it's always the same shift
         
         val_type = "" if absolute else "_a"
+        if not absolute:
+            _ = [self.anomaly(var) for var in ["s", "p", "rho"]]
         adj = "absolute values" if absolute else "relative perturbations"
         
         print("Exporting model as %s" % adj)
@@ -338,6 +363,7 @@ class VelocityModel:
             rho = getattr(self, "rho_stagyy" + val_type)
         else:
             rho = getattr(self, "rho" + val_type)
+            
         s, p = getattr(self, "s" + val_type), getattr(self, "p" + val_type)
         
         data = np.c_[r, th, p, s, rho]
