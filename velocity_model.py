@@ -9,7 +9,12 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
 import h5py
+import os
 
+# TO DO to speed things up first
+# create a function that uses griddata to interpolate from the 1D prof to the
+# whole grid. Thene use numba to compute the anomaly (loop over each single 
+# point or divide the array into chunks and loop over each chunk in parallel)
 @njit
 def _anomaly(rprof, vprof, rmod, vmod, dr):
     arr = np.zeros_like(vmod)
@@ -343,7 +348,7 @@ class VelocityModel:
                     arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
             """
             
-            arrnb = _anomaly(rprof, vprof, self.r, vel, drmin)
+            arr = _anomaly(rprof, vprof, self.r, vel, drmin)
 
             setattr(self, var+"_a", arr)
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
@@ -409,12 +414,14 @@ class VelocityModel:
         fpath = destination + "/" + fname
         name, extension = fname.rsplit(".")
         if extension == "sph":
-            np.savetxt(fpath, data, header=str(len(data)), comments='', 
-                       fmt=fmt)
-        else:            
-            with h5py.File(fpath, "w") as hf:
-                for d, d_name in zip(data, ["r", "theta", "p", "s", "rho"]):
-                    hf.create_dataset(d_name, data=d, dtype=dtype)
+            np.savetxt(fpath,data, header=str(len(data)), comments='', fmt=fmt)
+        else:
+            if os.path.exists(fpath):
+                raise OSError("hdf5 file with this name already exists.")
+            else:
+                for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"]):
+                    with h5py.File(fpath, "a") as hf:
+                        hf.create_dataset(d_name, data=d, dtype=dtype)
 
         # save a corresponding inparam_hetero, as needed by axisem
         filled_template = self.template.format(fname)
