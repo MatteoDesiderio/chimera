@@ -300,17 +300,24 @@ def compute_vmodels(proj, use_stagyy_rho=False):
         print("+"*76)        
     return v_model_paths
  
-def export_vmodels(proj, fmt="%.18e", absolute=True):
+def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
+                                               fname="geodynamic_hetfile.sph"):
     """
-    
 
     Parameters
-    fmt : str 
-        The single format used to save the values with numpy.savetxt 
-        Default is ".2f"
     ----------
     proj : TYPE
         DESCRIPTION.
+    absolute : TYPE, optional
+        DESCRIPTION. The default is True.
+    fac : TYPE, optional
+        DESCRIPTION. The default is 100.
+    fmt : TYPE, optional
+        DESCRIPTION. The default is "%.2f".
+    dtype : TYPE, optional
+        DESCRIPTION. The default is "float32".
+    fname : TYPE, optional
+        DESCRIPTION. The default is "geodynamic_hetfile.sph".
 
     Returns
     -------
@@ -330,8 +337,8 @@ def export_vmodels(proj, fmt="%.18e", absolute=True):
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
             v_model = VelocityModel.load(v_path)
-            v_model.export(v_path, fmt, absolute)
-            print("Exporting to sph format")
+            print("Exporting to %s format" % fname.rsplit(".")[-1])
+            v_model.export(v_path, fmt, absolute, fac, fname, dtype)
             print("Done")
             print("----------------------------------------------------------")
             print()
