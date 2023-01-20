@@ -8,6 +8,18 @@ from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
+import h5py
+
+@njit
+def _anomaly(rprof, vprof, rmod, vmod, dr):
+    arr = np.zeros_like(vmod)
+    for iprof in prange(len(rprof)):
+        r_pos = rprof[iprof]
+        v_pos = vprof[iprof]
+        imods = np.argwhere(np.abs(r_pos - rmod) <= dr)
+        for imod in imods:
+            arr[imod] = (vmod[imod] - v_pos) / v_pos
+    return arr
 
 def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
     ext_profs_pert = []
@@ -287,7 +299,24 @@ class VelocityModel:
             return rsel, prof
 
     def anomaly(self, var="s", round_param=3, fac=100.0):
+        """
         
+
+        Parameters
+        ----------
+        var : TYPE, optional
+            DESCRIPTION. The default is "s".
+        round_param : TYPE, optional
+            DESCRIPTION. The default is 3.
+        fac : TYPE, optional
+            DESCRIPTION. The default is 100.0.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        """
         vel = getattr(self, var)
         rprof, vprof = self.get_rprofile(var, round_param)
         quick_mode_on = _is_quick_mode_on(self)
@@ -303,19 +332,22 @@ class VelocityModel:
         else:
             diffs = np.diff(rprof)
             drmin = diffs[diffs > 0].min() / 2
-    
+            
+            """
             tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
             other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
             indices = tree.query_ball_tree(other_tree, r=drmin)
-    
             arr = np.empty(len(self.r))
             for i, index in enumerate(indices):
                 for j in index:
                     arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
-    
+            """
+            
+            arrnb = _anomaly(rprof, vprof, self.r, vel, drmin)
+
             setattr(self, var+"_a", arr)
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
-
+        
         return getattr(self, var+"_a"), getattr(self, var+"_prof")
 
     @staticmethod
@@ -328,7 +360,8 @@ class VelocityModel:
         with open(destination + 'v_model_data.pkl', 'wb') as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
-    def export(self, destination, fmt, absolute=True, fac=100):
+    def export(self, destination, fmt, absolute=True, fac=100, 
+               fname="geodynamic_hetfile.sph", dtype="float32"):
         """
         
 
@@ -342,6 +375,11 @@ class VelocityModel:
             DESCRIPTION. The default is True.
         fac : TYPE, optional
             DESCRIPTION. The default is 100.
+        fname : TYPE, optional
+            DESCRIPTION. Accepted file formats are .sph and .hdf5. 
+            The default is "geodynamic_hetfile.sph".
+        dtype : TYPE, optional
+            DESCRIPTION. Used only if file is hdf5. The default is "float".
 
         Returns
         -------
@@ -352,11 +390,11 @@ class VelocityModel:
         th -= 180.0 # TODO check if it's always the same shift
         
         val_type = "" if absolute else "_a"
+        adj = "absolute values" if absolute else "relative perturbations"
+        print("Exporting model as %s" % adj)
         if not absolute:
             _ = [self.anomaly(var) for var in ["s", "p", "rho"]]
-        adj = "absolute values" if absolute else "relative perturbations"
         
-        print("Exporting model as %s" % adj)
         print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
         
         if self.stagyy_rho_used:
@@ -368,10 +406,18 @@ class VelocityModel:
         
         data = np.c_[r, th, p, s, rho]
         # save the sph text file
-        fname = destination + "/geodynamic_hetfile.sph"
-        np.savetxt(fname, data, header=str(len(data)), comments='', fmt=fmt)
+        fpath = destination + "/" + fname
+        name, extension = fname.rsplit(".")
+        if extension == "sph":
+            np.savetxt(fpath, data, header=str(len(data)), comments='', 
+                       fmt=fmt)
+        else:            
+            with h5py.File(fpath, "w") as hf:
+                for d, d_name in zip(data, ["r", "theta", "p", "s", "rho"]):
+                    hf.create_dataset(d_name, data=d, dtype=dtype)
+
         # save a corresponding inparam_hetero, as needed by axisem
-        filled_template = self.template.format("geodynamic_hetfile.sph")
+        filled_template = self.template.format(fname)
         with open(destination + "/inparam_hetero", "w") as inparam_file:
             inparam_file.write(filled_template)
         
@@ -491,12 +537,35 @@ class VelocityModel:
         
         [ax.set_ylim((zprof_km.max(), zprof_km.min())) for ax in axs]
         [ax.set_xlabel(l) for ax, l in zip(axs, labels)]
-        axs[0].set_ylabel("Depth [m]")
+        axs[0].set_ylabel("Depth [km]")
         axs[-1].legend(handle_mod, ["Model"])
         plt.subplots_adjust(wspace=0)
         plt.title(self.model_name)
         
         return fig, axs
+    
+    @staticmethod
+    def import_hetfile(vel_model_path, variabs=["r", "theta", "p", "s", "rho"], 
+                       fname="geodynamic_hetfile.sph"):
+        
+        name, extension = fname.rsplit(".")
+        fpath = vel_model_path + "/" + fname
+        
+        if extension == "sph":  
+            print("loadtxt")
+            dic = {"r":0, "theta":1, "p":2, "s":3, "rho":4}
+            usecols = [dic[v] for v in variabs]
+            data = np.loadtxt(fpath, skiprows=1, usecols=usecols).T
+        elif extension == "hdf5":
+            data = []
+            print("h5py")
+            for d_name in variabs:
+                with h5py.File(fpath, "r") as file:
+                    d = np.array(file.get(d_name))
+                    data.append(d)
+        else:
+            data=None
+        return data
     
     @staticmethod
     def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
