@@ -101,12 +101,14 @@ class Tab:
         
 
     def plot(self, i_field, ax=None, exclude_range=None, kwargs={}):
+        
         i_field = _fix_i_field(i_field)
         
         if not ax is None:
             fig = ax.get_figure()
         else:
             fig, ax = plt.subplots(1)
+            
         fld_name = self.tab["fields"][i_field]
         data = self.data[i_field]
         T, P = self.data[:2]
@@ -137,8 +139,14 @@ class Tab:
 
         return fig, ax
     
-    def get_contour_TP(self, T, P):
-        pass
+    def get_contour_TP(self, i_field, T, P):
+        i_field = _fix_i_field(i_field)
+        profile = None
+        
+        Tax, Pax = self.data[:2]
+        profile = self.data[i_field][Tax==T, Pax==P]
+        
+        return profile
     
     def plot_contour_TP(self, ):
         pass
