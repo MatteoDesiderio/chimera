@@ -140,12 +140,34 @@ class Tab:
         return fig, ax
     
     def get_contour_TP(self, i_field, T, P):
+        """
+        
+
+        Parameters
+        ----------
+        i_field : TYPE
+            DESCRIPTION.
+        T : TYPE
+            DESCRIPTION.
+        P : TYPE
+            In Pa.
+
+        Returns
+        -------
+        profile : TYPE
+            DESCRIPTION.
+
+        """
         i_field = _fix_i_field(i_field)
-        profile = None
-        
+        data = self.data[i_field]
         Tax, Pax = self.data[:2]
-        profile = self.data[i_field][Tax==T, Pax==P]
-        
+        profile = np.zeros_like(T)
+
+        for i, (T_, P_) in enumerate(zip(T, P)):
+            iT = np.argmin(np.abs(T_ - Tax))
+            iP = np.argmin(np.abs(P_ - Pax*1e5))
+            profile[i] = data[iT, iP]
+
         return profile
     
     def plot_contour_TP(self, ):

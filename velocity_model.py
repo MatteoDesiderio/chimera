@@ -326,7 +326,6 @@ class VelocityModel:
         rprof, vprof = self.get_rprofile(var, round_param)
         quick_mode_on = _is_quick_mode_on(self)
         
-        # TODO : change operation when quick mode on
         if quick_mode_on:
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
             shape[0] = shape[0] + 1
@@ -348,7 +347,7 @@ class VelocityModel:
                     arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
             """
             
-            arr = _anomaly(rprof, vprof, self.r, vel, drmin)
+            arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
 
             setattr(self, var+"_a", arr)
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
@@ -391,14 +390,14 @@ class VelocityModel:
         None.
 
         """
-        r, th = self.r * 1e3 * self.r_E_km, self.theta * 180 / np.pi
-        th -= 180.0 # TODO check if it's always the same shift
+        r, th = self.r * self.r_E_km, self.theta * 180 / np.pi
+        th -= 90.0 # TODO check if it's always the same shift
         
         val_type = "" if absolute else "_a"
         adj = "absolute values" if absolute else "relative perturbations"
         print("Exporting model as %s" % adj)
         if not absolute:
-            _ = [self.anomaly(var) for var in ["s", "p", "rho"]]
+            _ = [self.anomaly(var, fac=fac) for var in ["s", "p", "rho"]]
         
         print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
         
@@ -565,15 +564,16 @@ class VelocityModel:
             data = np.loadtxt(fpath, skiprows=1, usecols=usecols).T
         elif extension == "hdf5":
             data = []
-            print("h5py")
             for d_name in variabs:
                 with h5py.File(fpath, "r") as file:
                     d = np.array(file.get(d_name))
                     data.append(d)
+            if isinstance(data, list) and len(data) < 2:
+                data = data[0]
         else:
             data=None
         return data
-    
+
     @staticmethod
     def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
                       c="b", lbl=None):
@@ -583,3 +583,4 @@ class VelocityModel:
         for ax, prof in zip(axs, profs):
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
+    
