@@ -279,8 +279,8 @@ class VelocityModel:
         # if you have a regular grid, this operation is easier
         if quick_mode_on:
             rsel, vel = self.r, getattr(self, var)
-            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-            shape[0] = shape[0] + 1
+            shape = [self.proj.geom["n{}tot".format(c)] for c in "yz" ]
+            shape[0] = rsel.size // shape[1]
             rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)
@@ -327,8 +327,8 @@ class VelocityModel:
         quick_mode_on = _is_quick_mode_on(self)
         
         if quick_mode_on:
-            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-            shape[0] = shape[0] + 1
+            shape = [self.proj.geom["n{}tot".format(c)] for c in "yz" ]
+            shape[0] = rprof.size // shape[1]
             vel = vel.reshape(shape)
             arr = fac * (vel - vprof) / vprof
             setattr(self, var+"_a", arr.flatten())
@@ -550,6 +550,21 @@ class VelocityModel:
         
         return fig, axs
     
+    def radial_corr_mat(self, var="s"):
+        if _is_quick_mode_on(self):
+            r = self.r
+            val = getattr(self, var)
+            shape = [self.proj.geom["n{}tot".format(c)] for c in "yz" ]
+            shape[0] = r.size // shape[1]
+            r = r.reshape(shape)[0] * self.r_E_km
+            val = val.reshape(shape)
+            corr = np.corrcoef(val, rowvar=False)
+            return r, corr
+        else:
+            msg = "Radial Correlation Matrix can be only computed on the" + \
+                  "StagYY grid"
+            raise NotImplementedError(msg)
+        
     @staticmethod
     def import_hetfile(vel_model_path, variabs=["r", "theta", "p", "s", "rho"], 
                        fname="geodynamic_hetfile.sph"):
@@ -557,7 +572,7 @@ class VelocityModel:
         name, extension = fname.rsplit(".")
         fpath = vel_model_path + "/" + fname
         
-        if extension == "sph":  
+        if extension == "sph":
             print("loadtxt")
             dic = {"r":0, "theta":1, "p":2, "s":3, "rho":4}
             usecols = [dic[v] for v in variabs]
@@ -583,4 +598,5 @@ class VelocityModel:
         for ax, prof in zip(axs, profs):
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
+        
     
