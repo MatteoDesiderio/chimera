@@ -328,7 +328,7 @@ class VelocityModel:
         
         if quick_mode_on:
             shape = [self.proj.geom["n{}tot".format(c)] for c in "yz" ]
-            shape[0] = rprof.size // shape[1]
+            shape[0] = vel.size // shape[1]
             vel = vel.reshape(shape)
             arr = fac * (vel - vprof) / vprof
             setattr(self, var+"_a", arr.flatten())
