@@ -253,7 +253,7 @@ class VelocityModel:
         print(fname_rho + " for average density")
         np.save(destination + fname_rho, self.rho)
 
-    def get_rprofile(self, var="s", round_param=3):
+    def get_rprofile(self, var="s", round_param=3, shape=None):
         """
         
 
@@ -263,7 +263,11 @@ class VelocityModel:
             DESCRIPTION. The default is "s".
         round_param : TYPE, optional
             DESCRIPTION. The default is 3.
-
+        shape : None or list-like
+            If list-like, will attempt to reshape the field into the provided
+            shape before computation. Useful for custom grids 
+            (i.e. neither axisem or stag)
+        
         Returns
         -------
         rsel : TYPE
@@ -287,23 +291,28 @@ class VelocityModel:
             return rsel, prof
         
         else:
-            # print(var.capitalize(), "profile for", self.model_name)
-            vel = getattr(self, var)
-            # hacky way to deal with a serious problem, numerical precision
-            rsel = np.sort(list(set(np.around(self.r, round_param))))
-    
-            diffs = np.diff(rsel)
-            drmin = diffs[diffs > 0].min() / 2
-    
-            prof = np.empty(len(rsel))
-            for i, r_i in enumerate(rsel):
-                r1, r2 = r_i - drmin, r_i + drmin
-                level = (self.r > r1) & (self.r < r2)
-                prof[i] = np.mean(vel[level])
-            
+            if shape is None:
+                # print(var.capitalize(), "profile for", self.model_name)
+                vel = getattr(self, var)
+                # hacky way to deal with a serious problem, numerical precision
+                rsel = np.sort(list(set(np.around(self.r, round_param))))
+        
+                diffs = np.diff(rsel)
+                drmin = diffs[diffs > 0].min() / 2
+        
+                prof = np.empty(len(rsel))
+                for i, r_i in enumerate(rsel):
+                    r1, r2 = r_i - drmin, r_i + drmin
+                    level = (self.r > r1) & (self.r < r2)
+                    prof[i] = np.mean(vel[level])
+            else:
+                rsel, vel = self.r, getattr(self, var)
+                rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
+                rsel = rsel[0]
+                prof = np.mean(vel, axis=0)
             return rsel, prof
 
-    def anomaly(self, var="s", round_param=3, fac=100.0):
+    def anomaly(self, var="s", round_param=3, fac=100.0, shape=None):
         """
         
 
@@ -323,7 +332,7 @@ class VelocityModel:
 
         """
         vel = getattr(self, var)
-        rprof, vprof = self.get_rprofile(var, round_param)
+        rprof, vprof = self.get_rprofile(var, round_param, shape=shape)
         quick_mode_on = _is_quick_mode_on(self)
         
         if quick_mode_on:
@@ -334,23 +343,29 @@ class VelocityModel:
             setattr(self, var+"_a", arr.flatten())
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
         else:
-            diffs = np.diff(rprof)
-            drmin = diffs[diffs > 0].min() / 2
-            
-            """
-            tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
-            other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
-            indices = tree.query_ball_tree(other_tree, r=drmin)
-            arr = np.empty(len(self.r))
-            for i, index in enumerate(indices):
-                for j in index:
-                    arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
-            """
-            
-            arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
-
-            setattr(self, var+"_a", arr)
-            setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+            if shape is None:
+                diffs = np.diff(rprof)
+                drmin = diffs[diffs > 0].min() / 2
+                
+                """
+                tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
+                other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
+                indices = tree.query_ball_tree(other_tree, r=drmin)
+                arr = np.empty(len(self.r))
+                for i, index in enumerate(indices):
+                    for j in index:
+                        arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
+                """
+                
+                arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
+    
+                setattr(self, var+"_a", arr)
+                setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+            else:
+                vel = vel.reshape(shape)
+                arr = fac * (vel - vprof) / vprof
+                setattr(self, var+"_a", arr.flatten())
+                setattr(self, var+"_prof", {"r": rprof, "val": vprof})
         
         return getattr(self, var+"_a"), getattr(self, var+"_prof")
 
