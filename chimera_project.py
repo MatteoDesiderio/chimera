@@ -26,7 +26,7 @@ class Project:
         """
         self.test_mode_on = False
         self.quick_mode_on = False
-        self.custom_grid = None
+        self.custom_mesh = None
         self._GY = 3600*24*364*1e9                                        # [s]
         self.chimera_project_path = ""    # path where you want to save project
         self.bg_model = ""                       # name of your axisem bg model
@@ -54,21 +54,21 @@ class Project:
     
     @bg_model.setter
     def bg_model(self, val):
-        if self.quick_mode_on or not (self.custom_grid) is None:
+        if self.quick_mode_on or not (self.custom_mesh) is None:
             self._bg_model = None
         else:
             self._bg_model = val
-    
+            
+    # if you are using the StagYY grid, you don't need a custom grid 
     @property
-    def custom_grid(self):
-        return self._custom_grid
-    
-    @custom_grid.setter
-    def custom_grid(self, val):
+    def custom_mesh(self):
+        return self._custom_mesh
+    @custom_mesh.setter
+    def custom_mesh(self, val):
         if self.quick_mode_on:
-            self._self.custom_grid = None
+            self._self.custom_mesh = None
         else:
-            self._custom_grid = val
+            self._custom_mesh = val
         
     
     def new(self, proj_name="New Project"):
@@ -122,6 +122,8 @@ class Project:
             nm = self.stagyy_model_names[0]
             sdat = stagyydata.StagyyData(self.stagyy_path + nm)
             mesh_x, mesh_y = _get_mesh_xy(sdat)
+        elif not self.custom_mesh is None:
+            mesh_x, mesh_y = self.custom_mesh
         else:
             path_x = self.chimera_project_path + self.bg_model + "_x.npy"
             path_y = self.chimera_project_path + self.bg_model + "_y.npy"
