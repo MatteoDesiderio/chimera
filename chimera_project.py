@@ -26,6 +26,7 @@ class Project:
         """
         self.test_mode_on = False
         self.quick_mode_on = False
+        self.custom_grid = None
         self._GY = 3600*24*364*1e9                                        # [s]
         self.chimera_project_path = ""    # path where you want to save project
         self.bg_model = ""                       # name of your axisem bg model
@@ -50,13 +51,26 @@ class Project:
     @property
     def bg_model(self):
         return self._bg_model
+    
     @bg_model.setter
     def bg_model(self, val):
-        if self.quick_mode_on:
+        if self.quick_mode_on or not (self.custom_grid) is None:
             self._bg_model = None
         else:
             self._bg_model = val
+    
+    @property
+    def custom_grid(self):
+        return self._custom_grid
+    
+    @custom_grid.setter
+    def custom_grid(self, val):
+        if self.quick_mode_on:
+            self._self.custom_grid = None
+        else:
+            self._custom_grid = val
         
+    
     def new(self, proj_name="New Project"):
         """
         Create a new project
