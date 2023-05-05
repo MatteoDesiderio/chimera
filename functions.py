@@ -28,6 +28,9 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
     if proj.quick_mode_on:
         interp_type = "none"
         print("Quick Mode on: overriding interp_type to '%s'." % interp_type)
+    elif not proj.custom_mesh is None:
+        interp_type = "resample"
+        print("Custom mesh: overriding interp_type to '%s'." % interp_type)
 
     # load axisem high resolution grid, if wanted
     x, y = proj.get_mesh_xy()
