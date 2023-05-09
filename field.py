@@ -111,6 +111,16 @@ class Field:
         self._coords = self.coords[0] / self.r_max, self.coords[1]
 
     def interpolate(self, interp_type, xnew, ynew):
+        # - if you want to use the orig stag grid, just return the orig array
+        # - if you want to use another mesh, you must have provided it
+        # -- if it's a rectangular grid (only if the shape was provided!)
+        # ---- we need to check if it is a coarser grid or not (in the former 
+        # ---- case, appropriate antialiasing filtering is needed first)
+        # ---- else, simply interpolate
+        # -- if it's not a rectangular grid (or could not reshape it into 
+        # -- the provided shape, or no shape was provided [e.g. axisem case])
+        # -- simply interpolate
+        
         z = self.values.flatten()
         if self.proj.quick_mode_on:
             interpolated = z
