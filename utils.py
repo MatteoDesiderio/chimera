@@ -4,6 +4,7 @@ Several misc utilities
 import numpy as np
 import numba as nb
 from scipy.interpolate import interp1d
+from scipy.signal.windows import tukey
 from skimage import transform
 
 @nb.njit(parallel=True)
@@ -64,28 +65,31 @@ class Downsampler:
         z_int = f(x_int)
         ny, nx = z_int.shape
         
+        # demean
+        mean = np.mean(z_int)
+        
         # 2) fourier transform
         tr_z_int = np.fft.fft2(z_int)
         kx = np.fft.fftfreq(nx, dx)
         ky = np.fft.fftfreq(ny, dy)
         
-        # 3) antialias filtering 
+        # 3) antialias filter 
         ky_nyq =  1 / np.diff(self.ynew).max()
         kx_nyq =  1 / np.diff(self.xnew).max()
         
         rectangle = np.zeros(tr_z_int.shape)
-        #, ( np.abs(ky) < ky_nyq)
+
         y_range = np.abs(ky) < ky_nyq
         x_range = np.abs(kx) >= kx_nyq
         rectangle[y_range] = 1
         rectangle[:, x_range] = 0
-        
-        x_win = np.blackman(np.count_nonzero( ~ x_range))
+        alpha = .2
+        x_win = tukey(np.count_nonzero( ~ x_range), alpha)
         half_nx = x_win.size // 2 + 1 * (x_win.size % 2 != 0)
         x_win = np.r_[x_win[half_nx-1:], 
                       np.ones(rectangle.shape[-1] - x_win.size) * x_win[[-1 ]], 
                       x_win[:half_nx-1]]
-        y_win = np.blackman(np.count_nonzero(y_range))
+        y_win = tukey(np.count_nonzero(y_range), alpha)
         half_ny = y_win.size // 2 + 1 * (y_win.size % 2 != 0)
         y_win = np.r_[y_win[half_ny-1:], 
                       np.ones(rectangle.shape[0] - y_win.size) * y_win[[-1 ]], 
@@ -96,7 +100,7 @@ class Downsampler:
         
         # 4) apply filter and inv transform
         filt_tr_z_int = filt * np.abs(tr_z_int) * np.exp(1j*np.angle(tr_z_int)) 
-        filt_z_int = np.real(np.fft.ifft2(filt_tr_z_int))
+        filt_z_int = np.real(np.fft.ifft2(filt_tr_z_int)) + mean
         
         xx, yy = to_cartesian(x_int, self.y)
         coords = np.c_[xx, yy]

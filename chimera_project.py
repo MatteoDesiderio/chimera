@@ -11,7 +11,6 @@ def _get_mesh_xy(sdat):
     mesh_y = geom.y_mesh.squeeze().flatten()
     return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
 
-
 class Project:
     """
     Project class
