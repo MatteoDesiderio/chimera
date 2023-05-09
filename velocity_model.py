@@ -253,7 +253,7 @@ class VelocityModel:
         print(fname_rho + " for average density")
         np.save(destination + fname_rho, self.rho)
 
-    def get_rprofile(self, var="s", round_param=3, shape=None):
+    def get_rprofile(self, var="s", round_param=3):
         """
         
 
@@ -263,10 +263,6 @@ class VelocityModel:
             DESCRIPTION. The default is "s".
         round_param : TYPE, optional
             DESCRIPTION. The default is 3.
-        shape : None or list-like
-            If list-like, will attempt to reshape the field into the provided
-            shape before computation. Useful for custom grids 
-            (i.e. neither axisem or stag)
         
         Returns
         -------
@@ -289,8 +285,8 @@ class VelocityModel:
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)
             return rsel, prof
-        
         else:
+            shape = self.proj.custom_mesh_shape
             if shape is None:
                 # print(var.capitalize(), "profile for", self.model_name)
                 vel = getattr(self, var)
@@ -312,7 +308,7 @@ class VelocityModel:
                 prof = np.mean(vel, axis=0)
             return rsel, prof
 
-    def anomaly(self, var="s", round_param=3, fac=100.0, shape=None):
+    def anomaly(self, var="s", round_param=3, fac=100.0):
         """
         
 
@@ -332,7 +328,7 @@ class VelocityModel:
 
         """
         vel = getattr(self, var)
-        rprof, vprof = self.get_rprofile(var, round_param, shape=shape)
+        rprof, vprof = self.get_rprofile(var, round_param)
         quick_mode_on = _is_quick_mode_on(self)
         
         if quick_mode_on:
@@ -343,7 +339,7 @@ class VelocityModel:
             setattr(self, var+"_a", arr.flatten())
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
         else:
-            if shape is None:
+            if self.proj.custom_mesh_shape is None:
                 diffs = np.diff(rprof)
                 drmin = diffs[diffs > 0].min() / 2
                 
@@ -362,7 +358,7 @@ class VelocityModel:
                 setattr(self, var+"_a", arr)
                 setattr(self, var+"_prof", {"r": rprof, "val": vprof})
             else:
-                vel = vel.reshape(shape)
+                vel = vel.reshape(self.proj.custom_mesh_shape)
                 arr = fac * (vel - vprof) / vprof
                 setattr(self, var+"_a", arr.flatten())
                 setattr(self, var+"_prof", {"r": rprof, "val": vprof})
