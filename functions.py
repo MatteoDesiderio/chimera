@@ -25,22 +25,23 @@ def _checker(shape,
     return T_
 
 def initialize_vmodels(proj, interp_type, checker_board_params=None):
+    
+    # load axisem high resolution grid, if wanted
+    x, y = proj.get_mesh_xy()
+
     if proj.quick_mode_on:
         interp_type = "none"
         print("Quick Mode on: overriding interp_type to '%s'." % interp_type)
-    elif not proj.custom_mesh is None:
-        interp_type = "resample"
-        print("Custom mesh: overriding interp_type to '%s'." % interp_type)
-
-    # load axisem high resolution grid, if wanted
-    x, y = proj.get_mesh_xy()
+    else:
+        if proj._regular_rect_mesh:
+            print("Provided mesh is rectangular.")
     
     if proj.test_mode_on:
         if checker_board_params is None:
             checker_board_params = [1.0, 0.0, 10, 10, 1600.0, 3100.0]
             
         print("Test Mode: 'time_span_Gy' and 'stagyy_model_names' ",
-              "were used but bear no meaning. Stagyy model used to load ", 
+              "were used but bear no meaning. Stagyy model is used to load ", 
               "coordinates and P, but T field is a checkerboard, ",
               "while the comp field is all pyrolitic")
         for model_name, thermo_name in zip(proj.stagyy_model_names, 
@@ -48,8 +49,8 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             
             print("Initializing variables and compositional fields")
             thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
-            variables = [Field(v) for v in thermodata.thermo_var_names]
-            fields = [Field(v) for v in thermodata.c_field_names[0]]
+            variables = [Field(proj, v) for v in thermodata.thermo_var_names]
+            fields = [Field(proj, v) for v in thermodata.c_field_names[0]]
             rho_stagyy = Field("rho")
             print("Variables:", *thermodata.thermo_var_names)
             print("Compositional Fields:", *thermodata.c_field_names[0])
@@ -108,9 +109,9 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
             lims = thermodata.range
             print("Initializing variables and compositional fields")            
-            variables = [Field(v) for v in thermodata.thermo_var_names]
-            fields = [Field(v) for v in thermodata.c_field_names[0]]
-            rho_stagyy = Field("rho")
+            variables = [Field(proj, v) for v in thermodata.thermo_var_names]
+            fields = [Field(proj, v) for v in thermodata.c_field_names[0]]
+            rho_stagyy = Field(proj, "rho")
             
             print("Variables:", *thermodata.thermo_var_names)
             print("Compositional Fields:", *thermodata.c_field_names[0])
