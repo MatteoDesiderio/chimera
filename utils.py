@@ -65,11 +65,9 @@ class Downsampler:
         z_int = f(x_int)
         ny, nx = z_int.shape
         
-        # demean
-        mean = np.mean(z_int)
-        
         # 2) fourier transform
         tr_z_int = np.fft.fft2(z_int)
+        phase = np.angle(tr_z_int)
         kx = np.fft.fftfreq(nx, dx)
         ky = np.fft.fftfreq(ny, dy)
         
@@ -99,8 +97,8 @@ class Downsampler:
         filt[filt < 0] = 0
         
         # 4) apply filter and inv transform
-        filt_tr_z_int = filt * np.abs(tr_z_int) * np.exp(1j*np.angle(tr_z_int)) 
-        filt_z_int = np.real(np.fft.ifft2(filt_tr_z_int)) + mean
+        filt_tr_z_int = filt * np.abs(tr_z_int) * np.exp(1j*phase) 
+        filt_z_int = np.real(np.fft.ifft2(filt_tr_z_int))
         
         xx, yy = to_cartesian(x_int, self.y)
         coords = np.c_[xx, yy]

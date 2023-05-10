@@ -33,6 +33,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
         interp_type = "none"
         print("Quick Mode on: overriding interp_type to '%s'." % interp_type)
     else:
+        print("Using external mesh.")
         if proj._regular_rect_mesh:
             print("Provided mesh is rectangular.")
     
