@@ -144,6 +144,7 @@ class Field:
                     old, z = downsampler.downsample(z)
                     z = z.flatten()
                     interp_type = "nearest"
+                
             interpolated = griddata(old, z, new, method=interp_type)
   
         return interpolated
