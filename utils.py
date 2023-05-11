@@ -74,7 +74,6 @@ class Downsampler:
             z_int = f(x_int)
             ny, nx = z_int.shape
             
-            
             xx, yy = np.meshgrid(x_int, self.y)
             pos = np.dstack((xx, yy))
             
@@ -91,11 +90,10 @@ class Downsampler:
                     mu = [mux, muy]
                     var = [[varx, 0], [0, vary]]
                     weights = multivariate_normal(mu, var).pdf(pos)
-                    
-                    
+                    weights /= weights.max()
                     znew[ix, iy] = np.sum(weights * z_int) / np.sum(weights)
  
-            return None, znew
+            return None, znew.T
             
             
         else:

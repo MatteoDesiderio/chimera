@@ -144,8 +144,20 @@ class Field:
                     old, z = downsampler.downsample(z)
                     z = z.flatten()
                     interp_type = "nearest"
-                
-            interpolated = griddata(old, z, new, method=interp_type)
+                    # HACK distinction necessary: the downsampler also gives
+                    # me the coordinates, it means that the method used was
+                    # filtering and the output array must actually be sampled
+                    # otherwise, the result is already sampled
+                    # In the future I will pick one method and delete this if
+                    if not old is None:
+                        interpolated = griddata(old, z, 
+                                                new, method=interp_type)
+                    else:
+                        interpolated = z
+                else:
+                    interpolated = griddata(old, z, new, method=interp_type)
+            else:
+                interpolated = griddata(old, z, new, method=interp_type)
   
         return interpolated
         
