@@ -590,12 +590,42 @@ class VelocityModel:
         return data
 
     @staticmethod
-    def plot_ext_prof(path, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
+    def plot_ext_prof(profs, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
                       c="b", lbl=None):
+        """
         
-        zprem_km, profs = get_ext_prof(path, r_core_m, r_Earth_m)
+
+        Parameters
+        ----------
+        profs : str or list like
+            Either the path to the 1D profiles or a tuple built like this:
+                (depth_in_km, [s, p, rho]). 
+        axs : TYPE
+            DESCRIPTION.
+        r_core_m : float, optional
+            DESCRIPTION. The default is 3481e3.
+        r_Earth_m : float, optional
+            DESCRIPTION. The default is 6371e3.
+        c : str, optional
+            Color. The default is "b".
+        lbl : str, optional
+            label. The default is None.
+
+        Returns
+        -------
+        None.
+
+        """
         
-        for ax, prof in zip(axs, profs):
+        if isinstance(profs, str):
+            zprem_km, _profs = get_ext_prof(profs, r_core_m, r_Earth_m)
+        elif isinstance(profs, (list, tuple)):
+            zprem_km, _profs = profs
+            
+        for ax, prof in zip(axs, _profs):
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
+            
+            
+            
     
