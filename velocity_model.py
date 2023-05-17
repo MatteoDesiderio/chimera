@@ -35,7 +35,7 @@ def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
         ext_profs_pert.append(pert)
     return z, ext_profs_pert
 
-def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
+def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
     """
     Return vs, vp, density out of an external 1D model (an axisem .bm file) and 
     their depth coordinates in kms.
@@ -45,8 +45,8 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
     path : str
         Path of an external 1D model, an axisem .bm file 
         (caution: it is assumed that the first 6 lines are the header. 
-         It is also assumed that the model is isotropic, and units are in
-         meters). 
+         It is also assumed that the model is isotropic, r units are in
+         meters and columns are r, rho, vpv, vsv, qka, qmu). 
     r_core_m : float, optional
         DESCRIPTION. The default is 3481e3.
     r_Earth_m : float, optional
@@ -60,15 +60,16 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3):
         vs, vp, density obtained from the 1D model supplied.
 
     """
-    rprem, rhoprem, vpprem, vsprem, _, _ = np.loadtxt(path, 
-                                                      skiprows=6, 
-                                                      unpack=True)
+    rprem, rhoprem, vpprem, vsprem, qka, qmu = np.loadtxt(path, 
+                                                          skiprows=6, 
+                                                          unpack=True)
     mantle = rprem >= r_core_m
     rprem, rhoprem = rprem[mantle], rhoprem[mantle]
     vpprem, vsprem = vpprem[mantle], vsprem[mantle]
+    qka, qmu = qka[mantle], qmu[mantle]
 
     zprem_km = (r_Earth_m - rprem) / 1e3
-    profs = [vsprem, vpprem, rhoprem]
+    profs = [vsprem, vpprem, rhoprem, qka, qmu][usecols[0]:usecols[1]]
     return zprem_km, profs
 
 def _is_quick_mode_on(_self):
