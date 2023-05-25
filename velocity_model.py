@@ -51,13 +51,21 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
         DESCRIPTION. The default is 3481e3.
     r_Earth_m : float, optional
         DESCRIPTION. The default is 6371e3.
+    usecols : tuple, optional
+        Use the columns from usecols[0] to usecols[-1]. The default is (0,3).
+        
 
     Returns
     -------
     zprem_km  : numpy.ndarray
         Array containing the depth coordinates in kms.
     profs : list
-        vs, vp, density obtained from the 1D model supplied.
+        Values obtained from the 1D model supplied. 
+        By default, vs, vp, density are returned.
+        The parameter usecols may be used to trim/extend this list.
+        The extended list is vs, vp, density, qka, qmu
+        
+        
 
     """
     rprem, rhoprem, vpprem, vsprem, qka, qmu = np.loadtxt(path, 
@@ -69,8 +77,8 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
     qka, qmu = qka[mantle], qmu[mantle]
 
     zprem_km = (r_Earth_m - rprem) / 1e3
-    profs = [vsprem, vpprem, rhoprem, qka, qmu][usecols[0]:usecols[1]]
-    return zprem_km, profs
+    profs = [vsprem, vpprem, rhoprem, qka, qmu]
+    return zprem_km, profs[usecols[0]:usecols[1]]
 
 def _is_quick_mode_on(_self):
     quick_mode_on = True
