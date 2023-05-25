@@ -634,7 +634,3 @@ class VelocityModel:
         for ax, prof in zip(axs, _profs):
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
-            
-            
-            
-    
