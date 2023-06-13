@@ -10,6 +10,7 @@ from matplotlib import cm
 from matplotlib.collections import LineCollection
 import h5py
 import os
+import pyshtools as pysh
 
 # TO DO to speed things up first
 # create a function that uses griddata to interpolate from the 1D prof to the
@@ -134,7 +135,6 @@ def compute_s(rho, G):
 
 def compute_bulk(rho, K):
     return np.sqrt(K * 1e5 / rho)                    # m / s
-
 
 @njit(parallel=True)
 def to_polar(x, y):
@@ -635,5 +635,79 @@ class VelocityModel:
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
     
-    def sh(self):
-        pass
+    def sh(self, var="s_a", method="extend", shift_deg=0, sh_type="GL",
+           norm="4pi", cs_phase=1, lmax=None, demean=False):
+        
+        _norm = {"4pi":1, "schmidt":2, "unnorm":3, "ortho":4}
+        n_i_d = _norm[norm]
+        lmax_calc = lmax
+        
+        if not _is_quick_mode_on(self):
+            raise NotImplementedError("The function has only been" +
+                                      "implemented on the regular grid")
+            
+        if "C" in var:
+            i_C = int(var.split("C")[-1])
+            raw = getattr(self, "C")[i_C]
+        else:
+            raw = getattr(self, var)
+        
+        shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+        shape[0] = shape[0] + 1
+        
+        theta = self.theta
+        r = np.reshape(self.r, shape)[0]
+        if method == "circle":
+            raise NotImplementedError("Method of Arnould et al. 2018 not" +
+                                      "yet implemented")
+        elif method == "extend":
+            data = np.reshape(raw, shape).T
+            lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi
+            if sh_type == "DH":
+                hemisphere = (lat > - 90) & ( lat <= 90 )
+            else:
+                hemisphere = (lat > - 90) & ( lat < 90 )
+            shift = int(np.rint(shift_deg / (np.abs(lat[1] - lat[0]))))
+            data = data[:, np.roll(hemisphere, shift)]
+            lat = lat[hemisphere] 
+            clm_z = np.zeros(len(r), dtype=pysh.SHCoeffs)
+
+            if lmax_calc is None:
+                lmax_calc = len(lat) - 1
+            ext_shape = (len(r), len(lat), 2 * (len(lat) - 1) + 1)
+            data_ext = np.broadcast_to(data[:,:,np.newaxis], ext_shape)
+            
+            if sh_type == "GL":
+                newlat, newlon = pysh.expand.GLQGridCoord(lmax_calc)
+                ext_shape = (len(r), len(lat), 2 * (len(lat) - 1) + 1)
+                data_ext = np.broadcast_to(data[:,:,np.newaxis], ext_shape)
+                for i, d in enumerate(data_ext):
+                    mu = np.mean(d) if demean else 0
+                    cilm = pysh.expand.SHExpandGLQ(d - mu, "", "", cs_phase, n_i_d,
+                                                   lmax_calc)
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                                                        normalization=norm)
+            elif sh_type == "DH":
+                lon = np.linspace(0, 359, 2 * len(lat))
+                newlat, newlon = lat, lon
+                ext_shape = (len(r), len(lat), len(lat))
+                data_ext = np.broadcast_to(data[:, :, np.newaxis], ext_shape)
+                for i, d in enumerate(data_ext):
+                    mu = np.mean(d) if demean else 0
+                    cilm = pysh.expand.SHExpandDH(d - mu, n_i_d, 1, cs_phase, 
+                                              lmax_calc)
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                                                        normalization=norm)
+            else:
+                lon = np.linspace(0, 359, 2 * len(lat))
+                xx, yy = np.meshgrid(lon, lat)
+                newlon, newlat = xx.flatten(), yy.flatten()
+                for i, d in enumerate(data_ext):
+                    mu = np.mean(d) if demean else 0
+                    cilm = pysh.expand.SHExpandLSQ((d - mu).flatten(), 
+                                                   newlon, newlat,
+                                                   lmax_calc, n_i_d, cs_phase)
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                                                        normalization=norm)
+                
+            return (lmax_calc, clm_z, r * self.r_E_km, newlat, newlon)
