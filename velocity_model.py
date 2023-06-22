@@ -36,6 +36,17 @@ def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
         ext_profs_pert.append(pert)
     return z, ext_profs_pert
 
+def getattrfrommod(vmod, var):
+    if "C" in var:
+        i_C = int(var.split("C")[-1])
+        if not isinstance(i_C, int):
+            raise ValueError("var must be either T, P, s, p, rho, s_a, ..." +
+                             " or C1, 2, ...")
+        _var = getattr(vmod, "C")[i_C]
+    else:
+        _var = getattr(vmod, var)
+    return _var
+
 def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
     """
     Return vs, vp, density out of an external 1D model (an axisem .bm file) and 
@@ -645,7 +656,8 @@ class VelocityModel:
         if not _is_quick_mode_on(self):
             raise NotImplementedError("The function has only been" +
                                       "implemented on the regular grid")
-            
+        
+        # raw = getattrfrommod(self, var)
         if "C" in var:
             i_C = int(var.split("C")[-1])
             raw = getattr(self, "C")[i_C]
