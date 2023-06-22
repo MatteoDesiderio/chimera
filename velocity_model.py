@@ -302,7 +302,7 @@ class VelocityModel:
             
         # if you have a regular grid, this operation is easier
         if quick_mode_on:
-            rsel, vel = self.r, getattr(self, var)
+            rsel, vel = self.r, getattrfrommod(self, var)
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
             shape[0] = shape[0] + 1
             rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
@@ -313,7 +313,7 @@ class VelocityModel:
         else:
             if shape is None:
                 # print(var.capitalize(), "profile for", self.model_name)
-                vel = getattr(self, var)
+                vel = getattrfrommod(self, var)
                 # hacky way to deal with a serious problem, numerical precision
                 rsel = np.sort(list(set(np.around(self.r, round_param))))
         
@@ -326,7 +326,7 @@ class VelocityModel:
                     level = (self.r > r1) & (self.r < r2)
                     prof[i] = np.mean(vel[level])
             else:
-                rsel, vel = self.r, getattr(self, var)
+                rsel, vel = self.r, getattrfrommod(self, var)
                 rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
                 rsel = rsel[0]
                 prof = np.mean(vel, axis=0)
@@ -547,8 +547,8 @@ class VelocityModel:
                 cmap = cmap_kwargs["cmap"]
                 vmin = cmap_kwargs["vmin"]
                 vmax = cmap_kwargs["vmax"] 
-                if third_variable == "T":
-                    vals = self.get_rprofile("T")[-1]
+                if isinstance(third_variable, str):
+                    vals = self.get_rprofile(third_variable)[-1]
                     # copied from matplotlib gallery (multicolored_line)
                     points = np.array([prof, zprof_km]).T.reshape(-1, 1, 2)
                     segments = np.concatenate([points[:-1], points[1:]], 
@@ -657,13 +657,8 @@ class VelocityModel:
             raise NotImplementedError("The function has only been" +
                                       "implemented on the regular grid")
         
-        # raw = getattrfrommod(self, var)
-        if "C" in var:
-            i_C = int(var.split("C")[-1])
-            raw = getattr(self, "C")[i_C]
-        else:
-            raw = getattr(self, var)
-        
+        raw = getattrfrommod(self, var)
+
         shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
         shape[0] = shape[0] + 1
         
