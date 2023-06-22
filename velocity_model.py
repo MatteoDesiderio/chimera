@@ -571,11 +571,7 @@ class VelocityModel:
                     color = cm.get_cmap(cmap)(val)
                     plot_kwargs["color"] = color
                     handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
-                else:
-                    msg = "Composition as color of the line not implemented"
-                    raise NotImplementedError(msg)
-                    
-        
+                
         [ax.set_ylim((zprof_km.max(), zprof_km.min())) for ax in axs]
         [ax.set_xlabel(l) for ax, l in zip(axs, labels)]
         axs[0].set_ylabel("Depth [km]")
