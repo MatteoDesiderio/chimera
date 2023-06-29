@@ -107,13 +107,14 @@ def _create_labels(variables, absolute):
             unit = "[K]" if absolute else "[%]" 
             return r"T " + unit
         if v == "s":
-            unit = "[m/s]" if absolute else " (V - V1D)/V [%]" 
+            unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]" 
             return r"$V_s$ " + unit
         elif v == "p":
-            unit = "[m/s]" if absolute else " (V - V1D)/V [%]"
+            unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]"
             return r"$V_p$ " + unit
         else:
-            unit = "[kg/m$^3$]" if absolute else " (rho - rho1D)/rho [%]"
+            _unit =  r" ($\rho - \rho_{1D}$)/$\rho$ [%]"
+            unit = "[kg/m$^3$]" if absolute else _unit
             return r"$\rho$ "  + unit
     
     labels = []
@@ -538,8 +539,7 @@ class VelocityModel:
                 axs = [axs[1,1]]
         
         handle_mod = [None]
-        
-            
+                    
         for ax, prof in zip(axs, profs):
             if third_variable is None:
                 handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
@@ -642,6 +642,31 @@ class VelocityModel:
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
     
+    def fourier(self, var="s_a", demean=False, psd=True, **fft_kwargs):
+        if not _is_quick_mode_on(self):
+            raise NotImplementedError("The function has only been" +
+                                      "implemented on the regular grid")
+
+        shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+        shape[0] = shape[0] + 1
+        
+        theta = self.theta
+        lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi 
+        r = np.reshape(self.r, shape)[0]
+        data = np.reshape(getattrfrommod(self, var), shape).T
+        
+        if demean:
+            _data -= np.mean(data, axis=1)[:, np.newaxis]
+        else:
+            _data = data
+
+        spectrum_r = np.fft.rfft(_data, axis=1, **fft_kwargs)
+        fax = np.fft.rfftfreq(len(lat), lat[1] - lat[0])
+        
+        if psd:
+            spectrum_r = (np.abs(spectrum_r) / len(lat) ) ** 2
+        return r * self.r_E_km, lat, fax, spectrum_r        
+    
     def sh(self, var="s_a", method="extend", shift_deg=0, sh_type="GL",
            norm="4pi", cs_phase=1, lmax=None, demean=False):
         
@@ -686,8 +711,8 @@ class VelocityModel:
                 data_ext = np.broadcast_to(data[:,:,np.newaxis], ext_shape)
                 for i, d in enumerate(data_ext):
                     mu = np.mean(d) if demean else 0
-                    cilm = pysh.expand.SHExpandGLQ(d - mu, "", "", cs_phase, n_i_d,
-                                                   lmax_calc)
+                    cilm = pysh.expand.SHExpandGLQ(d - mu, "", "", cs_phase, 
+                                                   n_i_d, lmax_calc)
                     clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
                                                         normalization=norm)
             elif sh_type == "DH":
