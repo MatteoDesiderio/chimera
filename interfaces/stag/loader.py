@@ -22,8 +22,8 @@ def load_coords(stagyydata):
 
     """
     snap = stagyydata.snaps[0]
-    r = snap.geom.z_coord
-    theta = snap.geom.y_coord
+    r = snap.geom.z_centers
+    theta = snap.geom.y_centers
     return (r, theta)
 
 
