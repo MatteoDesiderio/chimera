@@ -5,9 +5,10 @@ from stagpy.field import get_meshes_fld
 import numpy as np
 
 def _get_mesh_xy(sdat):
-    geom = sdat.snaps[0].geom
-    mesh_x = geom.x_mesh.squeeze().flatten()
-    mesh_y = geom.y_mesh.squeeze().flatten()
+    #geom = sdat.snaps[0].geom
+    #mesh_x = geom.x_mesh.squeeze().flatten()
+    #mesh_y = geom.y_mesh.squeeze().flatten()
+    mesh_x, mesh_y, _, _ = get_meshes_fld(sdat.snaps[0], "T")
     return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
 
 

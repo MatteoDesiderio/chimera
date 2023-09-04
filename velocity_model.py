@@ -305,7 +305,7 @@ class VelocityModel:
         if quick_mode_on:
             rsel, vel = self.r, getattrfrommod(self, var)
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-            shape[0] = shape[0] + 1
+            #shape[0] = shape[0] + 1
             rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)

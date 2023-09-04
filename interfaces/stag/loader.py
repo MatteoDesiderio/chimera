@@ -22,8 +22,9 @@ def load_coords(stagyydata):
 
     """
     snap = stagyydata.snaps[0]
-    r = snap.geom.z_coord
-    theta = snap.geom.y_coord
+    r = snap.geom.z_centers
+    print(r.min(), snap.geom.r_centers.min())
+    theta = snap.geom.y_centers
     return (r, theta)
 
 
@@ -46,4 +47,4 @@ def load_field(stagyydata, name, i):
         2D array representing the field.
 
     """
-    return stagyydata.snaps[i].fields[name].squeeze()
+    return stagyydata.snaps[i].fields[name].values.squeeze()
