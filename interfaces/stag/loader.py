@@ -46,4 +46,4 @@ def load_field(stagyydata, name, i):
         2D array representing the field.
 
     """
-    return stagyydata.snaps[i].fields[name].squeeze()
+    return stagyydata.snaps[i].fields[name].values.squeeze()
