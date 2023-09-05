@@ -7,8 +7,8 @@ import numpy as np
 def _get_mesh_xy(sdat):
     #geom = sdat.snaps[0].geom
     mesh_x, mesh_y, _, _ = get_meshes_fld(sdat.snaps[0], "T")
-    mesh_x = x_mesh.squeeze().flatten()
-    mesh_y = y_mesh.squeeze().flatten()
+    mesh_x = mesh_x.squeeze().flatten()
+    mesh_y = mesh_y.squeeze().flatten()
     return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
 
 
