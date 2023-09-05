@@ -358,7 +358,7 @@ class VelocityModel:
         
         if quick_mode_on:
             shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-            shape[0] = shape[0] + 1
+            #shape[0] = shape[0] + 1
             vel = vel.reshape(shape)
             arr = fac * (vel - vprof) / vprof
             setattr(self, var+"_a", arr.flatten())
@@ -648,7 +648,7 @@ class VelocityModel:
                                       "implemented on the regular grid")
 
         shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-        shape[0] = shape[0] + 1
+        #shape[0] = shape[0] + 1
         
         theta = self.theta
         lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi 
@@ -681,7 +681,7 @@ class VelocityModel:
         raw = getattrfrommod(self, var)
 
         shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
-        shape[0] = shape[0] + 1
+        #shape[0] = shape[0] + 1
         
         theta = self.theta
         r = np.reshape(self.r, shape)[0]
