@@ -2,15 +2,18 @@ from paraview.simple import *
 import sys
 import numpy as np
 from os import mkdir, remove
+from glob import glob
 
 
 # %% directories and profiles we're interested in
 # where axisem is
-axisem_parent_path = '/home/matteo/axisem-9f0be2f/SOLVER/'
-project_name = 'Plum_vs_Marble'
+axisem_parent_path = '/home/matteo/Apps/axisem-master/SOLVER/'
+project_name = 'Analysis-STX11-Xu08-MgNum88'
 # # where your axisem_runS are
-runlist = axisem_parent_path + project_name + '-runList'
+runlist = axisem_parent_path + "runList_" + project_name + '.txt'
 _, run_dirs = np.loadtxt(runlist, dtype=str, unpack=True)
+if not isinstance(run_dirs, np.ndarray):
+    run_dirs = [run_dirs]
 # what type of 1D profiles would you like? when iso, vsh = vsv etc.
 fields = ["rho", "vph", "vsh"]
 # if True, will load the data such that they can be visualized
@@ -18,7 +21,7 @@ fields = ["rho", "vph", "vsh"]
 fast = True
 
 # %% geometry of the profiles
-lateral_resolution = 3  # spacing between profiles
+lateral_resolution = 256  # spacing between profiles
 radial_resolution = 511
 thetas = np.linspace(-np.pi/2, np.pi/2, lateral_resolution)
 R = 6371e3
@@ -42,6 +45,7 @@ for run_dir in run_dirs:
         run_path = axisem_parent_path + run_dir
         output_path = run_path + '/' + field + "_post_axisem_read"
         # unless it exists already
+        print(output_path)
         try:
             mkdir(output_path)
         except OSError:
@@ -49,7 +53,11 @@ for run_dir in run_dirs:
         # determine name of vtk files
         vtkname = 'model_{}_0*.vtk'.format(field)
         # collect corresponding paths into a list
-        paths = glob(run_path + '/axisem_run/Info/' + vtkname)
+        paths = glob(run_path + '/Info/' + vtkname)
+        if len(paths) == 0:
+            paths = glob(run_path + '/PX/Info/' + vtkname)
+        if len(paths) == 0:
+            paths = glob(run_path + '/PZ/Info/' + vtkname)
 
         # here the paraview stuff begins
         # load from list of paths
@@ -63,7 +71,7 @@ for run_dir in run_dirs:
                 representations.append(rep)
 
         # select all and make a group
-        all_proxies = GetSources().values()
+        all_proxies = list(GetSources().values())
         group = GroupDatasets(Input=all_proxies)
 
         # initialize array to store average.
@@ -76,9 +84,9 @@ for run_dir in run_dirs:
 
             # create line
             plotOverLine = PlotOverLine(group)
-            plotOverLine.Source.Resolution = radial_resolution
-            plotOverLine.Source.Point1 = [0, 0, 0]
-            plotOverLine.Source.Point2 = [x2, y2, 0]
+            plotOverLine.Resolution = radial_resolution
+            plotOverLine.Point1 = [0, 0, 0]
+            plotOverLine.Point2 = [x2, y2, 0]
 
             UpdatePipeline()
 
@@ -110,7 +118,7 @@ for run_dir in run_dirs:
             writer = CreateWriter(output_path + fname)  # create writer
             writer.UpdatePipeline()                    # and it's written
             # load the csv again. We need values and r coord
-            data, _, arc, _, _ = np.genfromtxt(output_path + fname,
+            data, _, arc, _, _, _ = np.genfromtxt(output_path + fname,
                                          delimiter=',',
                                          skip_header=1, unpack=True)
             # add vel values
