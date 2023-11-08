@@ -47,6 +47,9 @@ def getattrfrommod(vmod, var):
         _var = getattr(vmod, var)
     return _var
 
+def get_hetero_profiles(self):
+    pass
+
 def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
     """
     Return vs, vp, density out of an external 1D model (an axisem .bm file) and 
@@ -604,7 +607,7 @@ class VelocityModel:
         else:
             data=None
         return data
-
+    
     @staticmethod
     def plot_ext_prof(profs, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
                       c="b", lbl=None):
@@ -656,7 +659,7 @@ class VelocityModel:
         data = np.reshape(getattrfrommod(self, var), shape).T
         
         if demean:
-            _data -= np.mean(data, axis=1)[:, np.newaxis]
+            _data = data - np.mean(data, axis=1)[:, np.newaxis]
         else:
             _data = data
 
