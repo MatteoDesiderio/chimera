@@ -21,7 +21,7 @@ fields = ["rho", "vph", "vsh"]
 fast = True
 
 # %% geometry of the profiles
-lateral_resolution = 256  # spacing between profiles
+lateral_resolution = 512  # spacing between profiles
 radial_resolution = 511
 thetas = np.linspace(-np.pi/2, np.pi/2, lateral_resolution)
 R = 6371e3
@@ -103,14 +103,14 @@ for run_dir in run_dirs:
             rep.XArrayName = 'arc_length'
             # hide all garbage
             rep.SeriesVisibility = ['', '', '', '', '', '', '', '',
-                              'data', '1',                  # data
-                              'vtkValidPointMask', '0',     # boh
-                              'arc_length', '0',            # dist in m
-                              'Points (0)', '0',            # dist in m
-                              'Points (1)', '0',            # boh
-                              'Points (2)', '0',            # boh
-                              'Points (Magnitude)', '0',    # dist in m
-                              'vtkOriginalIndices', '0']  # indices
+                                    'data', '1',                  # data
+                                    'vtkValidPointMask', '0',     # boh
+                                    'arc_length', '0',            # dist in m
+                                    'Points (0)', '0',            # dist in m
+                                    'Points (1)', '0',            # boh
+                                    'Points (2)', '0',            # boh
+                                    'Points (Magnitude)', '0',    # dist in m
+                                    'vtkOriginalIndices', '0']  # indices
 
             # write each profile into a csv file
             args = (lateral_resolution, radial_resolution, i)  # create name
@@ -119,8 +119,8 @@ for run_dir in run_dirs:
             writer.UpdatePipeline()                    # and it's written
             # load the csv again. We need values and r coord
             data, _, arc, _, _, _ = np.genfromtxt(output_path + fname,
-                                         delimiter=',',
-                                         skip_header=1, unpack=True)
+                                                  delimiter=',',
+                                                  skip_header=1, unpack=True)
             # add vel values
             avg[:, 0] += data
 
