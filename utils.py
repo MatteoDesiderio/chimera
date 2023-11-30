@@ -4,6 +4,8 @@ Several misc utilities
 import numpy as np
 import numba as nb
 
+def rms(x, axis=0):
+    return np.sqrt(np.ma.sum(x**2, axis=axis) / len(x))
 
 @nb.njit(parallel=True)
 def to_polar(x, y):

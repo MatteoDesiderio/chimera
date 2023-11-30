@@ -3,6 +3,9 @@ import os
 from stagpy import stagyydata
 from stagpy.field import get_meshes_fld
 import numpy as np
+from glob import glob
+from velocity_model import VelocityModel
+from utils import rms
 
 def _get_mesh_xy(sdat):
     #geom = sdat.snaps[0].geom
@@ -10,7 +13,6 @@ def _get_mesh_xy(sdat):
     mesh_x = mesh_x.squeeze().flatten()
     mesh_y = mesh_y.squeeze().flatten()
     return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
-
 
 class Project:
     """
@@ -115,7 +117,92 @@ class Project:
             mesh_x = np.load(path_x)
             mesh_y = np.load(path_y)
         return mesh_x, mesh_y
+    
+
+    @staticmethod
+    def load_vel_models_by_year(proj):
+        name_year_map = proj.t_indices
+        project_path = proj.chimera_project_path + proj.project_name + \
+                       "/{}/{}" + proj.vel_model_path
+        velocity_models_dict = {} 
+        for vel_model_name in name_year_map:
+            t_indices = name_year_map[vel_model_name]
+            models_list = []
+            for t_index in t_indices:
+                model_path = project_path.format(vel_model_name, t_index)
+                vmod = VelocityModel.load(model_path)
+                models_list.append(vmod)
+            velocity_models_dict[vel_model_name] = models_list
+        return (proj, velocity_models_dict)
+
+    @staticmethod
+    def compute_profiles(proj, velocity_models_dict):
+        name_year_map = proj.t_indices
+        vmod = velocity_models_dict[proj.stagyy_model_names[0]][0]
+        shape = proj.geom["nytot"], proj.geom["nztot"]
+        z = np.reshape((1 - vmod.r ) * vmod.r_E_km, shape)[0]
+        
+        heterogeneity_dictionary = {}
+        for vel_model_name in name_year_map:
+            vmods = velocity_models_dict[vel_model_name]
+            t_indices = name_year_map[vel_model_name]
             
+            spr = [m.get_rprofile("s")[-1] for m in vmods]
+            ppr = [m.get_rprofile("p")[-1] for m in vmods]
+            rho = [m.get_rprofile("rho")[-1] for m in vmods]
+            b = [m.bulk.reshape(shape) for m in vmods]
+            prim = [m.C[-1].reshape(shape) for m in vmods]
+            T = [m.T.reshape(shape) for m in vmods]
+            T_a = [m.anomaly("T")[0].reshape(shape) for m in vmods]
+            s = [m.s.reshape(shape) for m in vmods]
+            p = [m.p.reshape(shape) for m in vmods]
+            s_a = [m.anomaly("s")[0].reshape(shape) for m in vmods]
+            p_a = [m.anomaly("p")[0].reshape(shape) for m in vmods]
+            b_a = [m.anomaly("bulk")[0].reshape(shape) for m in vmods]
+            
+            s_lim = 0.4
+            p_lim = 0.2
+            s_safe = [np.ma.masked_array(x, np.abs(x) < s_lim) for x in s_a]
+            p_safe = [np.ma.masked_array(x, np.abs(x) < p_lim) for x in p_a]
+            s_safe = [np.ma.masked_array(x, x * y < 0) 
+                      for x, y in zip(s_safe, p_safe)]
+            p_safe = [np.ma.masked_array(y, x * y < 0) 
+                      for x, y in zip(s_safe, p_safe)]
+            
+            r_sp = [s / p for s, p in zip(s_safe, p_safe)]
+            
+            cor_b_s = [np.r_[[np.corrcoef(x[:,i], y[:,i])[0,1] 
+                              for i in range(shape[1])]]  
+                       for x, y in zip(b_a, s_a)]
+            
+            profiles_keys = "s_a", "p_a", "b_a", "b", "r_sp", "s", "p"
+            profiles = {k:{} for k in profiles_keys}
+            functions = [np.ma.mean, np.ma.median, np.ma.std, rms]
+            fnames = ["mean", "median", "std", "rms"]
+            for fun, fkey in zip(functions, fnames):
+                for xx, key in zip([s_a, p_a, b_a, b, r_sp, s, p], 
+                                   profiles_keys):
+                    profiles[key][fkey] = [fun(x, axis=0) for x in xx]
+            
+            r_sp_robust = np.ma.vstack(profiles["s_a"]["rms"]) / \
+                          np.ma.vstack(profiles["p_a"]["rms"])
+            
+            hets = dict(z=z, lims=({"s_lim": s_lim, "p_lim": p_lim}),
+                        t_indices=t_indices, mod_name=vel_model_name,
+                        prim=prim, profs=profiles, s=spr, p=ppr, rho=rho, 
+                        cor_b_s=cor_b_s, r_sp_robust=r_sp_robust, T=T, T_a=T_a)
+            
+            heterogeneity_dictionary[vel_model_name] = hets
+            
+        return heterogeneity_dictionary
+    
+    @staticmethod
+    def save_heterogeneity_dictionary(heterogeneity_dictionary, path):
+        for vname in heterogeneity_dictionary:
+            fname = "{}/{}_het_profs.pkl".format(path, vname)
+            with open(fname , "wb") as f:
+                pickle.dump(heterogeneity_dictionary[vname], f)
+    
     @staticmethod
     def load(project_path):
         with open(project_path + 'project_data.pkl', 'rb') as f:
