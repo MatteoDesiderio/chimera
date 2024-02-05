@@ -169,7 +169,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 v_model.thermo_data_name = proj.thermo_data_path + thermo_name
                 v_model.save(v_path)
                 print("Done")
-                print()
+                print("-" * 50)
             
 def geodynamic_to_thermoelastic(proj):
     """
