@@ -16,17 +16,9 @@ def to_polar(x, y):
         theta[i] = np.arctan2(y[i], x[i])
     return r, theta
 
-def set_renormalized_fields(list_of_fields, bshzpr=True):
+def set_renormalized_fields(list_of_fields):
     sum_ = 0.0
     names = [f.name for f in list_of_fields]
-    
-    if bshzpr:
-        if 'bs' in names and 'hz' in names and 'prim' in names:
-            bs = list(filter(lambda x: x.name == "bs", list_of_fields))[0]
-            pr = list(filter(lambda x: x.name == "prim", list_of_fields))[0]
-            for f in list_of_fields:
-                if f.name == 'hz':
-                    f.values = 1 - bs.values
                     
     for f in list_of_fields:
         sum_ += f.values
