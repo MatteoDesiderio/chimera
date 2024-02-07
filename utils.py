@@ -18,8 +18,9 @@ def to_polar(x, y):
 
 def set_renormalized_fields(list_of_fields):
     sum_ = 0.0
-    names = [f.name for f in list_of_fields]
-                    
+    
+    # TODO: fix case where sum_ = 0 
+    # (all molten: Bs=Hz=Pr=0)
     for f in list_of_fields:
         sum_ += f.values
     for f in list_of_fields:

@@ -242,7 +242,6 @@ class VelocityModel:
             # print(nm, comp) # to check correct order of loading
             G_path = path_moduli + comp + "_" + "G" + ".npy"
             K_path = path_moduli + comp + "_" + "K" + ".npy"
-            # TODO check if it's best to load the  from stagyy
             rho_path = path_moduli + comp + "_" + "rho" + ".npy"
 
             K_list[i] = np.load(K_path)
