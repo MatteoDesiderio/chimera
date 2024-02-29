@@ -3,9 +3,9 @@ import os
 from stagpy import stagyydata
 from stagpy.field import get_meshes_fld
 import numpy as np
-from glob import glob
 from velocity_model import VelocityModel
 from utils import rms
+import warnings
 
 def _get_mesh_xy(sdat):
     #geom = sdat.snaps[0].geom
@@ -29,6 +29,7 @@ class Project:
         """
         self.test_mode_on = False
         self.quick_mode_on = False
+        self.custom_mesh_shape = None
         self._GY = 3600*24*364*1e9                                        # [s]
         self.chimera_project_path = ""    # path where you want to save project
         self.bg_model = ""                       # name of your axisem bg model
@@ -40,6 +41,7 @@ class Project:
         self.vel_model_path = "/seism_vel-fields/" 
         self.time_span_Gy = [] # timesteps for which you want to compute vmodel
         self.geom = None      # geom of the geodynamic models grid (same 4 all)
+        self._regular_rect_mesh = False
 
     @property
     def stagyy_model_names(self):
@@ -53,12 +55,27 @@ class Project:
     @property
     def bg_model(self):
         return self._bg_model
+    
     @bg_model.setter
     def bg_model(self, val):
-        if self.quick_mode_on:
+        if self.quick_mode_on is None:
             self._bg_model = None
         else:
             self._bg_model = val
+            
+    # if you are using the StagYY grid, you don't need a custom grid 
+    @property
+    def custom_mesh_shape(self):
+        return self._custom_mesh_shape
+    @custom_mesh_shape.setter
+    def custom_mesh_shape(self, val):
+        if self.quick_mode_on:
+            self._custom_mesh_shape = None
+            msg = "Quick mode activated, but mesh shape provided:" + \
+                  "custom_mesh_shape has been set to None."
+            warnings.warn(msg)
+        else:
+            self._custom_mesh_shape = val
         
     def new(self, proj_name="New Project"):
         """
@@ -116,6 +133,23 @@ class Project:
             path_y = self.chimera_project_path + self.bg_model + "_y.npy"
             mesh_x = np.load(path_x)
             mesh_y = np.load(path_y)
+            if not self.custom_mesh_shape is None:
+                try:
+                    shp = self.custom_mesh_shape
+                    np.reshape(mesh_x, shp)
+                    np.reshape(mesh_y, shp)
+                    self._regular_rect_mesh = True
+                    msg = "succesfully reshaped mesh into provided shape." + \
+                          "Please, check quality of result."
+                    warnings.warn(msg)
+                except ValueError:
+                    self._regular_rect_mesh = False
+                    self.custom_mesh_shape = None
+                    msg = "cannot reshape mesh into provided shape." + \
+                          "Continuing assuming non-rectangular, " + \
+                          "axisem-like mesh: custom_mesh_shape set to None."
+                    warnings.warn(msg)
+                    
         return mesh_x, mesh_y
     
 
