@@ -28,7 +28,7 @@ def set_renormalized_fields(list_of_fields):
         sum_ += f.values
     for f in list_of_fields:
         f.values /= sum_
-    
+
 def to_cartesian(r, theta):
     """
 
