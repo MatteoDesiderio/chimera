@@ -24,6 +24,13 @@ def set_renormalized_fields(list_of_fields):
     
     # TODO: fix case where sum_ = 0 
     # (all molten: Bs=Hz=Pr=0)
+    
+    bs = list(filter(lambda x: x.name == "bs", list_of_fields))[0]
+    pr = list(filter(lambda x: x.name == "prim", list_of_fields))[0]
+    for f in list_of_fields:
+        if f.name == 'hz':
+            f.values = 1 - bs.values
+    
     for f in list_of_fields:
         sum_ += f.values
     for f in list_of_fields:
