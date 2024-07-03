@@ -123,6 +123,17 @@ class Project:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
     
     def get_mesh_xy(self):
+        """
+        Generate x and y 
+
+        
+        -------
+        mesh_x : TYPE
+            DESCRIPTION.
+        mesh_y : TYPE
+            DESCRIPTION.
+
+        """
         if self.quick_mode_on:
             print("We assume all models are defined on the same grid")
             nm = self.stagyy_model_names[0]
