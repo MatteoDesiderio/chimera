@@ -19,6 +19,14 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
+    "h5py",
+    "matplotlib",
+    "numba"
+    "numpy",
+    "pyshtools",
+    "scipy",
+    "stagpy",
+    "vtk",
 ]
 description = "A package to translate StagYY output to seismic velocities."
 dynamic = [
