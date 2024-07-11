@@ -21,7 +21,7 @@ classifiers = [
 dependencies = [
     "h5py",
     "matplotlib",
-    "numba"
+    "numba",
     "numpy",
     "pyshtools",
     "scipy",
