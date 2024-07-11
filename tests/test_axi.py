@@ -1,3 +1,4 @@
+TODO: translate to pytest
 import unittest
 import numpy as np
 from mesh_importer import MeshImporter
@@ -6,7 +7,7 @@ from os.path import exists
 
 class TestFields(unittest.TestCase):
     def setUp(self):
-        axisem_path = "/home/matteo/axisem-9f0be2f"
+        axisem_path = "./axisem_test_path/"
         self.importer = MeshImporter(axisem_path, mesh_path="PREM_ISO_10s")
 
     def test_importer(self):

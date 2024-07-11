@@ -1,3 +1,6 @@
+"""
+TODO: translate to pytest
+
 import unittest
 import numpy as np
 from stagpy import stagyydata as syyd
@@ -6,7 +9,7 @@ from loader import load_coords, load_field
 
 class TestLoader(unittest.TestCase):
     def setUp(self):
-        path = "/home/matteo/stagyyRuns/ghostresults/BS_drhoLM350_z1_PrLM100/"
+        path = "./stagyy_run_test_path/"
         self.stag_path = path
         self.load_coords = load_coords
         self.load_field = load_field
@@ -27,3 +30,4 @@ class TestLoader(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+"""
