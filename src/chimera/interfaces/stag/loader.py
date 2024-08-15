@@ -3,6 +3,29 @@ Simple wrappers to load coordinates and field data via stagpy.
 This assumes 2D yz spherical geometry.
 """
 
+class CustomStagFields(_Fields):
+    def __init__(self, step, variables, extravars, files, filesh5):
+        super().__init__(step, variables, extravars, files, filesh5)
+        # casting to dict because Mapping Proxy does not allow assignment
+        # is this 'dangerous'?
+        variables, filesh5 = dict(variables), dict(filesh5)
+        
+        # adding our custom mappings
+        variables['p_s'] = Varf('Static Pressure', 'Pa')        
+        variables['bs'] = Varf('Basalt fraction', '1')  
+        variables['hz'] = Varf('Harzburgite fraction', '1')
+        filesh5['Pressure'] = ['p_s']
+        filesh5['Basalt'] = ['bs']
+        filesh5['Harzburgite'] = ['hz']
+        
+        # back to normal
+        variables = MappingProxyType(variables)
+        filesh5 = MappingProxyType(filesh5)
+        self._vars = variables
+        self._extra = extravars
+        self._files = files
+        self._filesh5 = filesh5
+
 
 def load_coords(stagyydata):
     """
