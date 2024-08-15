@@ -1,4 +1,4 @@
-from interfaces.perp.tab import Tab
+from .interfaces.perp.tab import Tab
 import os
 import pickle
 import numpy as np
