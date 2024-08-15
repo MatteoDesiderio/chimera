@@ -2,15 +2,13 @@ import os
 import numpy as np
 from stagpy import stagyydata
 
-from field import Field
-from velocity_model import VelocityModel
-from utils import set_renormalized_fields
-
-from interfaces.stag import loader
-from interfaces.perp.tab import Tab
-from interfaces.perp.thermo_elastic_field import ThermoElasticField
-
-from thermo_data import ThermoData
+from .field import Field
+from .velocity_model import VelocityModel
+from .utils import set_renormalized_fields
+from .interfaces.stag import loader
+from .interfaces.perp.tab import Tab
+from .interfaces.perp.thermo_elastic_field import ThermoElasticField
+from .thermo_data import ThermoData
 
 def _checker(shape, 
              a1=1.0, a2=0.0, freq1=10, freq2=10, Tmin=1600.0, Tmax=3100.0):
