@@ -1,0 +1,2517 @@
+<?xml version="1.0" ?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+
+<Xdmf>
+  <Domain>
+    <Grid GridType="Collection" CollectionType="Temporal">
+     <Grid Name="mesh" GridType="Collection" CollectionType="Spatial">
+      <Time Value="             0.000000" />
+        <Grid Name="meshYin" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10110"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_z_00000_00001.h5:/z_00001_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_y_00000_00001.h5:/y_00001_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_x_00000_00001.h5:/x_00001_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_Temperature_00000_00001.h5:/Temperature_00001_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_Type_00000_00001.h5:/Type_00001_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_Mass_00000_00001.h5:/Mass_00001_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_NtMelted_00000_00001.h5:/NtMelted_00001_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10110">
+              Tracers_TimeMelted_00000_00001.h5:/TimeMelted_00001_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00002" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10100"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_z_00000_00002.h5:/z_00002_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_y_00000_00002.h5:/y_00002_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_x_00000_00002.h5:/x_00002_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_Temperature_00000_00002.h5:/Temperature_00002_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_Type_00000_00002.h5:/Type_00002_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_Mass_00000_00002.h5:/Mass_00002_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_NtMelted_00000_00002.h5:/NtMelted_00002_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10100">
+              Tracers_TimeMelted_00000_00002.h5:/TimeMelted_00002_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00003" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10106"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_z_00000_00003.h5:/z_00003_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_y_00000_00003.h5:/y_00003_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_x_00000_00003.h5:/x_00003_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_Temperature_00000_00003.h5:/Temperature_00003_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_Type_00000_00003.h5:/Type_00003_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_Mass_00000_00003.h5:/Mass_00003_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_NtMelted_00000_00003.h5:/NtMelted_00003_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10106">
+              Tracers_TimeMelted_00000_00003.h5:/TimeMelted_00003_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00004" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10107"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_z_00000_00004.h5:/z_00004_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_y_00000_00004.h5:/y_00004_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_x_00000_00004.h5:/x_00004_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Temperature_00000_00004.h5:/Temperature_00004_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Type_00000_00004.h5:/Type_00004_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Mass_00000_00004.h5:/Mass_00004_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_NtMelted_00000_00004.h5:/NtMelted_00004_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_TimeMelted_00000_00004.h5:/TimeMelted_00004_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00005" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10101"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_z_00000_00005.h5:/z_00005_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_y_00000_00005.h5:/y_00005_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_x_00000_00005.h5:/x_00005_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_Temperature_00000_00005.h5:/Temperature_00005_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_Type_00000_00005.h5:/Type_00005_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_Mass_00000_00005.h5:/Mass_00005_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_NtMelted_00000_00005.h5:/NtMelted_00005_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10101">
+              Tracers_TimeMelted_00000_00005.h5:/TimeMelted_00005_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00006" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10107"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_z_00000_00006.h5:/z_00006_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_y_00000_00006.h5:/y_00006_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_x_00000_00006.h5:/x_00006_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Temperature_00000_00006.h5:/Temperature_00006_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Type_00000_00006.h5:/Type_00006_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_Mass_00000_00006.h5:/Mass_00006_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_NtMelted_00000_00006.h5:/NtMelted_00006_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10107">
+              Tracers_TimeMelted_00000_00006.h5:/TimeMelted_00006_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00007" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10099"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_z_00000_00007.h5:/z_00007_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_y_00000_00007.h5:/y_00007_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_x_00000_00007.h5:/x_00007_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_Temperature_00000_00007.h5:/Temperature_00007_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_Type_00000_00007.h5:/Type_00007_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_Mass_00000_00007.h5:/Mass_00007_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_NtMelted_00000_00007.h5:/NtMelted_00007_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10099">
+              Tracers_TimeMelted_00000_00007.h5:/TimeMelted_00007_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00008" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10114"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_z_00000_00008.h5:/z_00008_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_y_00000_00008.h5:/y_00008_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_x_00000_00008.h5:/x_00008_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_Temperature_00000_00008.h5:/Temperature_00008_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_Type_00000_00008.h5:/Type_00008_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_Mass_00000_00008.h5:/Mass_00008_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_NtMelted_00000_00008.h5:/NtMelted_00008_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10114">
+              Tracers_TimeMelted_00000_00008.h5:/TimeMelted_00008_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00009" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10640"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_z_00000_00009.h5:/z_00009_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_y_00000_00009.h5:/y_00009_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_x_00000_00009.h5:/x_00009_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_Temperature_00000_00009.h5:/Temperature_00009_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_Type_00000_00009.h5:/Type_00009_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_Mass_00000_00009.h5:/Mass_00009_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_NtMelted_00000_00009.h5:/NtMelted_00009_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10640">
+              Tracers_TimeMelted_00000_00009.h5:/TimeMelted_00009_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00010" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10525"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_z_00000_00010.h5:/z_00010_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_y_00000_00010.h5:/y_00010_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_x_00000_00010.h5:/x_00010_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_Temperature_00000_00010.h5:/Temperature_00010_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_Type_00000_00010.h5:/Type_00010_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_Mass_00000_00010.h5:/Mass_00010_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_NtMelted_00000_00010.h5:/NtMelted_00010_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10525">
+              Tracers_TimeMelted_00000_00010.h5:/TimeMelted_00010_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00011" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10627"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_z_00000_00011.h5:/z_00011_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_y_00000_00011.h5:/y_00011_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_x_00000_00011.h5:/x_00011_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_Temperature_00000_00011.h5:/Temperature_00011_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_Type_00000_00011.h5:/Type_00011_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_Mass_00000_00011.h5:/Mass_00011_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_NtMelted_00000_00011.h5:/NtMelted_00011_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10627">
+              Tracers_TimeMelted_00000_00011.h5:/TimeMelted_00011_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00012" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10652"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_z_00000_00012.h5:/z_00012_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_y_00000_00012.h5:/y_00012_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_x_00000_00012.h5:/x_00012_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_Temperature_00000_00012.h5:/Temperature_00012_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_Type_00000_00012.h5:/Type_00012_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_Mass_00000_00012.h5:/Mass_00012_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_NtMelted_00000_00012.h5:/NtMelted_00012_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10652">
+              Tracers_TimeMelted_00000_00012.h5:/TimeMelted_00012_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00013" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10612"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_z_00000_00013.h5:/z_00013_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_y_00000_00013.h5:/y_00013_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_x_00000_00013.h5:/x_00013_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Temperature_00000_00013.h5:/Temperature_00013_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Type_00000_00013.h5:/Type_00013_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Mass_00000_00013.h5:/Mass_00013_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_NtMelted_00000_00013.h5:/NtMelted_00013_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_TimeMelted_00000_00013.h5:/TimeMelted_00013_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00014" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10625"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_z_00000_00014.h5:/z_00014_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_y_00000_00014.h5:/y_00014_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_x_00000_00014.h5:/x_00014_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_Temperature_00000_00014.h5:/Temperature_00014_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_Type_00000_00014.h5:/Type_00014_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_Mass_00000_00014.h5:/Mass_00014_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_NtMelted_00000_00014.h5:/NtMelted_00014_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10625">
+              Tracers_TimeMelted_00000_00014.h5:/TimeMelted_00014_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00015" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10535"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_z_00000_00015.h5:/z_00015_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_y_00000_00015.h5:/y_00015_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_x_00000_00015.h5:/x_00015_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_Temperature_00000_00015.h5:/Temperature_00015_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_Type_00000_00015.h5:/Type_00015_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_Mass_00000_00015.h5:/Mass_00015_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_NtMelted_00000_00015.h5:/NtMelted_00015_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10535">
+              Tracers_TimeMelted_00000_00015.h5:/TimeMelted_00015_00000
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00016" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10612"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_z_00000_00016.h5:/z_00016_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_y_00000_00016.h5:/y_00016_00000
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_x_00000_00016.h5:/x_00016_00000
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Temperature_00000_00016.h5:/Temperature_00016_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Type_00000_00016.h5:/Type_00016_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_Mass_00000_00016.h5:/Mass_00016_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_NtMelted_00000_00016.h5:/NtMelted_00016_00000
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10612">
+              Tracers_TimeMelted_00000_00016.h5:/TimeMelted_00016_00000
+            </DataItem>
+          </Attribute>
+      </Grid>
+     </Grid>
+     <Grid Name="mesh" GridType="Collection" CollectionType="Spatial">
+      <Time Value="            0.3159240E+17" />
+        <Grid Name="meshYin" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10102"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_z_00000_00001.h5:/z_00001_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_y_00000_00001.h5:/y_00001_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_x_00000_00001.h5:/x_00001_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_Temperature_00000_00001.h5:/Temperature_00001_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_Type_00000_00001.h5:/Type_00001_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_Mass_00000_00001.h5:/Mass_00001_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_NtMelted_00000_00001.h5:/NtMelted_00001_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10102">
+              Tracers_TimeMelted_00000_00001.h5:/TimeMelted_00001_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00002" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10143"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_z_00000_00002.h5:/z_00002_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_y_00000_00002.h5:/y_00002_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_x_00000_00002.h5:/x_00002_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_Temperature_00000_00002.h5:/Temperature_00002_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_Type_00000_00002.h5:/Type_00002_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_Mass_00000_00002.h5:/Mass_00002_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_NtMelted_00000_00002.h5:/NtMelted_00002_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10143">
+              Tracers_TimeMelted_00000_00002.h5:/TimeMelted_00002_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00003" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10198"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_z_00000_00003.h5:/z_00003_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_y_00000_00003.h5:/y_00003_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_x_00000_00003.h5:/x_00003_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_Temperature_00000_00003.h5:/Temperature_00003_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_Type_00000_00003.h5:/Type_00003_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_Mass_00000_00003.h5:/Mass_00003_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_NtMelted_00000_00003.h5:/NtMelted_00003_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10198">
+              Tracers_TimeMelted_00000_00003.h5:/TimeMelted_00003_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00004" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10089"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_z_00000_00004.h5:/z_00004_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_y_00000_00004.h5:/y_00004_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_x_00000_00004.h5:/x_00004_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_Temperature_00000_00004.h5:/Temperature_00004_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_Type_00000_00004.h5:/Type_00004_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_Mass_00000_00004.h5:/Mass_00004_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_NtMelted_00000_00004.h5:/NtMelted_00004_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10089">
+              Tracers_TimeMelted_00000_00004.h5:/TimeMelted_00004_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00005" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10080"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_z_00000_00005.h5:/z_00005_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_y_00000_00005.h5:/y_00005_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_x_00000_00005.h5:/x_00005_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_Temperature_00000_00005.h5:/Temperature_00005_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_Type_00000_00005.h5:/Type_00005_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_Mass_00000_00005.h5:/Mass_00005_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_NtMelted_00000_00005.h5:/NtMelted_00005_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10080">
+              Tracers_TimeMelted_00000_00005.h5:/TimeMelted_00005_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00006" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10096"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_z_00000_00006.h5:/z_00006_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_y_00000_00006.h5:/y_00006_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_x_00000_00006.h5:/x_00006_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_Temperature_00000_00006.h5:/Temperature_00006_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_Type_00000_00006.h5:/Type_00006_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_Mass_00000_00006.h5:/Mass_00006_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_NtMelted_00000_00006.h5:/NtMelted_00006_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10096">
+              Tracers_TimeMelted_00000_00006.h5:/TimeMelted_00006_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00007" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10168"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_z_00000_00007.h5:/z_00007_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_y_00000_00007.h5:/y_00007_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_x_00000_00007.h5:/x_00007_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_Temperature_00000_00007.h5:/Temperature_00007_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_Type_00000_00007.h5:/Type_00007_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_Mass_00000_00007.h5:/Mass_00007_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_NtMelted_00000_00007.h5:/NtMelted_00007_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10168">
+              Tracers_TimeMelted_00000_00007.h5:/TimeMelted_00007_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00008" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="10091"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_z_00000_00008.h5:/z_00008_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_y_00000_00008.h5:/y_00008_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_x_00000_00008.h5:/x_00008_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_Temperature_00000_00008.h5:/Temperature_00008_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_Type_00000_00008.h5:/Type_00008_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_Mass_00000_00008.h5:/Mass_00008_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_NtMelted_00000_00008.h5:/NtMelted_00008_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="10091">
+              Tracers_TimeMelted_00000_00008.h5:/TimeMelted_00008_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00009" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9454"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_z_00000_00009.h5:/z_00009_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_y_00000_00009.h5:/y_00009_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_x_00000_00009.h5:/x_00009_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Temperature_00000_00009.h5:/Temperature_00009_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Type_00000_00009.h5:/Type_00009_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Mass_00000_00009.h5:/Mass_00009_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_NtMelted_00000_00009.h5:/NtMelted_00009_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_TimeMelted_00000_00009.h5:/TimeMelted_00009_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00010" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9381"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_z_00000_00010.h5:/z_00010_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_y_00000_00010.h5:/y_00010_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_x_00000_00010.h5:/x_00010_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_Temperature_00000_00010.h5:/Temperature_00010_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_Type_00000_00010.h5:/Type_00010_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_Mass_00000_00010.h5:/Mass_00010_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_NtMelted_00000_00010.h5:/NtMelted_00010_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9381">
+              Tracers_TimeMelted_00000_00010.h5:/TimeMelted_00010_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00011" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9361"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_z_00000_00011.h5:/z_00011_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_y_00000_00011.h5:/y_00011_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_x_00000_00011.h5:/x_00011_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_Temperature_00000_00011.h5:/Temperature_00011_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_Type_00000_00011.h5:/Type_00011_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_Mass_00000_00011.h5:/Mass_00011_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_NtMelted_00000_00011.h5:/NtMelted_00011_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9361">
+              Tracers_TimeMelted_00000_00011.h5:/TimeMelted_00011_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00012" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9468"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_z_00000_00012.h5:/z_00012_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_y_00000_00012.h5:/y_00012_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_x_00000_00012.h5:/x_00012_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_Temperature_00000_00012.h5:/Temperature_00012_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_Type_00000_00012.h5:/Type_00012_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_Mass_00000_00012.h5:/Mass_00012_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_NtMelted_00000_00012.h5:/NtMelted_00012_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9468">
+              Tracers_TimeMelted_00000_00012.h5:/TimeMelted_00012_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00013" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9481"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_z_00000_00013.h5:/z_00013_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_y_00000_00013.h5:/y_00013_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_x_00000_00013.h5:/x_00013_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_Temperature_00000_00013.h5:/Temperature_00013_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_Type_00000_00013.h5:/Type_00013_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_Mass_00000_00013.h5:/Mass_00013_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_NtMelted_00000_00013.h5:/NtMelted_00013_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9481">
+              Tracers_TimeMelted_00000_00013.h5:/TimeMelted_00013_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00014" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9427"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_z_00000_00014.h5:/z_00014_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_y_00000_00014.h5:/y_00014_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_x_00000_00014.h5:/x_00014_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_Temperature_00000_00014.h5:/Temperature_00014_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_Type_00000_00014.h5:/Type_00014_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_Mass_00000_00014.h5:/Mass_00014_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_NtMelted_00000_00014.h5:/NtMelted_00014_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9427">
+              Tracers_TimeMelted_00000_00014.h5:/TimeMelted_00014_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00015" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9367"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_z_00000_00015.h5:/z_00015_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_y_00000_00015.h5:/y_00015_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_x_00000_00015.h5:/x_00015_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_Temperature_00000_00015.h5:/Temperature_00015_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_Type_00000_00015.h5:/Type_00015_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_Mass_00000_00015.h5:/Mass_00015_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_NtMelted_00000_00015.h5:/NtMelted_00015_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9367">
+              Tracers_TimeMelted_00000_00015.h5:/TimeMelted_00015_00001
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00016" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="9454"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_z_00000_00016.h5:/z_00016_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_y_00000_00016.h5:/y_00016_00001
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_x_00000_00016.h5:/x_00016_00001
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Temperature_00000_00016.h5:/Temperature_00016_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Type_00000_00016.h5:/Type_00016_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_Mass_00000_00016.h5:/Mass_00016_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_NtMelted_00000_00016.h5:/NtMelted_00016_00001
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="9454">
+              Tracers_TimeMelted_00000_00016.h5:/TimeMelted_00016_00001
+            </DataItem>
+          </Attribute>
+      </Grid>
+     </Grid>
+     <Grid Name="mesh" GridType="Collection" CollectionType="Spatial">
+      <Time Value="            0.6311937E+17" />
+        <Grid Name="meshYin" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12342"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_z_00000_00001.h5:/z_00001_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_y_00000_00001.h5:/y_00001_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_x_00000_00001.h5:/x_00001_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_Temperature_00000_00001.h5:/Temperature_00001_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_Type_00000_00001.h5:/Type_00001_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_Mass_00000_00001.h5:/Mass_00001_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_NtMelted_00000_00001.h5:/NtMelted_00001_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12342">
+              Tracers_TimeMelted_00000_00001.h5:/TimeMelted_00001_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00002" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12002"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_z_00000_00002.h5:/z_00002_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_y_00000_00002.h5:/y_00002_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_x_00000_00002.h5:/x_00002_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_Temperature_00000_00002.h5:/Temperature_00002_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_Type_00000_00002.h5:/Type_00002_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_Mass_00000_00002.h5:/Mass_00002_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_NtMelted_00000_00002.h5:/NtMelted_00002_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12002">
+              Tracers_TimeMelted_00000_00002.h5:/TimeMelted_00002_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00003" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11604"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_z_00000_00003.h5:/z_00003_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_y_00000_00003.h5:/y_00003_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_x_00000_00003.h5:/x_00003_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_Temperature_00000_00003.h5:/Temperature_00003_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_Type_00000_00003.h5:/Type_00003_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_Mass_00000_00003.h5:/Mass_00003_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_NtMelted_00000_00003.h5:/NtMelted_00003_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11604">
+              Tracers_TimeMelted_00000_00003.h5:/TimeMelted_00003_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00004" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11886"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_z_00000_00004.h5:/z_00004_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_y_00000_00004.h5:/y_00004_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_x_00000_00004.h5:/x_00004_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_Temperature_00000_00004.h5:/Temperature_00004_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_Type_00000_00004.h5:/Type_00004_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_Mass_00000_00004.h5:/Mass_00004_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_NtMelted_00000_00004.h5:/NtMelted_00004_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11886">
+              Tracers_TimeMelted_00000_00004.h5:/TimeMelted_00004_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00005" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11940"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_z_00000_00005.h5:/z_00005_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_y_00000_00005.h5:/y_00005_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_x_00000_00005.h5:/x_00005_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_Temperature_00000_00005.h5:/Temperature_00005_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_Type_00000_00005.h5:/Type_00005_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_Mass_00000_00005.h5:/Mass_00005_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_NtMelted_00000_00005.h5:/NtMelted_00005_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11940">
+              Tracers_TimeMelted_00000_00005.h5:/TimeMelted_00005_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00006" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11839"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_z_00000_00006.h5:/z_00006_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_y_00000_00006.h5:/y_00006_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_x_00000_00006.h5:/x_00006_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_Temperature_00000_00006.h5:/Temperature_00006_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_Type_00000_00006.h5:/Type_00006_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_Mass_00000_00006.h5:/Mass_00006_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_NtMelted_00000_00006.h5:/NtMelted_00006_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11839">
+              Tracers_TimeMelted_00000_00006.h5:/TimeMelted_00006_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00007" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11386"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_z_00000_00007.h5:/z_00007_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_y_00000_00007.h5:/y_00007_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_x_00000_00007.h5:/x_00007_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_Temperature_00000_00007.h5:/Temperature_00007_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_Type_00000_00007.h5:/Type_00007_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_Mass_00000_00007.h5:/Mass_00007_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_NtMelted_00000_00007.h5:/NtMelted_00007_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11386">
+              Tracers_TimeMelted_00000_00007.h5:/TimeMelted_00007_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00008" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11450"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_z_00000_00008.h5:/z_00008_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_y_00000_00008.h5:/y_00008_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_x_00000_00008.h5:/x_00008_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_Temperature_00000_00008.h5:/Temperature_00008_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_Type_00000_00008.h5:/Type_00008_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_Mass_00000_00008.h5:/Mass_00008_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_NtMelted_00000_00008.h5:/NtMelted_00008_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11450">
+              Tracers_TimeMelted_00000_00008.h5:/TimeMelted_00008_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00009" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12040"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_z_00000_00009.h5:/z_00009_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_y_00000_00009.h5:/y_00009_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_x_00000_00009.h5:/x_00009_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_Temperature_00000_00009.h5:/Temperature_00009_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_Type_00000_00009.h5:/Type_00009_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_Mass_00000_00009.h5:/Mass_00009_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_NtMelted_00000_00009.h5:/NtMelted_00009_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12040">
+              Tracers_TimeMelted_00000_00009.h5:/TimeMelted_00009_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00010" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11462"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_z_00000_00010.h5:/z_00010_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_y_00000_00010.h5:/y_00010_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_x_00000_00010.h5:/x_00010_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_Temperature_00000_00010.h5:/Temperature_00010_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_Type_00000_00010.h5:/Type_00010_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_Mass_00000_00010.h5:/Mass_00010_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_NtMelted_00000_00010.h5:/NtMelted_00010_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11462">
+              Tracers_TimeMelted_00000_00010.h5:/TimeMelted_00010_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00011" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11391"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_z_00000_00011.h5:/z_00011_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_y_00000_00011.h5:/y_00011_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_x_00000_00011.h5:/x_00011_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_Temperature_00000_00011.h5:/Temperature_00011_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_Type_00000_00011.h5:/Type_00011_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_Mass_00000_00011.h5:/Mass_00011_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_NtMelted_00000_00011.h5:/NtMelted_00011_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11391">
+              Tracers_TimeMelted_00000_00011.h5:/TimeMelted_00011_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00012" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12189"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_z_00000_00012.h5:/z_00012_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_y_00000_00012.h5:/y_00012_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_x_00000_00012.h5:/x_00012_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_Temperature_00000_00012.h5:/Temperature_00012_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_Type_00000_00012.h5:/Type_00012_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_Mass_00000_00012.h5:/Mass_00012_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_NtMelted_00000_00012.h5:/NtMelted_00012_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12189">
+              Tracers_TimeMelted_00000_00012.h5:/TimeMelted_00012_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00013" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11753"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_z_00000_00013.h5:/z_00013_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_y_00000_00013.h5:/y_00013_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_x_00000_00013.h5:/x_00013_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Temperature_00000_00013.h5:/Temperature_00013_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Type_00000_00013.h5:/Type_00013_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Mass_00000_00013.h5:/Mass_00013_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_NtMelted_00000_00013.h5:/NtMelted_00013_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_TimeMelted_00000_00013.h5:/TimeMelted_00013_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00014" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11384"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_z_00000_00014.h5:/z_00014_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_y_00000_00014.h5:/y_00014_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_x_00000_00014.h5:/x_00014_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_Temperature_00000_00014.h5:/Temperature_00014_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_Type_00000_00014.h5:/Type_00014_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_Mass_00000_00014.h5:/Mass_00014_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_NtMelted_00000_00014.h5:/NtMelted_00014_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11384">
+              Tracers_TimeMelted_00000_00014.h5:/TimeMelted_00014_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00015" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11416"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_z_00000_00015.h5:/z_00015_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_y_00000_00015.h5:/y_00015_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_x_00000_00015.h5:/x_00015_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_Temperature_00000_00015.h5:/Temperature_00015_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_Type_00000_00015.h5:/Type_00015_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_Mass_00000_00015.h5:/Mass_00015_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_NtMelted_00000_00015.h5:/NtMelted_00015_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11416">
+              Tracers_TimeMelted_00000_00015.h5:/TimeMelted_00015_00002
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00016" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11482"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_z_00000_00016.h5:/z_00016_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_y_00000_00016.h5:/y_00016_00002
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_x_00000_00016.h5:/x_00016_00002
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_Temperature_00000_00016.h5:/Temperature_00016_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_Type_00000_00016.h5:/Type_00016_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_Mass_00000_00016.h5:/Mass_00016_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_NtMelted_00000_00016.h5:/NtMelted_00016_00002
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11482">
+              Tracers_TimeMelted_00000_00016.h5:/TimeMelted_00016_00002
+            </DataItem>
+          </Attribute>
+      </Grid>
+     </Grid>
+     <Grid Name="mesh" GridType="Collection" CollectionType="Spatial">
+      <Time Value="            0.9468693E+17" />
+        <Grid Name="meshYin" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11716"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_z_00000_00001.h5:/z_00001_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_y_00000_00001.h5:/y_00001_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_x_00000_00001.h5:/x_00001_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_Temperature_00000_00001.h5:/Temperature_00001_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_Type_00000_00001.h5:/Type_00001_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_Mass_00000_00001.h5:/Mass_00001_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_NtMelted_00000_00001.h5:/NtMelted_00001_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11716">
+              Tracers_TimeMelted_00000_00001.h5:/TimeMelted_00001_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00002" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11202"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_z_00000_00002.h5:/z_00002_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_y_00000_00002.h5:/y_00002_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_x_00000_00002.h5:/x_00002_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_Temperature_00000_00002.h5:/Temperature_00002_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_Type_00000_00002.h5:/Type_00002_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_Mass_00000_00002.h5:/Mass_00002_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_NtMelted_00000_00002.h5:/NtMelted_00002_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11202">
+              Tracers_TimeMelted_00000_00002.h5:/TimeMelted_00002_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00003" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11605"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_z_00000_00003.h5:/z_00003_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_y_00000_00003.h5:/y_00003_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_x_00000_00003.h5:/x_00003_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_Temperature_00000_00003.h5:/Temperature_00003_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_Type_00000_00003.h5:/Type_00003_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_Mass_00000_00003.h5:/Mass_00003_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_NtMelted_00000_00003.h5:/NtMelted_00003_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11605">
+              Tracers_TimeMelted_00000_00003.h5:/TimeMelted_00003_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00004" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12571"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_z_00000_00004.h5:/z_00004_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_y_00000_00004.h5:/y_00004_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_x_00000_00004.h5:/x_00004_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_Temperature_00000_00004.h5:/Temperature_00004_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_Type_00000_00004.h5:/Type_00004_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_Mass_00000_00004.h5:/Mass_00004_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_NtMelted_00000_00004.h5:/NtMelted_00004_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12571">
+              Tracers_TimeMelted_00000_00004.h5:/TimeMelted_00004_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00005" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="12008"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_z_00000_00005.h5:/z_00005_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_y_00000_00005.h5:/y_00005_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_x_00000_00005.h5:/x_00005_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_Temperature_00000_00005.h5:/Temperature_00005_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_Type_00000_00005.h5:/Type_00005_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_Mass_00000_00005.h5:/Mass_00005_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_NtMelted_00000_00005.h5:/NtMelted_00005_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="12008">
+              Tracers_TimeMelted_00000_00005.h5:/TimeMelted_00005_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00006" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11753"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_z_00000_00006.h5:/z_00006_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_y_00000_00006.h5:/y_00006_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_x_00000_00006.h5:/x_00006_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Temperature_00000_00006.h5:/Temperature_00006_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Type_00000_00006.h5:/Type_00006_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_Mass_00000_00006.h5:/Mass_00006_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_NtMelted_00000_00006.h5:/NtMelted_00006_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11753">
+              Tracers_TimeMelted_00000_00006.h5:/TimeMelted_00006_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00007" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11035"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_z_00000_00007.h5:/z_00007_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_y_00000_00007.h5:/y_00007_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_x_00000_00007.h5:/x_00007_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_Temperature_00000_00007.h5:/Temperature_00007_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_Type_00000_00007.h5:/Type_00007_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_Mass_00000_00007.h5:/Mass_00007_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_NtMelted_00000_00007.h5:/NtMelted_00007_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11035">
+              Tracers_TimeMelted_00000_00007.h5:/TimeMelted_00007_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00008" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11748"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_z_00000_00008.h5:/z_00008_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_y_00000_00008.h5:/y_00008_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_x_00000_00008.h5:/x_00008_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_Temperature_00000_00008.h5:/Temperature_00008_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_Type_00000_00008.h5:/Type_00008_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_Mass_00000_00008.h5:/Mass_00008_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_NtMelted_00000_00008.h5:/NtMelted_00008_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11748">
+              Tracers_TimeMelted_00000_00008.h5:/TimeMelted_00008_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00009" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11952"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_z_00000_00009.h5:/z_00009_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_y_00000_00009.h5:/y_00009_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_x_00000_00009.h5:/x_00009_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_Temperature_00000_00009.h5:/Temperature_00009_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_Type_00000_00009.h5:/Type_00009_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_Mass_00000_00009.h5:/Mass_00009_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_NtMelted_00000_00009.h5:/NtMelted_00009_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11952">
+              Tracers_TimeMelted_00000_00009.h5:/TimeMelted_00009_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00010" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11637"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_z_00000_00010.h5:/z_00010_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_y_00000_00010.h5:/y_00010_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_x_00000_00010.h5:/x_00010_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_Temperature_00000_00010.h5:/Temperature_00010_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_Type_00000_00010.h5:/Type_00010_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_Mass_00000_00010.h5:/Mass_00010_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_NtMelted_00000_00010.h5:/NtMelted_00010_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11637">
+              Tracers_TimeMelted_00000_00010.h5:/TimeMelted_00010_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00011" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11606"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_z_00000_00011.h5:/z_00011_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_y_00000_00011.h5:/y_00011_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_x_00000_00011.h5:/x_00011_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_Temperature_00000_00011.h5:/Temperature_00011_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_Type_00000_00011.h5:/Type_00011_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_Mass_00000_00011.h5:/Mass_00011_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_NtMelted_00000_00011.h5:/NtMelted_00011_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11606">
+              Tracers_TimeMelted_00000_00011.h5:/TimeMelted_00011_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00012" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11947"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_z_00000_00012.h5:/z_00012_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_y_00000_00012.h5:/y_00012_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_x_00000_00012.h5:/x_00012_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_Temperature_00000_00012.h5:/Temperature_00012_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_Type_00000_00012.h5:/Type_00012_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_Mass_00000_00012.h5:/Mass_00012_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_NtMelted_00000_00012.h5:/NtMelted_00012_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11947">
+              Tracers_TimeMelted_00000_00012.h5:/TimeMelted_00012_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00013" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11900"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_z_00000_00013.h5:/z_00013_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_y_00000_00013.h5:/y_00013_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_x_00000_00013.h5:/x_00013_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_Temperature_00000_00013.h5:/Temperature_00013_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_Type_00000_00013.h5:/Type_00013_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_Mass_00000_00013.h5:/Mass_00013_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_NtMelted_00000_00013.h5:/NtMelted_00013_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11900">
+              Tracers_TimeMelted_00000_00013.h5:/TimeMelted_00013_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00014" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11322"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_z_00000_00014.h5:/z_00014_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_y_00000_00014.h5:/y_00014_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_x_00000_00014.h5:/x_00014_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_Temperature_00000_00014.h5:/Temperature_00014_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_Type_00000_00014.h5:/Type_00014_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_Mass_00000_00014.h5:/Mass_00014_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_NtMelted_00000_00014.h5:/NtMelted_00014_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11322">
+              Tracers_TimeMelted_00000_00014.h5:/TimeMelted_00014_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00015" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11321"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_z_00000_00015.h5:/z_00015_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_y_00000_00015.h5:/y_00015_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_x_00000_00015.h5:/x_00015_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_Temperature_00000_00015.h5:/Temperature_00015_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_Type_00000_00015.h5:/Type_00015_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_Mass_00000_00015.h5:/Mass_00015_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_NtMelted_00000_00015.h5:/NtMelted_00015_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11321">
+              Tracers_TimeMelted_00000_00015.h5:/TimeMelted_00015_00003
+            </DataItem>
+          </Attribute>
+        </Grid>
+        <Grid Name="meshYin00016" GridType="Uniform" >
+          <Topology Type="Polyvertex" NumberOfElements="11770"/>
+          <Geometry Type="X_Y_Z">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_z_00000_00016.h5:/z_00016_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_y_00000_00016.h5:/y_00016_00003
+            </DataItem>
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_x_00000_00016.h5:/x_00016_00003
+            </DataItem>
+          </Geometry>
+          <Attribute Name="Temperature" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_Temperature_00000_00016.h5:/Temperature_00016_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Type" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_Type_00000_00016.h5:/Type_00016_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="Mass" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_Mass_00000_00016.h5:/Mass_00016_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="NtMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_NtMelted_00000_00016.h5:/NtMelted_00016_00003
+            </DataItem>
+          </Attribute>
+          <Attribute Name="TimeMelted" AttributeType="Scalar" Center="Node">
+            <DataItem Format="HDF" DataType="Float" Precision="4" Dimensions="11770">
+              Tracers_TimeMelted_00000_00016.h5:/TimeMelted_00016_00003
+            </DataItem>
+          </Attribute>
+      </Grid>
+     </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>

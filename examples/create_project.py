@@ -2,30 +2,30 @@
 
 import sys
 from glob import glob
-sys.path.append('..')
 
 from chimera_project import Project
 
 # %% 
 proj = Project()
 proj.test_mode_on = False 
+proj.quick_mode_on = True
 # directory of project
-proj.chimera_project_path = "/home/matteo/chimera-projects/"
+proj.chimera_project_path = "./exampleOutput/"
 
 # define stagyy models location and model names
-proj.stagyy_path = "/media/matteo/seagate_external/"
-proj.stagyy_model_names = ['BS_drhoLM350_z1_PrLM100']
+proj.stagyy_path = "./inputData/"
+proj.stagyy_model_names = ['stagyyModel']
 
 # define perplex paths, where tab files are located
-proj.thermo_data_path = "/home/matteo/chimera-projects/ThermoData/"
-proj.thermo_data_names = ["MgNum100"] * len(proj.stagyy_model_names)
+proj.thermo_data_path = "./exampleOutput/ThermoData/"
+proj.thermo_data_names = ["ExamplePerplexTables"] * len(proj.stagyy_model_names)
 
 # % define axisem's mesh numpy path
-proj.bg_model = "PREM_ISO_2s_noCRUST"
+proj.bg_model = "no1DBackGroundModel"
 
 # define time span in billion years
-proj.time_span_Gy = [4.5]
+proj.time_span_Gy = [3]
 
 # finally create project with the name
-proj_name = "ProjectName"
+proj_name = "ExampleProject"
 proj.new(proj_name)
