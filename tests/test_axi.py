@@ -4,7 +4,7 @@ from os.path import exists
 
 
 def test_importer():
-    axisem_path = "examples/axisem_test_path/"
+    axisem_path = "examples/inputData/axisemFolder"
     importer = MeshImporter(axisem_path,
                             mesh_path="PREM_ISO_LIGHT_10s")
 
