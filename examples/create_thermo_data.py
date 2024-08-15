@@ -16,7 +16,7 @@ dataset = dict(description = "ExamplePerplexTables",
                                      "hzChimera_1", 
                                      "primChimera_1"],
 
-               perplex_path = "./tabFiles/") 
+               perplex_path = "./inputData/exampleTabFiles/") 
            
 
 save_path = "./exampleOutput/"
