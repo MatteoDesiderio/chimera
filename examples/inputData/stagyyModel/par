@@ -431,7 +431,7 @@
 	erupt_mode='all'
 	intrusion=.false.
 	intrude_fraction=0.0 !0.7	
-	intrude_position='base_crust'	  ! 'surface', 'base_crust’, mid_crust’, ‘d_intrude’
+	intrude_position='base_crust'	  ! 'surface', 'base_crust', 'mid_crust', 'd_intrude'
 	d_erupt_Earth=300.e3              ! maximum eruption depth in meters 
 	trackTTGsource=.false. ! checks if conditions for TTG formations are fulfilled (Moyen 2011)
   &end
