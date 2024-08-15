@@ -1,7 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
-from utils import Downsampler, to_polar
+import matplotlib.pyplot as plt
+from .utils import Downsampler, to_polar
 
 class Field:
     """

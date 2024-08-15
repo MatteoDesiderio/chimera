@@ -1,11 +1,11 @@
 import pickle
 import os
+import warnings
+import numpy as np
 from stagpy import stagyydata
 from stagpy.field import get_meshes_fld
-import numpy as np
-from velocity_model import VelocityModel
-from utils import rms
-import warnings
+from .velocity_model import VelocityModel
+from .utils import rms
 
 def _get_mesh_xy(sdat):
     #geom = sdat.snaps[0].geom

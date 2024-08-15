@@ -1,21 +1,22 @@
+import pickle
+import os
+import h5py
 import numpy as np
 from numba import prange, njit
-import pickle
 from scipy.spatial import KDTree
-from field import Field
-from interfaces.axi.inparam_hetero_template import inparam_hetero
 from scipy.interpolate import interp1d
+import pyshtools as pysh
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
-import h5py
-import os
-import pyshtools as pysh
+from .field import Field
+from .interfaces.axi.inparam_hetero_template import inparam_hetero
 
 # TO DO to speed things up first
 # create a function that uses griddata to interpolate from the 1D prof to the
 # whole grid. Thene use numba to compute the anomaly (loop over each single 
 # point or divide the array into chunks and loop over each chunk in parallel)
+
 @njit
 def _anomaly(rprof, vprof, rmod, vmod, dr):
     arr = np.zeros_like(vmod)
