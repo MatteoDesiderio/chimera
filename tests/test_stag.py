@@ -1,33 +1,33 @@
-"""
-TODO: translate to pytest
-
-import unittest
 import numpy as np
-from stagpy import stagyydata as syyd
-from loader import load_coords, load_field
+from stagpy.stagyydata import StagyyData
+from chimera.interfaces.stag.loader import load_coords, load_field
 
+def test_coords(example_dir):
+    stag_path = f"{example_dir}/inputData/stagyyModel"
+    sdat = StagyyData(stag_path)
+    
+    r, th = load_coords(sdat)
+    assert isinstance(r, np.ndarray)
+    assert isinstance(th, np.ndarray)
 
-class TestLoader(unittest.TestCase):
-    def setUp(self):
-        path = "./stagyy_run_test_path/"
-        self.stag_path = path
-        self.load_coords = load_coords
-        self.load_field = load_field
-
-    def test_coords(self):
-        sdat = syyd.StagyyData(self.stag_path)
-        r, th = self.load_coords(sdat)
-        assert isinstance(r, np.ndarray)
-        assert isinstance(th, np.ndarray)
-
-    @unittest.skip("Need to rewrite")
-    def test_field(self):
-        sdat = syyd.StagyyData(self.stag_path)
-        f = self.load_field(sdat, "T", -1)
+def test_field(example_dir):
+    stag_path = f"{example_dir}/inputData/stagyyModel"
+    sdat = StagyyData(stag_path)
+    
+    for var in "T", "p_s", "hz", "bs", "prim":
+        f = load_field(sdat, var, -1)
         assert isinstance(f, np.ndarray)
-        assert f.shape == (513, 96)  # shape of that particular model is known
-
-
-if __name__ == "__main__":
-    unittest.main()
-"""
+        # assert f.shape == (513, 96)
+        
+def test_compositions_almost_one(example_dir):
+    stag_path = f"{example_dir}/inputData/stagyyModel"
+    sdat = StagyyData(stag_path)   
+    
+    sum_compositional_fields = 0
+    for var in "hz", "bs", "prim":
+        f = load_field(sdat, var, -1)
+        assert isinstance(f, np.ndarray)
+        sum_compositional_fields += f
+    difference = np.abs(np.mean(sum_compositional_fields) - 1)
+    assert  difference <= 0.01
+        
