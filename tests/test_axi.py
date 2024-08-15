@@ -3,7 +3,8 @@ from chimera.interfaces.axi.mesh_importer import MeshImporter
 from os.path import exists
 
 def test_importer():
-    axisem_path = "../examples/inputData/axisemFolder"
+    tests_path = __file__
+    axisem_path = f"{tests_path}/examples/inputData/axisemFolder"
     importer = MeshImporter(axisem_path,
                             mesh_path="PREM_ISO_LIGHT_10s")
 
