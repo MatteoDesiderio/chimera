@@ -2,9 +2,8 @@ import numpy as np
 from chimera.interfaces.axi.mesh_importer import MeshImporter
 from os.path import exists
 
-
 def test_importer():
-    axisem_path = "examples/inputData/axisemFolder"
+    axisem_path = "../examples/inputData/axisemFolder"
     importer = MeshImporter(axisem_path,
                             mesh_path="PREM_ISO_LIGHT_10s")
 
