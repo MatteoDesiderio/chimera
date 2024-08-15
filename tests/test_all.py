@@ -10,11 +10,9 @@ import os
 
 from chimera.thermo_data import ThermoData
 from chimera.chimera_project import Project
-
-
 from chimera.functions import (initialize_vmodels,
-                       geodynamic_to_thermoelastic,
-                       compute_vmodels, export_vmodels)
+                               geodynamic_to_thermoelastic,
+                               compute_vmodels, export_vmodels)
 
 def test_create_thermo_data(tmp_path, input_data_dir):
     temporary_path = tmp_path.as_posix()

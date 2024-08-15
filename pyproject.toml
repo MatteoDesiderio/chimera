@@ -25,7 +25,7 @@ dependencies = [
     "numpy",
     "pyshtools",
     "scipy",
-    "stagpy",
+    "stagpy==0.17.0",
     "vtk",
 ]
 description = "A package to translate StagYY output to seismic velocities."
