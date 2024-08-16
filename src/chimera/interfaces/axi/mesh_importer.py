@@ -12,8 +12,8 @@ import vtk
 
 class MeshImporter:
     """
-    
-    Load, convert and save an AxiSEM mesh as a numpy array. 
+
+    Load, convert and save an AxiSEM mesh as a numpy array.
 
     Arguments:
     ---------
@@ -41,7 +41,7 @@ class MeshImporter:
         Returns
         -------
         x, y : numpy.ndarray
-            Cordinates of the central points of the cells of the AxiSEM mesh. 
+            Cordinates of the central points of the cells of the AxiSEM mesh.
 
         """
         reader = vtk.vtkGenericDataObjectReader()
@@ -70,10 +70,10 @@ class MeshImporter:
         path : str
             path to where the points array is saved.
         autoname : bool, optional
-            If True the name of the .npy file is the same as the mesh name 
+            If True the name of the .npy file is the same as the mesh name
             given by AxiSEM. Else, it can be specified. The default is True.
         exclude_core : bool, optional
-            If True the point corresponding to the core are not saved. 
+            If True the point corresponding to the core are not saved.
             if True, the radius of the core must be specified via r_core_km.
             The default is True.
         r_core_km : float, optional
@@ -85,8 +85,8 @@ class MeshImporter:
         out : ndarray
             An array object with the coordinates of the central points of the
             AxiSEM mesh. First and second col are x and y coordinates,
-            respectively. Note that the AxiSEM grid (corresponding to 
-            a half-circle) is mirrored around the axis to form a complete 
+            respectively. Note that the AxiSEM grid (corresponding to
+            a half-circle) is mirrored around the axis to form a complete
             circle. This array is also saved in the specified path.
 
         """

@@ -50,35 +50,35 @@ def getattrfrommod(vmod, var):
 
 def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
     """
-    Return vs, vp, density out of an external 1D model (an axisem .bm file) and 
+    Return vs, vp, density out of an external 1D model (an axisem .bm file) and
     their depth coordinates in kms.
 
     Parameters
     ----------
     path : str
-        Path of an external 1D model, an axisem .bm file 
-        (caution: it is assumed that the first 6 lines are the header. 
+        Path of an external 1D model, an axisem .bm file
+        (caution: it is assumed that the first 6 lines are the header.
          It is also assumed that the model is isotropic, r units are in
-         meters and columns are r, rho, vpv, vsv, qka, qmu). 
+         meters and columns are r, rho, vpv, vsv, qka, qmu).
     r_core_m : float, optional
         DESCRIPTION. The default is 3481e3.
     r_Earth_m : float, optional
         DESCRIPTION. The default is 6371e3.
     usecols : tuple, optional
         Use the columns from usecols[0] to usecols[-1]. The default is (0,3).
-        
+
 
     Returns
     -------
     zprem_km  : numpy.ndarray
         Array containing the depth coordinates in kms.
     profs : list
-        Values obtained from the 1D model supplied. 
+        Values obtained from the 1D model supplied.
         By default, vs, vp, density are returned.
         The parameter usecols may be used to trim/extend this list.
         The extended list is vs, vp, density, qka, qmu
-        
-        
+
+
 
     """
     rprem, rhoprem, vpprem, vsprem, qka, qmu = np.loadtxt(path,
@@ -275,7 +275,7 @@ class VelocityModel:
 
     def get_rprofile(self, var="s", round_param=3):
         """
-        
+
 
         Parameters
         ----------
@@ -283,7 +283,7 @@ class VelocityModel:
             DESCRIPTION. The default is "s".
         round_param : TYPE, optional
             DESCRIPTION. The default is 3.
-        
+
         Returns
         -------
         rsel : TYPE
@@ -328,7 +328,7 @@ class VelocityModel:
 
     def anomaly(self, var="s", round_param=3, fac=100.0):
         """
-        
+
 
         Parameters
         ----------
@@ -384,7 +384,7 @@ class VelocityModel:
     def export(self, destination, fmt, absolute=True, fac=100,
                fname="geodynamic_hetfile.sph", dtype="float32"):
         """
-        
+
 
         Parameters
         ----------
@@ -397,7 +397,7 @@ class VelocityModel:
         fac : TYPE, optional
             DESCRIPTION. The default is 100.
         fname : TYPE, optional
-            DESCRIPTION. Accepted file formats are .sph and .hdf5. 
+            DESCRIPTION. Accepted file formats are .sph and .hdf5.
             The default is "geodynamic_hetfile.sph".
         dtype : TYPE, optional
             DESCRIPTION. Used only if file is hdf5. The default is "float".
@@ -455,7 +455,7 @@ class VelocityModel:
                       plot_kwargs={"color": "r"},
                       cmap_kwargs={"cmap": "hot", "vmin": 300, "vmax": 4000}):
         """
-        
+
 
         Parameters
         ----------
@@ -466,12 +466,12 @@ class VelocityModel:
         axs : TYPE, optional
             DESCRIPTION. The default is None.
         absolute : TYPE, optional
-            If True, the profiles are plotted as they are. Else, they are 
-            compared to the ones from the supplied external 1D model. 
+            If True, the profiles are plotted as they are. Else, they are
+            compared to the ones from the supplied external 1D model.
             The default is True.
         external : tuple or list, optional
-            depth and (Vs, Vp, rho) profiles from 1D model. The value is 
-            automatically set  to None if the parameter "absolute" = True. 
+            depth and (Vs, Vp, rho) profiles from 1D model. The value is
+            automatically set  to None if the parameter "absolute" = True.
             The default is None.
         interp_kwargs : dict, optional
             DESCRIPTION. The default is {}.
@@ -479,7 +479,7 @@ class VelocityModel:
             If not None, use this variable to color the line. Accepted values:
                 - "T", str to plot as function of Temperature;
                 - float, to plot as function of mean T at that depth;
-                - integers, indicating the composition. 
+                - integers, indicating the composition.
             The default is None.
 
         Raises
@@ -590,13 +590,13 @@ class VelocityModel:
     def plot_ext_prof(profs, axs, r_core_m=3481e3, r_Earth_m=6371e3,
                       c="b", lbl=None):
         """
-        
+
 
         Parameters
         ----------
         profs : str or list like
             Either the path to the 1D profiles or a tuple built like this:
-                (depth_in_km, [s, p, rho]). 
+                (depth_in_km, [s, p, rho]).
         axs : TYPE
             DESCRIPTION.
         r_core_m : float, optional

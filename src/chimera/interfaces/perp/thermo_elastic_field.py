@@ -31,7 +31,7 @@ class ThermoElasticField:
 
     def extract(self, inds, model_name):
         """
-        
+
 
         Parameters
         ----------
@@ -62,7 +62,7 @@ class ThermoElasticField:
     @staticmethod
     def get_tree(tab):
         """
-        
+
 
         Parameters
         ----------
@@ -88,7 +88,7 @@ class ThermoElasticField:
     @staticmethod
     def get_indices(tree, T_grid, P_grid):
         """
-        
+
 
         Parameters
         ----------

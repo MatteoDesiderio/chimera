@@ -177,7 +177,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
 
 def geodynamic_to_thermoelastic(proj):
     """
-    
+
 
     Parameters
     ----------
@@ -247,14 +247,14 @@ def geodynamic_to_thermoelastic(proj):
 
 def compute_vmodels(proj, use_stagyy_rho=False):
     """
-    
+
 
     Parameters
     ----------
     proj : class Proj
         Your chimera project, from which all relevant information is taken.
     use_stagyy_rho : bool, optional
-        Uses stagyy density instead of that obtained via Perple_X. 
+        Uses stagyy density instead of that obtained via Perple_X.
         The default is False.
 
     Returns

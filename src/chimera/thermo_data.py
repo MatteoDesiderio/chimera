@@ -9,7 +9,7 @@ from .interfaces.perp.tab import Tab
 class ThermoData:
     def __init__(self):
         """
-        Initialize Thermochemical Data. 
+        Initialize Thermochemical Data.
 
         Returns
         -------
@@ -39,12 +39,12 @@ class ThermoData:
 
     def import_tab(self):
         """
-        When called, this method creates a Tab instance for each of the 
-        fields, whose names and corresponding tab file title are stored in the 
-        attribute c_field_names. These tabs are then stored in the attribute 
-        tabs. 
+        When called, this method creates a Tab instance for each of the
+        fields, whose names and corresponding tab file title are stored in the
+        attribute c_field_names. These tabs are then stored in the attribute
+        tabs.
         The overall P, T range is stored in the attributes Tminmax, Pminmax_Pa.
-        
+
         Returns
         -------
         None.

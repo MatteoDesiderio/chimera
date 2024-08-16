@@ -1,5 +1,5 @@
 """
-Simple wrappers to load coordinates and field data via stagpy. 
+Simple wrappers to load coordinates and field data via stagpy.
 This assumes 2D yz spherical geometry.
 """
 from types import MappingProxyType
@@ -41,7 +41,7 @@ def load_coords(stagyydata):
 
     Parameters
     ----------
-    stagyydata : stagpy.stagyydata.StagyyData 
+    stagyydata : stagpy.stagyydata.StagyyData
         The model data output from stagyy, as read by stagpy.
 
     Returns
@@ -64,7 +64,7 @@ def load_field(stagyydata, name, i):
 
     Parameters
     ----------
-    stagyydata : stagpy.stagyydata.StagyyData 
+    stagyydata : stagpy.stagyydata.StagyyData
         The model data output from stagyy, as read by stagpy.
     name : str
         name of the field.

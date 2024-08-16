@@ -12,7 +12,7 @@ inparam_hetero = (
 rndm                  format of heterogeneity reading: const, discr, funct, ica
 2Dgll                                              1Delem, 1Dgll, 2Delem, 2Dgll
 44800., 47000.               minimum/maximum radius of heterogeneous region [m]
-10., 20.               minimum/maximum colatitude of heterogeneous region [deg] 
+10., 20.               minimum/maximum colatitude of heterogeneous region [deg]
 0.        delta rho (density perturbation) in % with respect to reference model
 0.          delta vp (P vel. perturbation) in % with respect to reference model
 0.          delta vs (S vel. perturbation) in % with respect to reference model
@@ -23,7 +23,7 @@ spher            function type: sinus, gauss, trian, gss1d, inclp, inclr, const
 .false.                                                                gradient
 300., 0.	       	       gradient width on top and at bottom of heterogeneity
 3685000., 5685000.           minimum/maximum radius of heterogeneous region [m]
-30., 60.               minimum/maximum colatitude of heterogeneous region [deg] 
+30., 60.               minimum/maximum colatitude of heterogeneous region [deg]
 0.        delta rho (density perturbation) in % with respect to reference model
 0.          delta vp (P vel. perturbation) in % with respect to reference model
 0.          delta vs (S vel. perturbation) in % with respect to reference model

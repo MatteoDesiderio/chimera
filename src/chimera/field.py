@@ -7,7 +7,7 @@ from .utils import Downsampler, to_polar
 
 class Field:
     """
-    General class implementing a named field defined on a regular grid. 
+    General class implementing a named field defined on a regular grid.
     The coordinates of the grid must be polar (r, theta).
     """
 
@@ -69,17 +69,17 @@ class Field:
 # TODO remove split, because you need both halves actually. AxiSEM rotates.
     def split(self, edge_pad_perc=0.25):
         """
-        Splits the model in two portions (a left one and right one). 
+        Splits the model in two portions (a left one and right one).
         This is needed, as the axisem grid is only half of the whole "annulus".
-        Using edge_extension_perc it is possible to pad and include more points 
-        from boht sides of the halved field. This is useful when interpolating 
+        Using edge_extension_perc it is possible to pad and include more points
+        from boht sides of the halved field. This is useful when interpolating
         on the final fine grid.
 
         Parameters
         ----------
         edge_pad_perc : float
-            Extent of the padding, given as a percentage of the half-length of 
-            self.values. The number of indices to get from each side of the 
+            Extent of the padding, given as a percentage of the half-length of
+            self.values. The number of indices to get from each side of the
             half-annulus is int(edge_pad_perc * self.values.shape[0] // 2).
 
         Returns

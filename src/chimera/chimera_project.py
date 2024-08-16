@@ -23,7 +23,7 @@ class Project:
 
     def __init__(self):
         """
-        Initialize project. 
+        Initialize project.
 
         Returns
         -------
@@ -127,7 +127,7 @@ class Project:
 
     def get_mesh_xy(self):
         """
-        Generate x and y. 
+        Generate x and y.
 
         -------
         mesh_x : TYPE
