@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Created on Thu Aug 15 18:32:09 2024
 
 @author: matteo
 """
-import os
 from pathlib import Path
-from pytest import FixtureRequest, fixture
+
+from pytest import fixture
+
 
 # Paths to be shared among all tests in test session
 @fixture(scope="session")
@@ -29,10 +29,10 @@ def ground_truth_dir(request, example_dir):
 
 @fixture(scope="session")
 def ground_truth_vel_anomaly_dir(request, ground_truth_dir):
-    return (f"{ground_truth_dir}/GroundTruthProject" + 
+    return (f"{ground_truth_dir}/GroundTruthProject" +
             "/stagyyModel/2/seism_vel-fields/")
 
-# 
+#
 @fixture(scope="session")
 def project_path(tmp_path_factory):
     return tmp_path_factory.mktemp("temporary_project_path")
@@ -42,13 +42,14 @@ def thermo_data_description():
     return "ExamplePerplexTables"
 
 def pytest_collection_modifyitems(items):
-    """Modifies test items in place to ensure 
-    test modules run in a given order."""
-    
+    """
+    Modifies test items in place to ensure
+    test modules run in a given order.
+    """
     MODULE_ORDER = ["tests.test_thermo_data",
-                    "tests.test_analysis_project", 
+                    "tests.test_analysis_project",
                     "tests.test_compute_analysis"]
-    
+
     module_mapping = {item: item.module.__name__ for item in items}
 
     sorted_itms = items.copy()

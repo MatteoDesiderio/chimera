@@ -1,20 +1,18 @@
-""" Here I show how to create a new project"""
+"""Here I show how to create a new project"""
 
-import sys
-from glob import glob
 
 from chimera_project import Project
 
-# %% 
+# %%
 proj = Project()
-proj.test_mode_on = False 
+proj.test_mode_on = False
 proj.quick_mode_on = True
 # directory of project
 proj.chimera_project_path = "./exampleOutput/"
 
 # define stagyy models location and model names
 proj.stagyy_path = "./inputData/"
-proj.stagyy_model_names = ['stagyyModel']
+proj.stagyy_model_names = ["stagyyModel"]
 
 # define perplex paths, where tab files are located
 proj.thermo_data_path = "./exampleOutput/ThermoData/"

@@ -1,7 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import griddata
-import matplotlib.pyplot as plt
+
 from .utils import Downsampler, to_polar
+
 
 class Field:
     """
@@ -57,13 +59,14 @@ class Field:
         TYPE tuple of two numpy.array.
             (x, y). The coordinates are unraveled.
             len(x) = len(y) = len(r) * len(theta) = self.values.size
+
         """
         r_grid, theta_grid = np.meshgrid(*self.coords)
         z = r_grid * np.exp(1j * theta_grid)
         x, y = np.real(z).flatten(), np.imag(z).flatten()
         return x, y
-    
-# TODO remove split, because you need both halves actually. AxiSEM rotates. 
+
+# TODO remove split, because you need both halves actually. AxiSEM rotates.
     def split(self, edge_pad_perc=0.25):
         """
         Splits the model in two portions (a left one and right one). 
@@ -100,7 +103,7 @@ class Field:
         fields = [Field(), Field()]
         for fld, half, coord in zip(fields,
                                     [left_half, right_half],
-                                    [(r, theta_l), (r, theta_r)]):
+                                    [(r, theta_l), (r, theta_r)], strict=False):
             fld.values = half
             fld.coords = coord
 
@@ -114,13 +117,13 @@ class Field:
         # - if you want to use the orig stag grid, just return the orig array
         # - if you want to use another mesh, you must have provided it
         # -- if it's a rectangular grid (only if the shape was provided!)
-        # ---- we need to check if it is a coarser grid or not (in the former 
+        # ---- we need to check if it is a coarser grid or not (in the former
         # ---- case, appropriate antialiasing filtering is needed first)
         # ---- else, simply interpolate
-        # -- if it's not a rectangular grid (or could not reshape it into 
+        # -- if it's not a rectangular grid (or could not reshape it into
         # -- the provided shape, or no shape was provided [e.g. axisem case])
         # -- simply interpolate
-        
+
         z = self.values.flatten()
         if self.proj.quick_mode_on:
             interpolated = z
@@ -135,10 +138,10 @@ class Field:
                 rnew, thetanew = to_polar(xnew, ynew)
                 rnew = rnew.reshape(self.proj.custom_mesh_shape)[0]
                 thetanew = thetanew.reshape(self.proj.custom_mesh_shape)[:,0]
-                x_is_coarse = (np.abs(np.diff(r).min()) < 
+                x_is_coarse = (np.abs(np.diff(r).min()) <
                                np.abs(np.diff(rnew).min()) )
-                y_is_coarse = (np.abs(np.diff(theta).min()) < 
-                               np.abs(np.diff(thetanew).min()) ) 
+                y_is_coarse = (np.abs(np.diff(theta).min()) <
+                               np.abs(np.diff(thetanew).min()) )
                 if x_is_coarse or y_is_coarse:
                     downsampler = Downsampler(r, theta, rnew, thetanew)
                     old, z = downsampler.downsample(z)
@@ -149,8 +152,8 @@ class Field:
                     # filtering and the output array must actually be sampled
                     # otherwise, the result is already sampled
                     # In the future I will pick one method and delete this if
-                    if not old is None:
-                        interpolated = griddata(old, z, 
+                    if old is not None:
+                        interpolated = griddata(old, z,
                                                 new, method=interp_type)
                     else:
                         interpolated = z
@@ -158,9 +161,9 @@ class Field:
                     interpolated = griddata(old, z, new, method=interp_type)
             else:
                 interpolated = griddata(old, z, new, method=interp_type)
-  
+
         return interpolated
-        
+
     def plot(self):
         fig = plt.figure()
         ax = fig.gca()

@@ -1,16 +1,15 @@
-from paraview.simple import *
-import sys
-import numpy as np
-from os import mkdir, remove
 from glob import glob
+from os import mkdir
 
+import numpy as np
+from paraview.simple import *
 
 # %% directories and profiles we're interested in
 # where axisem is
-axisem_parent_path = '/home/matteo/Apps/axisem-master/SOLVER/'
-project_name = 'Analysis-STX11-Xu08-MgNum88'
+axisem_parent_path = "/home/matteo/Apps/axisem-master/SOLVER/"
+project_name = "Analysis-STX11-Xu08-MgNum88"
 # # where your axisem_runS are
-runlist = axisem_parent_path + "runList_" + project_name + '.txt'
+runlist = axisem_parent_path + "runList_" + project_name + ".txt"
 _, run_dirs = np.loadtxt(runlist, dtype=str, unpack=True)
 if not isinstance(run_dirs, np.ndarray):
     run_dirs = [run_dirs]
@@ -32,8 +31,8 @@ R = 6371e3
 def make_visible(model, lookupTable):
     SetActiveSource(model)
     representation = Show()
-    representation.SelectionPointFieldDataArrayName = 'data'
-    representation.ColorArrayName = ('POINT_DATA', 'data')
+    representation.SelectionPointFieldDataArrayName = "data"
+    representation.ColorArrayName = ("POINT_DATA", "data")
     representation.LookupTable = lookupTable
     return representation
 
@@ -43,7 +42,7 @@ for run_dir in run_dirs:
     for field in fields:
         # create a path where you want to store your output
         run_path = axisem_parent_path + run_dir
-        output_path = run_path + '/' + field + "_post_axisem_read"
+        output_path = run_path + "/" + field + "_post_axisem_read"
         # unless it exists already
         print(output_path)
         try:
@@ -51,13 +50,13 @@ for run_dir in run_dirs:
         except OSError:
             pass
         # determine name of vtk files
-        vtkname = 'model_{}_0*.vtk'.format(field)
+        vtkname = f"model_{field}_0*.vtk"
         # collect corresponding paths into a list
-        paths = glob(run_path + '/Info/' + vtkname)
+        paths = glob(run_path + "/Info/" + vtkname)
         if len(paths) == 0:
-            paths = glob(run_path + '/PX/Info/' + vtkname)
+            paths = glob(run_path + "/PX/Info/" + vtkname)
         if len(paths) == 0:
-            paths = glob(run_path + '/PZ/Info/' + vtkname)
+            paths = glob(run_path + "/PZ/Info/" + vtkname)
 
         # here the paraview stuff begins
         # load from list of paths
@@ -100,17 +99,17 @@ for run_dir in run_dirs:
             rep = GetDisplayProperties(plotOverLine)
             # decide what you want on x axis of plot
             rep.UseIndexForXAxis = 0  # do not use indices
-            rep.XArrayName = 'arc_length'
+            rep.XArrayName = "arc_length"
             # hide all garbage
-            rep.SeriesVisibility = ['', '', '', '', '', '', '', '',
-                                    'data', '1',                  # data
-                                    'vtkValidPointMask', '0',     # boh
-                                    'arc_length', '0',            # dist in m
-                                    'Points (0)', '0',            # dist in m
-                                    'Points (1)', '0',            # boh
-                                    'Points (2)', '0',            # boh
-                                    'Points (Magnitude)', '0',    # dist in m
-                                    'vtkOriginalIndices', '0']  # indices
+            rep.SeriesVisibility = ["", "", "", "", "", "", "", "",
+                                    "data", "1",                  # data
+                                    "vtkValidPointMask", "0",     # boh
+                                    "arc_length", "0",            # dist in m
+                                    "Points (0)", "0",            # dist in m
+                                    "Points (1)", "0",            # boh
+                                    "Points (2)", "0",            # boh
+                                    "Points (Magnitude)", "0",    # dist in m
+                                    "vtkOriginalIndices", "0"]  # indices
 
             # write each profile into a csv file
             args = (lateral_resolution, radial_resolution, i)  # create name
@@ -119,7 +118,7 @@ for run_dir in run_dirs:
             writer.UpdatePipeline()                    # and it's written
             # load the csv again. We need values and r coord
             data, _, arc, _, _, _ = np.genfromtxt(output_path + fname,
-                                                  delimiter=',',
+                                                  delimiter=",",
                                                   skip_header=1, unpack=True)
             # add vel values
             avg[:, 0] += data

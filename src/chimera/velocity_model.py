@@ -1,20 +1,20 @@
-import pickle
 import os
+import pickle
+
 import h5py
-import numpy as np
-from numba import prange, njit
-from scipy.spatial import KDTree
-from scipy.interpolate import interp1d
-import pyshtools as pysh
 import matplotlib.pyplot as plt
+import numpy as np
+import pyshtools as pysh
 from matplotlib import cm
 from matplotlib.collections import LineCollection
-from .field import Field
+from numba import njit, prange
+from scipy.interpolate import interp1d
+
 from .interfaces.axi.inparam_hetero_template import inparam_hetero
 
 # TO DO to speed things up first
 # create a function that uses griddata to interpolate from the 1D prof to the
-# whole grid. Thene use numba to compute the anomaly (loop over each single 
+# whole grid. Thene use numba to compute the anomaly (loop over each single
 # point or divide the array into chunks and loop over each chunk in parallel)
 
 @njit
@@ -30,7 +30,7 @@ def _anomaly(rprof, vprof, rmod, vmod, dr):
 
 def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
     ext_profs_pert = []
-    for ext_pr, pr in zip(ext_profs, profs):
+    for ext_pr, pr in zip(ext_profs, profs, strict=False):
         f = interp1d(ext_z, ext_pr, **interp_kwargs)
         ext_pr_i = f(z)
         pert = 100 * (pr - ext_pr_i) / pr
@@ -43,7 +43,7 @@ def getattrfrommod(vmod, var):
         if not isinstance(i_C, int):
             raise ValueError("var must be either T, P, s, p, rho, s_a, ..." +
                              " or C1, 2, ...")
-        _var = getattr(vmod, "C")[i_C]
+        _var = vmod.C[i_C]
     else:
         _var = getattr(vmod, var)
     return _var
@@ -81,8 +81,8 @@ def get_ext_prof(path, r_core_m=3481e3, r_Earth_m=6371e3, usecols=(0,3)):
         
 
     """
-    rprem, rhoprem, vpprem, vsprem, qka, qmu = np.loadtxt(path, 
-                                                          skiprows=6, 
+    rprem, rhoprem, vpprem, vsprem, qka, qmu = np.loadtxt(path,
+                                                          skiprows=6,
                                                           unpack=True)
     mantle = rprem >= r_core_m
     rprem, rhoprem = rprem[mantle], rhoprem[mantle]
@@ -99,16 +99,16 @@ def _is_quick_mode_on(_self):
         quick_mode_on = _self.proj.quick_mode_on
     except AttributeError:
         quick_mode_on = False
-        
+
     return quick_mode_on
 
 def _create_labels(variables, absolute):
     def define_label(v):
         if v == "T":
-            unit = "[K]" if absolute else "[%]" 
+            unit = "[K]" if absolute else "[%]"
             return r"T " + unit
         if v == "s":
-            unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]" 
+            unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]"
             return r"$V_s$ " + unit
         elif v == "p":
             unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]"
@@ -117,7 +117,7 @@ def _create_labels(variables, absolute):
             _unit =  r" ($\rho - \rho_{1D}$)/$\rho$ [%]"
             unit = "[kg/m$^3$]" if absolute else _unit
             return r"$\rho$ "  + unit
-    
+
     labels = []
     for v in variables:
         label = define_label(v)
@@ -126,14 +126,14 @@ def _create_labels(variables, absolute):
 
 def voigt(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
-    for m, f in zip(moduli, compositions):
+    for m, f in zip(moduli, compositions, strict=False):
         sum_ += m * f
     return sum_
 
 
 def reuss(moduli, compositions):
     sum_ = np.zeros(compositions[0].shape)
-    for m, f in zip(moduli, compositions):
+    for m, f in zip(moduli, compositions, strict=False):
         sum_ += f / m
     return 1.0 / sum_
 
@@ -236,7 +236,7 @@ class VelocityModel:
         K_list = np.empty(shape)
         G_list = np.empty(shape)
         rho_list = np.empty(shape)
-        
+
         # TODO transfer the proj_dict from proj class to thermo_data class
         for i, nm in enumerate(self.Cnames):
             comp = proj_dict[nm]
@@ -259,7 +259,7 @@ class VelocityModel:
     def vel_rho_to_npy(self, destination):
         model_name = self.model_name
 
-        print('Saving seismic velocity fields in ' + destination)
+        print("Saving seismic velocity fields in " + destination)
         fname_s = model_name + "_Vs.npy"
         fname_p = model_name + "_Vp.npy"
         fname_b = model_name + "_Vb.npy"
@@ -296,13 +296,13 @@ class VelocityModel:
         # HACK to make it work with a previous version where the velocity
         # model did not have the attribute quick_mode_on
         quick_mode_on = _is_quick_mode_on(self)
-            
+
         # if you have a regular grid, this operation is easier
         if quick_mode_on:
             rsel, vel = self.r, getattrfrommod(self, var)
-            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+            shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
             #shape[0] = shape[0] + 1
-            rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
+            rsel, vel = (ar.reshape(shape) for ar in (rsel, vel))
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)
             return rsel, prof
@@ -313,10 +313,10 @@ class VelocityModel:
                 vel = getattrfrommod(self, var)
                 # hacky way to deal with a serious problem, numerical precision
                 rsel = np.sort(list(set(np.around(self.r, round_param))))
-        
+
                 diffs = np.diff(rsel)
                 drmin = diffs[diffs > 0].min() / 2
-        
+
                 prof = np.empty(len(rsel))
                 for i, r_i in enumerate(rsel):
                     r1, r2 = r_i - drmin, r_i + drmin
@@ -324,7 +324,7 @@ class VelocityModel:
                     prof[i] = np.mean(vel[level])
             else:
                 rsel, vel = self.r, getattrfrommod(self, var)
-                rsel, vel = [ar.reshape(shape) for ar in (rsel, vel)]
+                rsel, vel = (ar.reshape(shape) for ar in (rsel, vel))
                 rsel = rsel[0]
                 prof = np.mean(vel, axis=0)
             return rsel, prof
@@ -351,20 +351,19 @@ class VelocityModel:
         vel = getattr(self, var)
         rprof, vprof = self.get_rprofile(var, round_param)
         quick_mode_on = _is_quick_mode_on(self)
-        
+
         if quick_mode_on:
-            shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+            shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
             #shape[0] = shape[0] + 1
             vel = vel.reshape(shape)
             arr = fac * (vel - vprof) / vprof
             setattr(self, var+"_a", arr.flatten())
             setattr(self, var+"_prof", {"r": rprof, "val": vprof})
-        else:
-            if self.proj.custom_mesh_shape is None:
-                diffs = np.diff(rprof)
-                drmin = diffs[diffs > 0].min() / 2
-                
-                """
+        elif self.proj.custom_mesh_shape is None:
+            diffs = np.diff(rprof)
+            drmin = diffs[diffs > 0].min() / 2
+
+            """
                 tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
                 other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
                 indices = tree.query_ball_tree(other_tree, r=drmin)
@@ -373,30 +372,30 @@ class VelocityModel:
                     for j in index:
                         arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
                 """
-                
-                arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
-    
-                setattr(self, var+"_a", arr)
-                setattr(self, var+"_prof", {"r": rprof, "val": vprof})
-            else:
-                vel = vel.reshape(self.proj.custom_mesh_shape)
-                arr = fac * (vel - vprof) / vprof
-                setattr(self, var+"_a", arr.flatten())
-                setattr(self, var+"_prof", {"r": rprof, "val": vprof})
-        
+
+            arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
+
+            setattr(self, var+"_a", arr)
+            setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+        else:
+            vel = vel.reshape(self.proj.custom_mesh_shape)
+            arr = fac * (vel - vprof) / vprof
+            setattr(self, var+"_a", arr.flatten())
+            setattr(self, var+"_prof", {"r": rprof, "val": vprof})
+
         return getattr(self, var+"_a"), getattr(self, var+"_prof")
 
     @staticmethod
     def load(vmodel_path):
-        with open(vmodel_path + 'v_model_data.pkl', 'rb') as f:
+        with open(vmodel_path + "v_model_data.pkl", "rb") as f:
             pickled_class = pickle.load(f)
         return pickled_class
 
     def save(self, destination):
-        with open(destination + 'v_model_data.pkl', 'wb') as outp:
+        with open(destination + "v_model_data.pkl", "wb") as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
 
-    def export(self, destination, fmt, absolute=True, fac=100, 
+    def export(self, destination, fmt, absolute=True, fac=100,
                fname="geodynamic_hetfile.sph", dtype="float32"):
         """
         
@@ -424,51 +423,50 @@ class VelocityModel:
         """
         r, th = self.r * self.r_E_km, self.theta * 180 / np.pi
         th -= 90.0 # TODO check if it's always the same shift
-        
+
         val_type = "" if absolute else "_a"
         adj = "absolute values" if absolute else "relative perturbations"
         print("Exporting model as %s" % adj)
         if not absolute:
             _ = [self.anomaly(var, fac=fac) for var in ["s", "p", "rho"]]
-        
+
         print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
-        
+
         if self.stagyy_rho_used:
             rho = getattr(self, "rho_stagyy" + val_type)
         else:
             rho = getattr(self, "rho" + val_type)
-            
+
         s, p = getattr(self, "s" + val_type), getattr(self, "p" + val_type)
-        
+
         data = np.c_[r, th, p, s, rho]
         # save the sph text file
         fpath = destination + "/" + fname
         name, extension = fname.rsplit(".")
         if extension == "sph":
-            np.savetxt(fpath,data, header=str(len(data)), comments='', fmt=fmt)
+            np.savetxt(fpath,data, header=str(len(data)), comments="", fmt=fmt)
+        elif os.path.exists(fpath):
+            raise OSError("hdf5 file with this name already exists.")
         else:
-            if os.path.exists(fpath):
-                raise OSError("hdf5 file with this name already exists.")
-            else:
-                for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"]):
-                    with h5py.File(fpath, "a") as hf:
-                        hf.create_dataset(d_name, data=d, dtype=dtype)
+            for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"], strict=False):
+                with h5py.File(fpath, "a") as hf:
+                    hf.create_dataset(d_name, data=d, dtype=dtype)
 
         # save a corresponding inparam_hetero, as needed by axisem
         filled_template = self.template.format(fname)
         with open(destination + "/inparam_hetero", "w") as inparam_file:
             inparam_file.write(filled_template)
-    
+
     def get_hetero_profile(self):
         pass
-        
-    
+
+
     def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None,
                       absolute=True, external=None,
                       interp_kwargs={"kind": "linear", "bounds_error": False,
-                                     "fill_value": "extrapolate"}, 
+                                     "fill_value": "extrapolate"},
                       third_variable=None,
-                      plot_kwargs={"color": "r"}, 
+                      plot_kwargs={"color": "r"},
                       cmap_kwargs={"cmap": "hot", "vmin": 300, "vmax": 4000}):
         """
         
@@ -514,46 +512,45 @@ class VelocityModel:
         """
         if absolute:
             external = None
-                    
+
         nv = len(variables)
         r_prof_km  = self.get_rprofile("s")[0] * self.r_E_km
         zprof_km = (self.r_E_km - r_prof_km)
-        
+
         labels = _create_labels(variables, absolute)
         _profs = [self.get_rprofile(v)[-1] for v in variables]
         if external is None:
             profs = _profs
+        elif isinstance(external, (tuple, list)):
+            ext_z, ext_profs = external
+            _, profs = get_prof_pert(ext_z, ext_profs, zprof_km, _profs,
+                                     interp_kwargs)
         else:
-            if isinstance(external, (tuple, list)):
-                ext_z, ext_profs = external
-                _, profs = get_prof_pert(ext_z, ext_profs, zprof_km, _profs, 
-                                         interp_kwargs)
-            else:
-                profs = None
-                raise ValueError("External must be of type list or tuple, " +
-                                 "the first element being the z coordinate " + 
-                                 "in km and the second a tuple with s, p, rho")
+            profs = None
+            raise ValueError("External must be of type list or tuple, " +
+                             "the first element being the z coordinate " +
+                             "in km and the second a tuple with s, p, rho")
         if axs is fig is None:
             fig, axs = plt.subplots(1, nv, sharey=True, squeeze=False)
             if axs.shape == (1,1):
                 axs = [axs[1,1]]
-        
+
         handle_mod = [None]
-                    
-        for ax, prof in zip(axs, profs):
+
+        for ax, prof in zip(axs, profs, strict=False):
             if third_variable is None:
                 handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
             else:
                 cmap = cmap_kwargs["cmap"]
                 vmin = cmap_kwargs["vmin"]
-                vmax = cmap_kwargs["vmax"] 
+                vmax = cmap_kwargs["vmax"]
                 if isinstance(third_variable, str):
                     vals = self.get_rprofile(third_variable)[-1]
                     # copied from matplotlib gallery (multicolored_line)
                     points = np.array([prof, zprof_km]).T.reshape(-1, 1, 2)
-                    segments = np.concatenate([points[:-1], points[1:]], 
+                    segments = np.concatenate([points[:-1], points[1:]],
                                               axis=1)
-                    
+
                     norm = plt.Normalize(vmin, vmax)
                     lc = LineCollection(segments, cmap=cmap, norm=norm)
                     # Set the values used for colormapping
@@ -563,7 +560,7 @@ class VelocityModel:
                     # fig.colorbar(line, ax=ax)
                 elif isinstance(third_variable, float):
                     vals = self.get_rprofile("T")[-1]
-                    val = np.interp(third_variable, 
+                    val = np.interp(third_variable,
                                     zprof_km[::-1], vals[::-1])
                     # print(val)
                     val -= vmin
@@ -571,24 +568,24 @@ class VelocityModel:
                     color = cm.get_cmap(cmap)(val)
                     plot_kwargs["color"] = color
                     handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
-                
+
         [ax.set_ylim((zprof_km.max(), zprof_km.min())) for ax in axs]
-        [ax.set_xlabel(l) for ax, l in zip(axs, labels)]
+        [ax.set_xlabel(l) for ax, l in zip(axs, labels, strict=False)]
         axs[0].set_ylabel("Depth [km]")
         axs[-1].legend(handle_mod, ["Model"])
         plt.subplots_adjust(wspace=0)
         plt.title(self.model_name)
-        
+
         return fig, axs
-    
+
     @staticmethod
-    def import_hetfile(vel_model_path, variabs=["r", "theta", "p", "s", "rho"], 
+    def import_hetfile(vel_model_path, variabs=["r", "theta", "p", "s", "rho"],
                        fname="geodynamic_hetfile.sph"):
-        
+
         name, extension = fname.rsplit(".")
         fpath = vel_model_path + "/" + fname
-        
-        if extension == "sph":  
+
+        if extension == "sph":
             print("loadtxt")
             dic = {"r":0, "theta":1, "p":2, "s":3, "rho":4}
             usecols = [dic[v] for v in variabs]
@@ -604,9 +601,9 @@ class VelocityModel:
         else:
             data=None
         return data
-    
+
     @staticmethod
-    def plot_ext_prof(profs, axs, r_core_m=3481e3, r_Earth_m=6371e3, 
+    def plot_ext_prof(profs, axs, r_core_m=3481e3, r_Earth_m=6371e3,
                       c="b", lbl=None):
         """
         
@@ -632,29 +629,28 @@ class VelocityModel:
         None.
 
         """
-        
         if isinstance(profs, str):
             zprem_km, _profs = get_ext_prof(profs, r_core_m, r_Earth_m)
         elif isinstance(profs, (list, tuple)):
             zprem_km, _profs = profs
-            
-        for ax, prof in zip(axs, _profs):
+
+        for ax, prof in zip(axs, _profs, strict=False):
             handle = ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
-    
+
     def fourier(self, var="s_a", demean=False, psd=True, **fft_kwargs):
         if not _is_quick_mode_on(self):
             raise NotImplementedError("The function has only been" +
                                       "implemented on the regular grid")
 
-        shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+        shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
         #shape[0] = shape[0] + 1
-        
+
         theta = self.theta
-        lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi 
+        lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi
         r = np.reshape(self.r, shape)[0]
         data = np.reshape(getattrfrommod(self, var), shape).T
-        
+
         if demean:
             _data = data - np.mean(data, axis=1)[:, np.newaxis]
         else:
@@ -662,27 +658,27 @@ class VelocityModel:
 
         spectrum_r = np.fft.rfft(_data, axis=1, **fft_kwargs)
         fax = np.fft.rfftfreq(len(lat), lat[1] - lat[0])
-        
+
         if psd:
             spectrum_r = (np.abs(spectrum_r) / len(lat) ) ** 2
-        return r * self.r_E_km, lat, fax, spectrum_r        
-    
+        return r * self.r_E_km, lat, fax, spectrum_r
+
     def sh(self, var="s_a", method="extend", shift_deg=0, sh_type="GL",
            norm="4pi", cs_phase=1, lmax=None, demean=False):
-        
+
         _norm = {"4pi":1, "schmidt":2, "unnorm":3, "ortho":4}
         n_i_d = _norm[norm]
         lmax_calc = lmax
-        
+
         if not _is_quick_mode_on(self):
             raise NotImplementedError("The function has only been" +
                                       "implemented on the regular grid")
-        
+
         raw = getattrfrommod(self, var)
 
-        shape = [self.proj.geom["n{}tot".format(c)] for c in ("yz") ]
+        shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
         #shape[0] = shape[0] + 1
-        
+
         theta = self.theta
         r = np.reshape(self.r, shape)[0]
         if method == "circle":
@@ -697,23 +693,23 @@ class VelocityModel:
                 hemisphere = (lat > - 90) & ( lat < 90 )
             shift = int(np.rint(shift_deg / (np.abs(lat[1] - lat[0]))))
             data = data[:, np.roll(hemisphere, shift)]
-            lat = lat[hemisphere] 
+            lat = lat[hemisphere]
             clm_z = np.zeros(len(r), dtype=pysh.SHCoeffs)
 
             if lmax_calc is None:
                 lmax_calc = len(lat) - 1
             ext_shape = (len(r), len(lat), 2 * (len(lat) - 1) + 1)
             data_ext = np.broadcast_to(data[:,:,np.newaxis], ext_shape)
-            
+
             if sh_type == "GL":
                 newlat, newlon = pysh.expand.GLQGridCoord(lmax_calc)
                 ext_shape = (len(r), len(lat), 2 * (len(lat) - 1) + 1)
                 data_ext = np.broadcast_to(data[:,:,np.newaxis], ext_shape)
                 for i, d in enumerate(data_ext):
                     mu = np.mean(d) if demean else 0
-                    cilm = pysh.expand.SHExpandGLQ(d - mu, "", "", cs_phase, 
+                    cilm = pysh.expand.SHExpandGLQ(d - mu, "", "", cs_phase,
                                                    n_i_d, lmax_calc)
-                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase,
                                                         normalization=norm)
             elif sh_type == "DH":
                 lon = np.linspace(0, 359, 2 * len(lat))
@@ -722,9 +718,9 @@ class VelocityModel:
                 data_ext = np.broadcast_to(data[:, :, np.newaxis], ext_shape)
                 for i, d in enumerate(data_ext):
                     mu = np.mean(d) if demean else 0
-                    cilm = pysh.expand.SHExpandDH(d - mu, n_i_d, 1, cs_phase, 
+                    cilm = pysh.expand.SHExpandDH(d - mu, n_i_d, 1, cs_phase,
                                               lmax_calc)
-                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase,
                                                         normalization=norm)
             else:
                 lon = np.linspace(0, 359, 2 * len(lat))
@@ -732,10 +728,10 @@ class VelocityModel:
                 newlon, newlat = xx.flatten(), yy.flatten()
                 for i, d in enumerate(data_ext):
                     mu = np.mean(d) if demean else 0
-                    cilm = pysh.expand.SHExpandLSQ((d - mu).flatten(), 
+                    cilm = pysh.expand.SHExpandLSQ((d - mu).flatten(),
                                                    newlon, newlat,
                                                    lmax_calc, n_i_d, cs_phase)
-                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase, 
+                    clm_z[i] = pysh.SHCoeffs.from_array(cilm, csphase=cs_phase,
                                                         normalization=norm)
-                
+
             return (lmax_calc, clm_z, r * self.r_E_km, newlat, newlon)

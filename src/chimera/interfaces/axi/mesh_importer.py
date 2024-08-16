@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Created on Wed Jun  8 18:31:11 2022
 
 @author: matteo
 """
-import vtk
-import numpy as np
 import os
+
+import numpy as np
+import vtk
 
 
 class MeshImporter:
-    """ 
+    """
+    
     Load, convert and save an AxiSEM mesh as a numpy array. 
 
-    Arguments
+    Arguments:
     ---------
     axisem_path : str
         The AxiSEM directory
     mesh_path : str
         The name of the mesh stored in the SOLVER directory.
         The default is "PREM_ISO_2s"
+
     """
 
     def __init__(self, axisem_path, mesh_path="PREM_ISO_2s", rE_km=6371.0,
@@ -40,6 +42,7 @@ class MeshImporter:
         -------
         x, y : numpy.ndarray
             Cordinates of the central points of the cells of the AxiSEM mesh. 
+
         """
         reader = vtk.vtkGenericDataObjectReader()
         _vtkname = "mesh_domaindecomposition.vtk"
@@ -49,9 +52,9 @@ class MeshImporter:
         reader.Update()
         points = reader.GetOutput().GetPoints()
         data_type = points.GetDataType()
-        # TODO raise an error if choice is not consistent 
+        # TODO raise an error if choice is not consistent
         # or better, load directly in double precision
-        print("The data_type of the vtk points is %i." % data_type, 
+        print("The data_type of the vtk points is %i." % data_type,
               "Double-check if consistent with your choice of", self.dtype)
         x, y = np.array(points.GetData(),
                         dtype=self.dtype)[:, :-1].T
@@ -85,6 +88,7 @@ class MeshImporter:
             respectively. Note that the AxiSEM grid (corresponding to 
             a half-circle) is mirrored around the axis to form a complete 
             circle. This array is also saved in the specified path.
+
         """
         if autoname:
             path += "/" + self.mesh_name

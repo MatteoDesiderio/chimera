@@ -1,10 +1,12 @@
 import unittest
+
+import matplotlib.pyplot as plt
 import numpy as np
 from field import Field
 from stagpy import stagyydata as syyd
-import matplotlib.pyplot as plt
-from interfaces.stag import loader as stag_loader
 from utils import to_polar
+
+from interfaces.stag import loader as stag_loader
 
 
 class TestFields(unittest.TestCase):
@@ -102,7 +104,7 @@ class TestFields(unittest.TestCase):
 
         r *= self.field.r_max
         theta -= np.pi / 2
-        fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+        fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
         ax.set_theta_offset(np.pi / 2.0)
         # ax.set_rmin(3480)
         ax.scatter(theta, r, s=1, c=znew, marker=".")

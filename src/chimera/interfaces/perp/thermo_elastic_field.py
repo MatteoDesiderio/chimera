@@ -1,7 +1,8 @@
 import numpy as np
-from scipy.interpolate import griddata
+from numba import njit, prange
 from numba_kdtree import KDTree
-from numba import prange, njit
+from scipy.interpolate import griddata
+
 
 def _TP_to_xy(T_tab, P_tab):
     lenT, lenP = len(T_tab), len(P_tab)
@@ -23,11 +24,11 @@ def _store(inds, fld):
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
         self.tab = tab
-        self.label = label if not (label is None) else tab.tab["title"]
+        self.label = label if label is not None else tab.tab["title"]
         self.rho = None
         self.K = None
         self.G = None
-        
+
     def extract(self, inds, model_name):
         """
         
@@ -49,13 +50,13 @@ class ThermoElasticField:
         self.rho = _store(inds, rho.T.flatten())
         self.K = _store(inds, K.T.flatten())
         self.G = _store(inds, G.T.flatten())
-    
-    def save(self, path):   
-        fname = path + self.tab.tab["title"] + '_'
+
+    def save(self, path):
+        fname = path + self.tab.tab["title"] + "_"
         print("Saving as %s<parameter>.npy" % fname)
-        np.save(fname + 'rho',  self.rho)
-        np.save(fname + 'K', self.K)
-        np.save(fname + 'G', self.G)
+        np.save(fname + "rho",  self.rho)
+        np.save(fname + "K", self.K)
+        np.save(fname + "G", self.G)
         print("Done for rho [kg/m^3], Ks [bar], Gs [bar]")
 
     @staticmethod
@@ -78,12 +79,12 @@ class ThermoElasticField:
               "dataset")
         T, P = tab.data[:2]
         # since stagyy is in Pa, convert P [bar]->[Pa])
-        P *= 1e5  
-        x, y = _TP_to_xy(T, P)  
+        P *= 1e5
+        x, y = _TP_to_xy(T, P)
         kdtree = KDTree(np.c_[x, y], leafsize=10)
         print("KDTree Created")
         return kdtree
-    
+
     @staticmethod
     def get_indices(tree, T_grid, P_grid):
         """

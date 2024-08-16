@@ -3,10 +3,10 @@ Simple wrappers to load coordinates and field data via stagpy.
 This assumes 2D yz spherical geometry.
 """
 from types import MappingProxyType
-from stagpy.datatypes import Varf, Varr, Vart
-from stagpy._step import _Fields
-from stagpy import phyvars 
-from stagpy._step import Step
+
+from stagpy import phyvars
+from stagpy._step import Step, _Fields
+from stagpy.datatypes import Varf
 
 
 class CustomStagFields(_Fields):
@@ -16,15 +16,15 @@ class CustomStagFields(_Fields):
         # casting to dict because Mapping Proxy does not allow assignment
         # is this 'dangerous'?
         variables, filesh5 = dict(variables), dict(filesh5)
-        
+
         # adding our custom mappings
-        variables['p_s'] = Varf('Static Pressure', 'Pa')        
-        variables['bs'] = Varf('Basalt fraction', '1')  
-        variables['hz'] = Varf('Harzburgite fraction', '1')
-        filesh5['Pressure'] = ['p_s']
-        filesh5['Basalt'] = ['bs']
-        filesh5['Harzburgite'] = ['hz']
-        
+        variables["p_s"] = Varf("Static Pressure", "Pa")
+        variables["bs"] = Varf("Basalt fraction", "1")
+        variables["hz"] = Varf("Harzburgite fraction", "1")
+        filesh5["Pressure"] = ["p_s"]
+        filesh5["Basalt"] = ["bs"]
+        filesh5["Harzburgite"] = ["hz"]
+
         # back to normal
         variables = MappingProxyType(variables)
         filesh5 = MappingProxyType(filesh5)
@@ -80,7 +80,7 @@ def load_field(stagyydata, name, i):
     snap = stagyydata.snaps[i]
     snap_copy = Step(snap.istep, snap.sdat)
 
-    snap_copy.fields = CustomStagFields(snap, 
+    snap_copy.fields = CustomStagFields(snap,
                                         phyvars.FIELD,
                                         phyvars.FIELD_EXTRA,
                                         phyvars.FIELD_FILES,

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import sys
 from chimera_project import Project
-from functions import (initialize_vmodels,
-                       geodynamic_to_thermoelastic,
-                       compute_vmodels, export_vmodels)
+from functions import (
+    compute_vmodels,
+    export_vmodels,
+    geodynamic_to_thermoelastic,
+    initialize_vmodels,
+)
 
 # %% input
 # load project

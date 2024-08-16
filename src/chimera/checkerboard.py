@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Created on Thu Jun 30 12:00:05 2022
 
 @author: matteo
 """
-import numpy as np
 import matplotlib.pyplot as plt
-
 from chimera_project import Project
-from velocity_model import VelocityModel
-from functions import (initialize_vmodels,
-                       geodynamic_to_thermoelastic,
-                       compute_vmodels, export_vmodels)
-
-from interfaces.stag  import loader
+from functions import (
+    compute_vmodels,
+    export_vmodels,
+    geodynamic_to_thermoelastic,
+    initialize_vmodels,
+)
 from stagpy import stagyydata
 from utils import to_cartesian
+from velocity_model import VelocityModel
+
+from interfaces.stag import loader
 
 # %% input
 # load project
@@ -49,7 +49,7 @@ initialize_vmodels(proj, **params)
 # %% extract thermoelastic fields
 geodynamic_to_thermoelastic(proj)
 
-# %% seismic velocity + export 
+# %% seismic velocity + export
 v_model_paths = compute_vmodels(proj, False)
 export_vmodels(proj)
 
@@ -75,7 +75,7 @@ ax3.plot(rho_prof["val"], zprof_km, label="Model")
 
 [ax.legend for ax in axs]
 [ax.set_ylim(ax.get_ylim()[::-1]) for ax in axs]
-[ax.set_xlabel(l) for ax, l in zip(axs, labels)]
+[ax.set_xlabel(l) for ax, l in zip(axs, labels, strict=False)]
 ax1.set_ylabel("Depth [m]")
 ax3.legend()
 plt.subplots_adjust(wspace=0)
