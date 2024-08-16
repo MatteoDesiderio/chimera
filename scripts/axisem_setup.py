@@ -1,6 +1,6 @@
 """
 generate a list of names for the axisem runs that can be read with by the 
-runmanager provided here
+runmanager provided here.
 """
 
 from chimera_project import Project

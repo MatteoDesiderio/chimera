@@ -17,9 +17,7 @@ def _get_mesh_xy(sdat):
     return mesh_x / mesh_x.max(), mesh_y / mesh_y.max()
 
 class Project:
-    """
-    Project class.
-    """
+    """Project class."""
 
     def __init__(self):
         """
@@ -234,10 +232,10 @@ class Project:
             r_sp_robust = np.ma.vstack(profiles["s_a"]["rms"]) / \
                           np.ma.vstack(profiles["p_a"]["rms"])
 
-            hets = dict(z=z, lims=({"s_lim": s_lim, "p_lim": p_lim}),
-                        t_indices=t_indices, mod_name=vel_model_name,
-                        prim=prim, profs=profiles, s=spr, p=ppr, rho=rho,
-                        cor_b_s=cor_b_s, r_sp_robust=r_sp_robust, T=T, T_a=T_a)
+            hets = {"z": z, "lims": ({"s_lim": s_lim, "p_lim": p_lim}),
+                        "t_indices": t_indices, "mod_name": vel_model_name,
+                        "prim": prim, "profs": profiles, "s": spr, "p": ppr, "rho": rho,
+                        "cor_b_s": cor_b_s, "r_sp_robust": r_sp_robust, "T": T, "T_a": T_a}
 
             heterogeneity_dictionary[vel_model_name] = hets
 

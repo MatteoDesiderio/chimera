@@ -165,7 +165,7 @@ class VelocityModel:
     def __init__(self, model_name, i_t, t, x, y, Cnames=None, proj=None):
         # model name, time info, radius of earth, other info
         if Cnames is None:
-            Cnames = list()
+            Cnames = []
         self.model_name = model_name
         self.i_t = i_t
         self.t = t
@@ -235,7 +235,6 @@ class VelocityModel:
         self.bulk = compute_bulk(rho, K)
 
     def load_moduli(self, path_moduli, proj_dict):
-        name = self.model_name
         shape = self.C.shape
         K_list = np.empty(shape)
         G_list = np.empty(shape)
@@ -553,7 +552,7 @@ class VelocityModel:
                     # Set the values used for colormapping
                     lc.set_array(vals)
                     lc.set_linewidth(1)
-                    line = ax.add_collection(lc)
+                    ax.add_collection(lc)
                 elif isinstance(third_variable, float):
                     vals = self.get_rprofile("T")[-1]
                     val = np.interp(third_variable,
@@ -632,7 +631,7 @@ class VelocityModel:
             zprem_km, _profs = profs
 
         for ax, prof in zip(axs, _profs, strict=False):
-            handle = ax.plot(prof, zprem_km, c=c, label=lbl)
+            ax.plot(prof, zprem_km, c=c, label=lbl)
         axs[0].legend()
 
     def fourier(self, var="s_a", demean=False, psd=True, **fft_kwargs):

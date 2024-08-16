@@ -1,4 +1,4 @@
-"""Here I show how to create a new project"""
+"""Here I show how to create a new project."""
 
 
 from chimera_project import Project

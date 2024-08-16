@@ -1,6 +1,4 @@
-"""
-Several misc utilities.
-"""
+"""Several misc utilities."""
 import numba as nb
 import numpy as np
 from scipy.interpolate import interp1d

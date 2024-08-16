@@ -1,6 +1,4 @@
-"""
-This is the first step before creating the project
-"""
+"""This is the first step before creating the project."""
 from thermo_data import ThermoData
 
 # %% List of parameters
@@ -9,13 +7,13 @@ stagyy_field_names = ["bs", "hz", "prim"]                   # as read by stagyy
 
 # can supply more than one set of tab files
 # the order of th perplex tab files match with the order of stagyy comp fields
-dataset = dict(description = "ExamplePerplexTables",
+dataset = {"description": "ExamplePerplexTables",
 
-               perplex_proj_names = ["bsChimera_1",
+               "perplex_proj_names": ["bsChimera_1",
                                      "hzChimera_1",
                                      "primChimera_1"],
 
-               perplex_path = "./inputData/exampleTabFiles/")
+               "perplex_path": "./inputData/exampleTabFiles/"}
 
 
 save_path = "./exampleOutput/"
