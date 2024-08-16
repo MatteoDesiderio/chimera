@@ -18,12 +18,12 @@ def _get_mesh_xy(sdat):
 
 class Project:
     """
-    Project class
+    Project class.
     """
 
     def __init__(self):
         """
-        Initialize project 
+        Initialize project. 
 
         Returns
         -------
@@ -82,7 +82,7 @@ class Project:
 
     def new(self, proj_name="New Project"):
         """
-        Create a new project
+        Create a new project.
 
         Parameters
         ----------
@@ -127,7 +127,7 @@ class Project:
 
     def get_mesh_xy(self):
         """
-        Generate x and y 
+        Generate x and y. 
 
         -------
         mesh_x : TYPE

@@ -9,7 +9,7 @@ from .interfaces.perp.tab import Tab
 class ThermoData:
     def __init__(self):
         """
-        Initialize Thermochemical Data 
+        Initialize Thermochemical Data. 
 
         Returns
         -------
@@ -72,7 +72,7 @@ class ThermoData:
 
     def save(self, save_path):
         """
-        Save a thermo_data somewhere
+        Save a thermo_data somewhere.
 
         Parameters
         ----------

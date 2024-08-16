@@ -1,5 +1,5 @@
 """
-Several misc utilities
+Several misc utilities.
 """
 import numba as nb
 import numpy as np
