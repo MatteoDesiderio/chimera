@@ -91,6 +91,8 @@ lint.ignore = [
     "D407", # removed dashes lines under sections
     "D417", # argument description in docstring (unreliable)
     "ISC001", # simplify implicit str concatenation (ruff-format recommended)
+    "ANN001", # do not check for type annotation for function arguments 
+    "ANN201" # do not check for return type annotation for functions 
 ]
 lint.per-file-ignores = {"tests*" = [
     "INP001", # File is part of an implicit namespace package.
