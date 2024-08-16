@@ -97,8 +97,10 @@ class Tab:
             pickle.dump(self.tab, f)
 
 
-    def plot(self, i_field, ax=None, exclude_range=None, kwargs={}):
+    def plot(self, i_field, ax=None, exclude_range=None, kwargs=None):
 
+        if kwargs is None:
+            kwargs = {}
         i_field = _fix_i_field(i_field)
 
         if ax is not None:

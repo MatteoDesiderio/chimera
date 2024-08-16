@@ -219,7 +219,7 @@ def geodynamic_to_thermoelastic(proj):
             thermodata = _thermodata
             tree = _tree
 
-        for i_t, t in zip(indices, years, strict=False):
+        for i_t, _t in zip(indices, years, strict=False):
             snap_path = model_path + f"/{i_t}/"
             v_path = snap_path + proj.vel_model_path
             v_model = VelocityModel.load(v_path)
@@ -279,7 +279,7 @@ def compute_vmodels(proj, use_stagyy_rho=False):
         print()
 
         thermodata = ThermoData.load(thermo_path)
-        for i_t, t in zip(indices, years, strict=False):
+        for i_t, _t in zip(indices, years, strict=False):
             snap_path = model_path + f"/{i_t}/"
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
@@ -336,7 +336,7 @@ def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
         print("for each of time steps in", years,
               "Gy, corresponding to indices", indices)
         print()
-        for i_t, t in zip(indices, years, strict=False):
+        for i_t, _t in zip(indices, years, strict=False):
             snap_path = model_path + f"/{i_t}/"
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
@@ -349,7 +349,7 @@ def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
 
 def _check_all_exist(thermodata, save_path):
     exist = []
-    for tab, f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
+    for tab, _f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
         nm = save_path + tab.tab["title"]
         for v in ["rho", "K", "G"]:
             exist.append(os.path.exists(nm + "_" + v + ".npy"))

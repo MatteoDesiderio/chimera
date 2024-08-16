@@ -55,7 +55,7 @@ class ThermoData:
         Tminmax = np.zeros((length, 2))
         Pminmax_Pa = np.zeros((length, 2))
 
-        for i, (f, tb) in enumerate(zip(*self.c_field_names, strict=False)):
+        for i, (_f, tb) in enumerate(zip(*self.c_field_names, strict=False)):
             inpfl = self.perplex_path + tb + ".tab"
             tab = Tab(inpfl)
             tab.load()

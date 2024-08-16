@@ -28,7 +28,9 @@ def _anomaly(rprof, vprof, rmod, vmod, dr):
             arr[imod] = (vmod[imod] - v_pos) / v_pos
     return arr
 
-def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs={}):
+def get_prof_pert(ext_z, ext_profs, z, profs, interp_kwargs=None):
+    if interp_kwargs is None:
+        interp_kwargs = {}
     ext_profs_pert = []
     for ext_pr, pr in zip(ext_profs, profs, strict=False):
         f = interp1d(ext_z, ext_pr, **interp_kwargs)
@@ -160,8 +162,10 @@ def to_polar(x, y):
 
 
 class VelocityModel:
-    def __init__(self, model_name, i_t, t, x, y, Cnames=list(), proj=None):
+    def __init__(self, model_name, i_t, t, x, y, Cnames=None, proj=None):
         # model name, time info, radius of earth, other info
+        if Cnames is None:
+            Cnames = list()
         self.model_name = model_name
         self.i_t = i_t
         self.t = t
@@ -447,13 +451,12 @@ class VelocityModel:
         pass
 
 
-    def plot_profiles(self, variables=["s", "p", "rho"], fig=None, axs=None,
+    def plot_profiles(self, variables=None, fig=None, axs=None,
                       absolute=True, external=None,
-                      interp_kwargs={"kind": "linear", "bounds_error": False,
-                                     "fill_value": "extrapolate"},
+                      interp_kwargs=None,
                       third_variable=None,
-                      plot_kwargs={"color": "r"},
-                      cmap_kwargs={"cmap": "hot", "vmin": 300, "vmax": 4000}):
+                      plot_kwargs=None,
+                      cmap_kwargs=None):
         """
 
 
@@ -496,6 +499,14 @@ class VelocityModel:
             DESCRIPTION.
 
         """
+        if cmap_kwargs is None:
+            cmap_kwargs = {"cmap": "hot", "vmin": 300, "vmax": 4000}
+        if plot_kwargs is None:
+            plot_kwargs = {"color": "r"}
+        if interp_kwargs is None:
+            interp_kwargs = {"kind": "linear", "bounds_error": False, "fill_value": "extrapolate"}
+        if variables is None:
+            variables = ["s", "p", "rho"]
         if absolute:
             external = None
 
@@ -563,9 +574,11 @@ class VelocityModel:
         return fig, axs
 
     @staticmethod
-    def import_hetfile(vel_model_path, variabs=["r", "theta", "p", "s", "rho"],
+    def import_hetfile(vel_model_path, variabs=None,
                        fname="geodynamic_hetfile.sph"):
 
+        if variabs is None:
+            variabs = ["r", "theta", "p", "s", "rho"]
         name, extension = fname.rsplit(".")
         fpath = vel_model_path + "/" + fname
 
