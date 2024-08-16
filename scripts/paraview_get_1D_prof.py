@@ -124,7 +124,7 @@ for run_dir in run_dirs:
             avg[:, 0] += data
 
             # we dont need the csv anymore
-            # remove(output_path + fname)
+            remove(output_path + fname)
 
         # compute average and save it
         avg /= lateral_resolution
@@ -134,11 +134,4 @@ for run_dir in run_dirs:
 
         # clean up paraview
         _ = [Delete(proxy) for proxy in GetSources().values()]
-        _ = [Delete(rep) for rep in representations]
-
-        # I thoght the following was necessary but it seems unimportant
-        #for i, mod in enumerate(models):
-        #   try:
-        #       Delete(mod)
-        #   except RuntimeError:
-        #       print("error", str(i))
+        _ = [Delete(rep) for rep in representations]d

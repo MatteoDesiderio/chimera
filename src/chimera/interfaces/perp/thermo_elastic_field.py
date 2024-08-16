@@ -106,7 +106,7 @@ class ThermoElasticField:
 
         """
         print("Retrieving moduli, density as function of P, T")
-        #_, inds = tree.query(np.c_[T_grid, P_grid]) # changed with v0.1.6
+        # _, inds = tree.query(np.c_[T_grid, P_grid]) # changed with v0.1.6 # noqa: ERA001
         # number of valid neighbors is returned too now. Must be ignored
         _, inds, _ = tree.query(np.c_[T_grid, P_grid])
         print("KDTree queried")

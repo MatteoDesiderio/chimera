@@ -240,7 +240,6 @@ class VelocityModel:
         # TODO transfer the proj_dict from proj class to thermo_data class
         for i, nm in enumerate(self.Cnames):
             comp = proj_dict[nm]
-            # print(nm, comp) # to check correct order of loading
             G_path = path_moduli + comp + "_" + "G" + ".npy"
             K_path = path_moduli + comp + "_" + "K" + ".npy"
             rho_path = path_moduli + comp + "_" + "rho" + ".npy"
@@ -301,7 +300,6 @@ class VelocityModel:
         if quick_mode_on:
             rsel, vel = self.r, getattrfrommod(self, var)
             shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
-            #shape[0] = shape[0] + 1
             rsel, vel = (ar.reshape(shape) for ar in (rsel, vel))
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)
@@ -309,7 +307,6 @@ class VelocityModel:
         else:
             shape = self.proj.custom_mesh_shape
             if shape is None:
-                # print(var.capitalize(), "profile for", self.model_name)
                 vel = getattrfrommod(self, var)
                 # hacky way to deal with a serious problem, numerical precision
                 rsel = np.sort(list(set(np.around(self.r, round_param))))
@@ -354,7 +351,6 @@ class VelocityModel:
 
         if quick_mode_on:
             shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
-            #shape[0] = shape[0] + 1
             vel = vel.reshape(shape)
             arr = fac * (vel - vprof) / vprof
             setattr(self, var+"_a", arr.flatten())
@@ -362,16 +358,6 @@ class VelocityModel:
         elif self.proj.custom_mesh_shape is None:
             diffs = np.diff(rprof)
             drmin = diffs[diffs > 0].min() / 2
-
-            """
-                tree = KDTree(np.c_[rprof, np.zeros(len(rprof))])
-                other_tree = KDTree(np.c_[self.r, np.zeros(len(self.r))])
-                indices = tree.query_ball_tree(other_tree, r=drmin)
-                arr = np.empty(len(self.r))
-                for i, index in enumerate(indices):
-                    for j in index:
-                        arr[j] = fac * (vel[j] - vprof[i]) / vprof[i]
-                """
 
             arr = fac * _anomaly(rprof, vprof, self.r, vel, drmin)
 
@@ -557,12 +543,10 @@ class VelocityModel:
                     lc.set_array(vals)
                     lc.set_linewidth(1)
                     line = ax.add_collection(lc)
-                    # fig.colorbar(line, ax=ax)
                 elif isinstance(third_variable, float):
                     vals = self.get_rprofile("T")[-1]
                     val = np.interp(third_variable,
                                     zprof_km[::-1], vals[::-1])
-                    # print(val)
                     val -= vmin
                     val /= (vmax-vmin)
                     color = cm.get_cmap(cmap)(val)
@@ -644,7 +628,6 @@ class VelocityModel:
                                       "implemented on the regular grid")
 
         shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
-        #shape[0] = shape[0] + 1
 
         theta = self.theta
         lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi
@@ -677,7 +660,6 @@ class VelocityModel:
         raw = getattrfrommod(self, var)
 
         shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
-        #shape[0] = shape[0] + 1
 
         theta = self.theta
         r = np.reshape(self.r, shape)[0]

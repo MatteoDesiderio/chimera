@@ -11,7 +11,6 @@ from .velocity_model import VelocityModel
 
 
 def _get_mesh_xy(sdat):
-    #geom = sdat.snaps[0].geom
     mesh_x, mesh_y, _, _ = get_meshes_fld(sdat.snaps[0], "T")
     mesh_x = mesh_x.squeeze().flatten()
     mesh_y = mesh_y.squeeze().flatten()

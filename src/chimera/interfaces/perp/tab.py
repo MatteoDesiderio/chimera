@@ -15,7 +15,6 @@ def _fix_i_field(i_field):
 
 def _interp_nans(arr, x, y):
     nr, nc = arr.shape
-    # print(x, y)
     # define square around x, y coordinates in array
     dist = 1
     x1, x2 = max(0, x - dist), min(nr, x + 1 + dist)
@@ -24,7 +23,6 @@ def _interp_nans(arr, x, y):
 
     # if all elements in this square are NaNs, make it larger
     while np.all(np.isnan(square)):
-        # print('too small')
         dist += 1
         x1, x2 = max(0, x - dist), min(nr, x + 1 + dist)
         y1, y2 = max(0, y - dist), min(nc, y + 1 + dist)
@@ -75,7 +73,6 @@ class Tab:
         nT = self.tab["nT"]
         nP = self.tab["nP"]
         for i, field in enumerate(self.tab["fields"]):
-            # print(i, field)
             data_ = np.loadtxt(self.inpfl, skiprows=13, usecols=i)
             if field == "T(K)":
                 data_ = data_[:nT]
@@ -84,8 +81,6 @@ class Tab:
                 data_ = data_[::nT]
 
             else:
-                print(i, field)
-                # print(np.any(data == 0))
                 data_ = np.reshape(data_, (nP, nT)).T
 
             self.data.append(data_)
