@@ -92,7 +92,8 @@ lint.ignore = [
     "D417", # argument description in docstring (unreliable)
     "ISC001", # simplify implicit str concatenation (ruff-format recommended)
     "ANN001", # do not check for type annotation for function arguments 
-    "ANN201" # do not check for return type annotation for functions 
+    "ANN201", # do not check for return type annotation for functions 
+    "ANN102", 
 ]
 lint.per-file-ignores = {"tests*" = [
     "INP001", # File is part of an implicit namespace package.
@@ -108,6 +109,7 @@ lint.mccabe.max-complexity = 18
 lint.pep8-naming.classmethod-decorators = [
     "classmethod",
 ]
+lint.flake8-annotations.ignore-fully-untyped = true
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"

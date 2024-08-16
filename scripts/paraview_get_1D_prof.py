@@ -134,4 +134,4 @@ for run_dir in run_dirs:
 
         # clean up paraview
         _ = [Delete(proxy) for proxy in GetSources().values()]
-        _ = [Delete(rep) for rep in representations]d
+        _ = [Delete(rep) for rep in representations]
