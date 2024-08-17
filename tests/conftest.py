@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Created on Thu Aug 15 18:32:09 2024.
 
@@ -6,37 +5,37 @@ Created on Thu Aug 15 18:32:09 2024.
 """
 from pathlib import Path
 
-from pytest import fixture
+import pytest
 
 
 # Paths to be shared among all tests in test session
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def repo_dir():
     return Path(__file__).parent.parent.resolve().as_posix()
 
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def example_dir(request, repo_dir):
     return f"{repo_dir}/examples/"
 
 # These are not strictly necessary but convenient
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def input_data_dir(request, example_dir):
     return f"{example_dir}/inputData/"
 
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def ground_truth_dir(request, example_dir):
     return f"{example_dir}/groundTruthOutput/"
 
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def ground_truth_vel_anomaly_dir(request, ground_truth_dir):
     return (f"{ground_truth_dir}/GroundTruthProject"
             "/stagyyModel/2/seism_vel-fields/")
 
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def project_path(tmp_path_factory):
     return tmp_path_factory.mktemp("temporary_project_path")
 
-@fixture(scope="session")
+@pytest.fixture(scope="session")
 def thermo_data_description():
     return "ExamplePerplexTables"
 

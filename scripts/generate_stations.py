@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Created on Tue Jul  5 12:56:36 2022.
 
@@ -38,5 +37,3 @@ def generate(n=200, min_max_lat=(-89, 89), min_max_lon=(-179, 179),
 
     data = np.c_[names, nets, x, y, z, z]
     np.savetxt(out_path, data, fmt="%s")
-
-generate()
