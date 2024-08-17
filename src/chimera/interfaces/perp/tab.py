@@ -7,8 +7,8 @@ from numpy import ma
 
 def _fix_i_field(i_field):
     if i_field < 2:
-        raise Warning("The specified index pointed to the independent" +
-                      "variables. The index has been automatically" +
+        raise Warning("The specified index pointed to the independent "
+                      "variables. The index has been automatically "
                       "to the minimum acceptable value")
     i_field = max(2, i_field)
     return i_field

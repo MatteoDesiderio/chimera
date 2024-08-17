@@ -34,7 +34,7 @@ def test_correct_result(project_path, thermo_data_description,
     temporary_path = project_path.as_posix()
 
     project = Project.load(f"{temporary_path}/temporary_project/")
-    new_sph_path = (f"{project.chimera_project_path}/temporary_project/" +
+    new_sph_path = (f"{project.chimera_project_path}/temporary_project/"
                      "/stagyyModel/2/seism_vel-fields/")
 
 
@@ -47,7 +47,3 @@ def test_correct_result(project_path, thermo_data_description,
                        skiprows=1)
 
     assert(np_all(newSph == truthSph))
-
-
-
-

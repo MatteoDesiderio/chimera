@@ -72,8 +72,8 @@ class Project:
     def custom_mesh_shape(self, val):
         if self.quick_mode_on:
             self._custom_mesh_shape = None
-            msg = "Quick mode activated, but mesh shape provided:" + \
-                  "custom_mesh_shape has been set to None."
+            msg = ("Quick mode activated, but mesh shape provided: "
+                   "custom_mesh_shape has been set to None.")
             warnings.warn(msg)
         else:
             self._custom_mesh_shape = val
@@ -149,25 +149,24 @@ class Project:
                     np.reshape(mesh_x, shp)
                     np.reshape(mesh_y, shp)
                     self._regular_rect_mesh = True
-                    msg = "succesfully reshaped mesh into provided shape." + \
-                          "Please, check quality of result."
+                    msg = ("Mesh reshaped into provided shape. "
+                           "Please, check quality of result.")
                     warnings.warn(msg)
                 except ValueError:
                     self._regular_rect_mesh = False
                     self.custom_mesh_shape = None
-                    msg = "cannot reshape mesh into provided shape." + \
-                          "Continuing assuming non-rectangular, " + \
-                          "axisem-like mesh: custom_mesh_shape set to None."
+                    msg = ("cannot reshape mesh into provided shape."
+                           "Continuing assuming non-rectangular, "
+                           "axisem-like mesh: custom_mesh_shape set to None.")
                     warnings.warn(msg)
 
         return mesh_x, mesh_y
 
-
     @staticmethod
     def load_vel_models_by_year(proj):
         name_year_map = proj.t_indices
-        project_path = proj.chimera_project_path + proj.project_name + \
-                       "/{}/{}" + proj.vel_model_path
+        project_path = (proj.chimera_project_path + proj.project_name
+                        + "/{}/{}" + proj.vel_model_path)
         velocity_models_dict = {}
         for vel_model_name in name_year_map:
             t_indices = name_year_map[vel_model_name]
@@ -184,7 +183,7 @@ class Project:
         name_year_map = proj.t_indices
         vmod = velocity_models_dict[proj.stagyy_model_names[0]][0]
         shape = proj.geom["nytot"], proj.geom["nztot"]
-        z = np.reshape((1 - vmod.r ) * vmod.r_E_km, shape)[0]
+        z = np.reshape((1 - vmod.r) * vmod.r_E_km, shape)[0]
 
         heterogeneity_dictionary = {}
         for vel_model_name in name_year_map:
@@ -220,7 +219,7 @@ class Project:
                        for x, y in zip(b_a, s_a, strict=False)]
 
             profiles_keys = "s_a", "p_a", "b_a", "b", "r_sp", "s", "p"
-            profiles = {k:{} for k in profiles_keys}
+            profiles = {k: {} for k in profiles_keys}
             functions = [np.ma.mean, np.ma.median, np.ma.std, rms]
             fnames = ["mean", "median", "std", "rms"]
             for fun, fkey in zip(functions, fnames, strict=False):

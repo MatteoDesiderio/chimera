@@ -103,6 +103,8 @@ lint.ignore = [
     "D103", # missing docstrings (ignore for now)
     "D104", # missing docstrings (ignore for now)
     "D107", # missing docstrings (ignore for now)
+    "D205", # no blank line between summary-description in doc
+    "TD"    # all rules with TODO
 ]
 lint.per-file-ignores = {"tests*" = [
     "INP001", # File is part of an implicit namespace package.

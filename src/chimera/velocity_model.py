@@ -43,7 +43,7 @@ def getattrfrommod(vmod, var):
     if "C" in var:
         i_C = int(var.split("C")[-1])
         if not isinstance(i_C, int):
-            raise ValueError("var must be either T, P, s, p, rho, s_a, ..." +
+            raise ValueError("var must be either T, P, s, p, rho, s_a, ..."
                              " or C1, 2, ...")
         _var = vmod.C[i_C]
     else:
@@ -525,8 +525,8 @@ class VelocityModel:
                                      interp_kwargs)
         else:
             profs = None
-            raise ValueError("External must be of type list or tuple, " +
-                             "the first element being the z coordinate " +
+            raise ValueError("External must be of type list or tuple, "
+                             "the first element being the z coordinate "
                              "in km and the second a tuple with s, p, rho")
         if axs is fig is None:
             fig, axs = plt.subplots(1, nv, sharey=True, squeeze=False)
@@ -638,8 +638,8 @@ class VelocityModel:
 
     def fourier(self, var="s_a", demean=False, psd=True, **fft_kwargs):
         if not _is_quick_mode_on(self):
-            raise NotImplementedError("The function has only been" +
-                                      "implemented on the regular grid")
+            msg = "Function has only been implemented on the regular grid"
+            raise NotImplementedError(msg)
 
         shape = [self.proj.geom[f"n{c}tot"] for c in ("yz") ]
 
@@ -668,8 +668,8 @@ class VelocityModel:
         lmax_calc = lmax
 
         if not _is_quick_mode_on(self):
-            raise NotImplementedError("The function has only been" +
-                                      "implemented on the regular grid")
+            msg = ("The function has only been implemented on a regular grid")
+            raise NotImplementedError(msg)
 
         raw = getattrfrommod(self, var)
 
@@ -678,8 +678,8 @@ class VelocityModel:
         theta = self.theta
         r = np.reshape(self.r, shape)[0]
         if method == "circle":
-            raise NotImplementedError("Method of Arnould et al. 2018 not" +
-                                      "yet implemented")
+            msg = "Method of Arnould et al. 2018 not yet implemented"
+            raise NotImplementedError(msg)
         if method == "extend":
             data = np.reshape(raw, shape).T
             lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi

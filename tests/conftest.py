@@ -29,7 +29,7 @@ def ground_truth_dir(request, example_dir):
 
 @fixture(scope="session")
 def ground_truth_vel_anomaly_dir(request, ground_truth_dir):
-    return (f"{ground_truth_dir}/GroundTruthProject" +
+    return (f"{ground_truth_dir}/GroundTruthProject"
             "/stagyyModel/2/seism_vel-fields/")
 
 @fixture(scope="session")

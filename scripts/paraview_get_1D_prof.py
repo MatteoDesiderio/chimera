@@ -2,12 +2,21 @@ from glob import glob
 from os import mkdir
 
 import numpy as np
-from paraview.simple import (SetActiveSource, Show, LegacyVTKReader,
-                             GetLookupTableForArray,
-                             GroupDatasets, PlotOverLine,
-                             UpdatePipeline, CreateXYPlotView,
-                             GetDisplayProperties, CreateWriter,
-                             remove, Delete, GetSources)
+from paraview.simple import (
+    CreateWriter,
+    CreateXYPlotView,
+    Delete,
+    GetDisplayProperties,
+    GetLookupTableForArray,
+    GetSources,
+    GroupDatasets,
+    LegacyVTKReader,
+    PlotOverLine,
+    SetActiveSource,
+    Show,
+    UpdatePipeline,
+    remove,
+)
 
 # %% directories and profiles we're interested in
 # where axisem is
