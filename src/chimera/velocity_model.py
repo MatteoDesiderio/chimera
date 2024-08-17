@@ -109,16 +109,18 @@ def _create_labels(variables, absolute):
         if v == "T":
             unit = "[K]" if absolute else "[%]"
             return r"T " + unit
+
         if v == "s":
             unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]"
             return r"$V_s$ " + unit
-        elif v == "p":
+
+        if v == "p":
             unit = "[m/s]" if absolute else r" (V - V$_{1D}$)/V [%]"
             return r"$V_p$ " + unit
-        else:
-            _unit =  r" ($\rho - \rho_{1D}$)/$\rho$ [%]"
-            unit = "[kg/m$^3$]" if absolute else _unit
-            return r"$\rho$ "  + unit
+
+        _unit =  r" ($\rho - \rho_{1D}$)/$\rho$ [%]"
+        unit = r"[kg/m$^3$]" if absolute else _unit
+        return r"$\rho$ "  + unit
 
     labels = []
     for v in variables:
@@ -307,27 +309,27 @@ class VelocityModel:
             rsel = rsel[0]
             prof = np.mean(vel, axis=0)
             return rsel, prof
+
+        shape = self.proj.custom_mesh_shape
+        if shape is None:
+            vel = getattrfrommod(self, var)
+            # hacky way to deal with a serious problem, numerical precision
+            rsel = np.sort(list(set(np.around(self.r, round_param))))
+
+            diffs = np.diff(rsel)
+            drmin = diffs[diffs > 0].min() / 2
+
+            prof = np.empty(len(rsel))
+            for i, r_i in enumerate(rsel):
+                r1, r2 = r_i - drmin, r_i + drmin
+                level = (self.r > r1) & (self.r < r2)
+                prof[i] = np.mean(vel[level])
         else:
-            shape = self.proj.custom_mesh_shape
-            if shape is None:
-                vel = getattrfrommod(self, var)
-                # hacky way to deal with a serious problem, numerical precision
-                rsel = np.sort(list(set(np.around(self.r, round_param))))
-
-                diffs = np.diff(rsel)
-                drmin = diffs[diffs > 0].min() / 2
-
-                prof = np.empty(len(rsel))
-                for i, r_i in enumerate(rsel):
-                    r1, r2 = r_i - drmin, r_i + drmin
-                    level = (self.r > r1) & (self.r < r2)
-                    prof[i] = np.mean(vel[level])
-            else:
-                rsel, vel = self.r, getattrfrommod(self, var)
-                rsel, vel = (ar.reshape(shape) for ar in (rsel, vel))
-                rsel = rsel[0]
-                prof = np.mean(vel, axis=0)
-            return rsel, prof
+            rsel, vel = self.r, getattrfrommod(self, var)
+            rsel, vel = (ar.reshape(shape) for ar in (rsel, vel))
+            rsel = rsel[0]
+            prof = np.mean(vel, axis=0)
+        return rsel, prof
 
     def anomaly(self, var="s", round_param=3, fac=100.0):
         """
@@ -678,7 +680,7 @@ class VelocityModel:
         if method == "circle":
             raise NotImplementedError("Method of Arnould et al. 2018 not" +
                                       "yet implemented")
-        elif method == "extend":
+        if method == "extend":
             data = np.reshape(raw, shape).T
             lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi
             if sh_type == "DH":

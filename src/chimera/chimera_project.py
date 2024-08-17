@@ -117,8 +117,7 @@ class Project:
         if not np.all(np.r_[geoms] ==  geom):
             msg = "All models must share the same geometry parameters"
             raise NotImplementedError(msg)
-        else:
-            self.geom = geoms[0]
+        self.geom = geoms[0]
 
         with open(parent + "project_data.pkl", "wb") as outp:
             pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)

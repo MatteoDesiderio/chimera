@@ -32,7 +32,6 @@ def ground_truth_vel_anomaly_dir(request, ground_truth_dir):
     return (f"{ground_truth_dir}/GroundTruthProject" +
             "/stagyyModel/2/seism_vel-fields/")
 
-#
 @fixture(scope="session")
 def project_path(tmp_path_factory):
     return tmp_path_factory.mktemp("temporary_project_path")

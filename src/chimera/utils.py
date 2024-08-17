@@ -88,7 +88,7 @@ class Downsampler:
             return None, znew.T
 
 
-        elif method=="fourier":
+        if method=="fourier":
             # 1) resample original mesh (dr is not constant)
             dx = np.diff(np.abs(self.x)).min()
             dy = np.diff(np.abs(self.y)).min()
@@ -139,41 +139,40 @@ class Downsampler:
 
             return coords, filt_z_int
 
-        else:
-            # 1) resample original mesh (dr is not constant)
-            dx = np.abs(np.diff(self.x)).min()
-            dy = np.abs(np.diff(self.y)).min()
-            shape = self.y.size, self.x.size
-            f = interp1d(self.x, z.reshape(shape))
-            x_int = np.arange(self.x.min(), self.x.max() + dx, dx)
-            x_int[-1] = 1
-            z_int = f(x_int)
-            ny, nx = z_int.shape
+        # 1) resample original mesh (dr is not constant)
+        dx = np.abs(np.diff(self.x)).min()
+        dy = np.abs(np.diff(self.y)).min()
+        shape = self.y.size, self.x.size
+        f = interp1d(self.x, z.reshape(shape))
+        x_int = np.arange(self.x.min(), self.x.max() + dx, dx)
+        x_int[-1] = 1
+        z_int = f(x_int)
+        ny, nx = z_int.shape
 
-            xx, yy = np.meshgrid(x_int, self.y)
-            pos = np.dstack((xx, yy))
+        xx, yy = np.meshgrid(x_int, self.y)
+        pos = np.dstack((xx, yy))
 
-            znew = np.zeros([self.xnew.size, self.ynew.size])
-            xdiffs = np.abs(np.diff(self.xnew))
-            xdiffs = np.r_[xdiffs, xdiffs[-1]] / 2
-            ydiffs = np.abs(np.diff(self.ynew))
-            ydiffs = np.r_[ydiffs, ydiffs[-1]] / 2
+        znew = np.zeros([self.xnew.size, self.ynew.size])
+        xdiffs = np.abs(np.diff(self.xnew))
+        xdiffs = np.r_[xdiffs, xdiffs[-1]] / 2
+        ydiffs = np.abs(np.diff(self.ynew))
+        ydiffs = np.r_[ydiffs, ydiffs[-1]] / 2
 
-            for ix, mux in enumerate(self.xnew):
-                sx = xdiffs[ix]
-                for iy, muy in enumerate(self.ynew):
-                    sy = ydiffs[iy]
-                    weights = np.zeros_like(z_int)
-                    squarex = (xx >= mux - sx) & (xx <= mux + sx)
-                    squarey = (yy >= muy - sy) & (yy <= muy + sy)
-                    square = squarex & squarey
-                    weights[square] = 1.0
-                    if method == "triang":
-                        mx = len(squarex[0, :][squarex[0, :]])
-                        my = len(squarey[:, 0][squarey[:, 0]])
-                        triangx = bartlett(mx)
-                        triangy = triang(my)
-                        pyramid = triangy[:, np.newaxis] * triangx
-                        weights[square] *= pyramid.flatten()
-                    znew[ix, iy] = np.sum(weights * z_int) / np.sum(weights)
-            return None, znew.T
+        for ix, mux in enumerate(self.xnew):
+            sx = xdiffs[ix]
+            for iy, muy in enumerate(self.ynew):
+                sy = ydiffs[iy]
+                weights = np.zeros_like(z_int)
+                squarex = (xx >= mux - sx) & (xx <= mux + sx)
+                squarey = (yy >= muy - sy) & (yy <= muy + sy)
+                square = squarex & squarey
+                weights[square] = 1.0
+                if method == "triang":
+                    mx = len(squarex[0, :][squarex[0, :]])
+                    my = len(squarey[:, 0][squarey[:, 0]])
+                    triangx = bartlett(mx)
+                    triangy = triang(my)
+                    pyramid = triangy[:, np.newaxis] * triangx
+                    weights[square] *= pyramid.flatten()
+                znew[ix, iy] = np.sum(weights * z_int) / np.sum(weights)
+        return None, znew.T

@@ -2,7 +2,12 @@ from glob import glob
 from os import mkdir
 
 import numpy as np
-from paraview.simple import *
+from paraview.simple import (SetActiveSource, Show, LegacyVTKReader,
+                             GetLookupTableForArray,
+                             GroupDatasets, PlotOverLine,
+                             UpdatePipeline, CreateXYPlotView,
+                             GetDisplayProperties, CreateWriter,
+                             remove, Delete, GetSources)
 
 # %% directories and profiles we're interested in
 # where axisem is
@@ -22,7 +27,7 @@ fast = True
 # %% geometry of the profiles
 lateral_resolution = 512  # spacing between profiles
 radial_resolution = 511
-thetas = np.linspace(-np.pi/2, np.pi/2, lateral_resolution)
+thetas = np.linspace(-np.pi / 2, np.pi / 2, lateral_resolution)
 R = 6371e3
 
 # %% a useful function to visualize the data as normal in paraview
@@ -79,7 +84,7 @@ for run_dir in run_dirs:
         # create n radial profiles
         for i, th in enumerate(thetas):
 
-            x2, y2 = R*np.cos(th), R*np.sin(th)
+            x2, y2 = R * np.cos(th), R * np.sin(th)
 
             # create line
             plotOverLine = PlotOverLine(group)
