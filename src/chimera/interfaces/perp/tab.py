@@ -4,14 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import ma
 
+MIN_I_FIELD_INDEX = 2
 
 def _fix_i_field(i_field):
-    if i_field < 2:
-        msg = (
-            "The specified index pointed to the independent "
-                      "variables. The index has been automatically "
-                      "to the minimum acceptable value"
-        )
+    if i_field < MIN_I_FIELD_INDEX:
+        msg = ("The specified index pointed to the independent "
+               "variables. The index has been automatically "
+               "to the minimum acceptable value")
         raise Warning(msg)
     return max(2, i_field)
 

@@ -12,6 +12,8 @@ from scipy.interpolate import interp1d
 
 from .interfaces.axi.inparam_hetero_template import inparam_hetero
 
+NINETY_DEG = 90.0
+
 # TO DO to speed things up first
 # create a function that uses griddata to interpolate from the 1D prof to the
 # whole grid. Thene use numba to compute the anomaly (loop over each single
@@ -412,7 +414,7 @@ class VelocityModel:
 
         """
         r, th = self.r * self.r_E_km, self.theta * 180 / np.pi
-        th -= 90.0 # TODO check if it's always the same shift
+        th -= NINETY_DEG # TODO check if it's always the same shift
 
         val_type = "" if absolute else "_a"
         adj = "absolute values" if absolute else "relative perturbations"
@@ -563,7 +565,7 @@ class VelocityModel:
                     val = np.interp(third_variable,
                                     zprof_km[::-1], vals[::-1])
                     val -= vmin
-                    val /= (vmax-vmin)
+                    val /= (vmax - vmin)
                     color = cm.get_cmap(cmap)(val)
                     plot_kwargs["color"] = color
                     handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
@@ -597,7 +599,7 @@ class VelocityModel:
                 with h5py.File(fpath, "r") as file:
                     d = np.array(file.get(d_name))
                     data.append(d)
-            if isinstance(data, list) and len(data) < 2:
+            if isinstance(data, list) and len(data) < 2: # noqa: PLR2004
                 data = data[0]
         else:
             data=None
@@ -684,9 +686,9 @@ class VelocityModel:
             data = np.reshape(raw, shape).T
             lat = np.reshape(theta, shape)[:, 0] * 180 / np.pi
             if sh_type == "DH":
-                hemisphere = (lat > - 90) & ( lat <= 90 )
+                hemisphere = (lat > - NINETY_DEG) & ( lat <= NINETY_DEG )
             else:
-                hemisphere = (lat > - 90) & ( lat < 90 )
+                hemisphere = (lat > - NINETY_DEG) & ( lat < NINETY_DEG )
             shift = int(np.rint(shift_deg / (np.abs(lat[1] - lat[0]))))
             data = data[:, np.roll(hemisphere, shift)]
             lat = lat[hemisphere]
