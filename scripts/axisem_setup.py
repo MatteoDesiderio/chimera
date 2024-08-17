@@ -32,16 +32,16 @@ for thermo_info, key in zip(thermo_infos, names, strict=False):
 
 listname = proj.project_name + "-runList"
 savetxt(SOLVER_path + listname, lines, fmt="%s")
-print("A list has been saved in %s with the name %s" % (SOLVER_path, listname))
+print(f"A list has been saved in {SOLVER_path} with the name {listname}")
 print("Please run AxiSEM by executing the run_manager.sh (provided here)")
 print("from the SOLVER directory")
 print()
 print("Usage example: ./run_manager.sh", listname)
-print("""
-cat %s | while read path run_name
+print(f"""
+cat {listname} | while read path run_name
 do
 # copy the heterogeneities model into the directory
 cp $path .
 #./submit.csh $run_name
 done
-""" % listname)
+""")

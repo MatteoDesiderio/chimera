@@ -7,11 +7,13 @@ from numpy import ma
 
 def _fix_i_field(i_field):
     if i_field < 2:
-        raise Warning("The specified index pointed to the independent "
+        msg = (
+            "The specified index pointed to the independent "
                       "variables. The index has been automatically "
-                      "to the minimum acceptable value")
-    i_field = max(2, i_field)
-    return i_field
+                      "to the minimum acceptable value"
+        )
+        raise Warning(msg)
+    return max(2, i_field)
 
 def _interp_nans(arr, x, y):
     nr, nc = arr.shape

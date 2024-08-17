@@ -43,7 +43,8 @@ class Field:
     @coords.setter
     def coords(self, value):
         if len(value) != 2:
-            raise TypeError("Coords must be a 2-elements tuple.")
+            msg = "Coords must be a 2-elements tuple."
+            raise TypeError(msg)
         self._coords = value
 
     @values.setter

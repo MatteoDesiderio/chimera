@@ -43,8 +43,11 @@ def getattrfrommod(vmod, var):
     if "C" in var:
         i_C = int(var.split("C")[-1])
         if not isinstance(i_C, int):
-            raise ValueError("var must be either T, P, s, p, rho, s_a, ..."
-                             " or C1, 2, ...")
+            msg = (
+                "var must be either T, P, s, p, rho, s_a, ..."
+                             " or C1, 2, ..."
+            )
+            raise ValueError(msg)
         _var = vmod.C[i_C]
     else:
         _var = getattr(vmod, var)
@@ -379,8 +382,7 @@ class VelocityModel:
     @staticmethod
     def load(vmodel_path):
         with open(vmodel_path + "v_model_data.pkl", "rb") as f:
-            pickled_class = pickle.load(f)
-        return pickled_class
+            return pickle.load(f)
 
     def save(self, destination):
         with open(destination + "v_model_data.pkl", "wb") as outp:
@@ -417,11 +419,11 @@ class VelocityModel:
 
         val_type = "" if absolute else "_a"
         adj = "absolute values" if absolute else "relative perturbations"
-        print("Exporting model as %s" % adj)
+        print(f"Exporting model as {adj}")
         if not absolute:
             _ = [self.anomaly(var, fac=fac) for var in ["s", "p", "rho"]]
 
-        print("min/max thetas: %.1f, %.1f " % (th.min(), th.max()))
+        print(f"min/max thetas: {th.min():.1f}, {th.max():.1f} ")
 
         if self.stagyy_rho_used:
             rho = getattr(self, "rho_stagyy" + val_type)
@@ -437,7 +439,8 @@ class VelocityModel:
         if extension == "sph":
             np.savetxt(fpath,data, header=str(len(data)), comments="", fmt=fmt)
         elif os.path.exists(fpath):
-            raise OSError("hdf5 file with this name already exists.")
+            msg = "hdf5 file with this name already exists."
+            raise OSError(msg)
         else:
             for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"], strict=False):
                 with h5py.File(fpath, "a") as hf:
@@ -525,9 +528,12 @@ class VelocityModel:
                                      interp_kwargs)
         else:
             profs = None
-            raise ValueError("External must be of type list or tuple, "
+            msg = (
+                "External must be of type list or tuple, "
                              "the first element being the z coordinate "
-                             "in km and the second a tuple with s, p, rho")
+                             "in km and the second a tuple with s, p, rho"
+            )
+            raise ValueError(msg)
         if axs is fig is None:
             fig, axs = plt.subplots(1, nv, sharey=True, squeeze=False)
             if axs.shape == (1,1):

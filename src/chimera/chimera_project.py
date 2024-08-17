@@ -249,8 +249,7 @@ class Project:
     @staticmethod
     def load(project_path):
         with open(project_path + "project_data.pkl", "rb") as f:
-            pickled_class = pickle.load(f)
-        return pickled_class
+            return pickle.load(f)
 
 
 

@@ -30,7 +30,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
 
     if proj.quick_mode_on:
         interp_type = "none"
-        print("Quick Mode on: overriding interp_type to '%s'." % interp_type)
+        print(f"Quick Mode on: overriding interp_type to '{interp_type}'.")
     else:
         print("Using external mesh.")
         if proj._regular_rect_mesh:
@@ -125,9 +125,8 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
             print("for each of time steps in", years,
                   "Gy, corresponding to indices", indices)
 
-            print("The thermodynamic dataset '%s' will be used," % thermo_name)
-            print("located in %s and containing reference to the tab files:" %
-                  proj.thermo_data_path)
+            print(f"The thermodynamic dataset '{thermo_name}' will be used,")
+            print(f"located in {proj.thermo_data_path} and containing reference to the tab files:")
             print(*thermodata.c_field_names[1])
             print()
             for i_t, t in zip(indices, years, strict=False):
@@ -137,8 +136,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 for v, key in zip(variables, lims, strict=False):
                     a_min, a_max = lims[key]
                     v.coords = loader.load_coords(sdat)
-                    print("Clamping %s between %.1e and %.1e [SI units]" %
-                          (key, a_min, a_max) )
+                    print(f"Clamping {key} between {a_min:.1e} and {a_max:.1e} [SI units]" )
                     v.values = np.clip(loader.load_field(sdat, v.name, i_t),
                                        a_min, a_max)
 
@@ -233,7 +231,7 @@ def geodynamic_to_thermoelastic(proj):
                 T, P = v_model.T, v_model.P
                 inds = ThermoElasticField.get_indices(tree, T, P)
                 for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
-                    print("... working on %s ..." % f)
+                    print(f"... working on {f} ...")
                     thermo_field = ThermoElasticField(tab, f)
                     thermo_field.extract(inds, model_name)
                     thermo_field.save(save_path)
@@ -341,7 +339,7 @@ def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
             v_path = snap_path + proj.vel_model_path
             print("Loading velocity model saved in", v_path)
             v_model = VelocityModel.load(v_path)
-            print("Exporting to %s format" % fname.rsplit(".")[-1])
+            print("Exporting to {} format".format(fname.rsplit(".")[-1]))
             v_model.export(v_path, fmt, absolute, fac, fname, dtype)
             print("Done")
             print("----------------------------------------------------------")

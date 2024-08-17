@@ -97,5 +97,4 @@ class ThermoData:
     @staticmethod
     def load(path):
         with open(path + ".pkl", "rb") as f:
-            pickled_class = pickle.load(f)
-        return pickled_class
+            return pickle.load(f)
