@@ -95,6 +95,7 @@ lint.ignore = [
     "D205",   # no blank line between summary-description in doc
     "D203",   # no-blank-line-before-class
     "D212",   # multi-line-summary-first-line
+    "D401",   # non-imperative mood in doc string (ignore for now)
     "D407",   # removed dashes lines under sections
     "D417",   # argument description in docstring (unreliable)
     "ISC001", # simplify implicit str concatenation (ruff-format recommended)
@@ -104,7 +105,8 @@ lint.ignore = [
     "T201",   # print found
     "N806",   # capital letters for variables deactivated for now...
     "N803",   # ... in function args as well (will maybe change later)
-    "TD",     # all rules about TODO
+    "TD",     # all rules about badly formatted TODO
+    "FIX",    # HACK / TODO detected, consider fixing (ignore for now)
     "SIM105", # suppressible exception
     "FBT002", # boolean-default-value-positional-argument (for now)
     "PTH",    # os and glob instead of recommended Path (ignore for now) 

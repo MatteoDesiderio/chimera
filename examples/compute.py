@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 from chimera.chimera_project import Project
 from chimera.functions import (
