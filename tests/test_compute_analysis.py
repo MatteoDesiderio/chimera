@@ -15,7 +15,7 @@ from chimera.functions import (
 )
 
 
-def test_compute(project_path, thermo_data_description, input_data_dir):
+def test_compute(project_path):
     temporary_path = project_path.as_posix()
 
     project = Project.load(f"{temporary_path}/temporary_project/")
@@ -28,8 +28,7 @@ def test_compute(project_path, thermo_data_description, input_data_dir):
     export_vmodels(project, absolute=False, fname=fname_sph)
 
 
-def test_correct_result(project_path, thermo_data_description,
-                        input_data_dir, ground_truth_vel_anomaly_dir):
+def test_correct_result(project_path, ground_truth_vel_anomaly_dir):
     temporary_path = project_path.as_posix()
 
     project = Project.load(f"{temporary_path}/temporary_project/")

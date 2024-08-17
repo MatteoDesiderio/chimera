@@ -14,20 +14,20 @@ def repo_dir():
     return Path(__file__).parent.parent.resolve().as_posix()
 
 @pytest.fixture(scope="session")
-def example_dir(request, repo_dir):
+def example_dir(repo_dir):
     return f"{repo_dir}/examples/"
 
 # These are not strictly necessary but convenient
 @pytest.fixture(scope="session")
-def input_data_dir(request, example_dir):
+def input_data_dir(example_dir):
     return f"{example_dir}/inputData/"
 
 @pytest.fixture(scope="session")
-def ground_truth_dir(request, example_dir):
+def ground_truth_dir(example_dir):
     return f"{example_dir}/groundTruthOutput/"
 
 @pytest.fixture(scope="session")
-def ground_truth_vel_anomaly_dir(request, ground_truth_dir):
+def ground_truth_vel_anomaly_dir(ground_truth_dir):
     return (f"{ground_truth_dir}/GroundTruthProject"
             "/stagyyModel/2/seism_vel-fields/")
 
