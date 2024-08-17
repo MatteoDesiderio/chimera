@@ -95,14 +95,15 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 snap_path = model_path + f"/{i_t}/"
                 v_path = snap_path + proj.vel_model_path
                 print()
-                print("Saving velocity model for", t, "Gy in", v_path )
+                print("Saving velocity model for", t, "Gy in", v_path)
                 v_model.thermo_data_name = proj.thermo_data_path + thermo_name
                 v_model.save(v_path)
                 print("Done")
                 print()
 
     else:
-        zipnames = zip(proj.stagyy_model_names, proj.thermo_data_names, strict=False)
+        zipnames = zip(proj.stagyy_model_names,
+                       proj.thermo_data_names, strict=False)
         # load data from stagyy with stagpy into fields
         # TODO speed up the process by loading coords, fields at the same time
         for model_name, thermo_name in zipnames:
@@ -126,7 +127,8 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                   "Gy, corresponding to indices", indices)
 
             print(f"The thermodynamic dataset '{thermo_name}' will be used,")
-            print(f"located in {proj.thermo_data_path} and containing reference to the tab files:")
+            print(f"located in {proj.thermo_data_path} "
+                   "and containing reference to the tab files:")
             print(*thermodata.c_field_names[1])
             print()
             for i_t, t in zip(indices, years, strict=False):
@@ -136,7 +138,8 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 for v, key in zip(variables, lims, strict=False):
                     a_min, a_max = lims[key]
                     v.coords = loader.load_coords(sdat)
-                    print(f"Clamping {key} between {a_min:.1e} and {a_max:.1e} [SI units]" )
+                    print(f"Clamping {key} between {a_min:.1e} "
+                           " and {a_max:.1e} [SI units]")
                     v.values = np.clip(loader.load_field(sdat, v.name, i_t),
                                        a_min, a_max)
 
@@ -167,7 +170,7 @@ def initialize_vmodels(proj, interp_type, checker_board_params=None):
                 snap_path = model_path + f"/{i_t}/"
                 v_path = snap_path + proj.vel_model_path
                 print()
-                print("Saving velocity model for", t, "Gy in", v_path )
+                print("Saving velocity model for", t, "Gy in", v_path)
                 v_model.thermo_data_name = proj.thermo_data_path + thermo_name
                 v_model.save(v_path)
                 print("Done")
@@ -187,7 +190,8 @@ def geodynamic_to_thermoelastic(proj):
     None.
 
     """
-    zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names, strict=False)
+    zip_names = zip(proj.stagyy_model_names,
+                    proj.thermo_data_names, strict=False)
     # in principle, there might be a different thermo data set 4 each model
     if _all_equals(proj.thermo_data_names):
         print("The same thermodynamic dataset was assigned to all models")
@@ -230,7 +234,8 @@ def geodynamic_to_thermoelastic(proj):
                 print("Loading P, T from velocity model saved in\n", v_path)
                 T, P = v_model.T, v_model.P
                 inds = ThermoElasticField.get_indices(tree, T, P)
-                for tab,f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
+                for tab,f in zip(thermodata.tabs,
+                                 thermodata.c_field_names[0], strict=False):
                     print(f"... working on {f} ...")
                     thermo_field = ThermoElasticField(tab, f)
                     thermo_field.extract(inds, model_name)
@@ -240,7 +245,7 @@ def geodynamic_to_thermoelastic(proj):
                       "this model at time step %i." % i_t)
 
             print("Done")
-            print("-"*76)
+            print("-" * 76)
         print("+"*76)
 
 def compute_vmodels(proj, use_stagyy_rho=False):
