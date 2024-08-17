@@ -228,10 +228,7 @@ class VelocityModel:
         self._P = value
 
     def compute_velocities(self, use_stagyy_rho):
-        if use_stagyy_rho:
-            rho = self.rho_stagyy
-        else:
-            rho = self.rho
+        rho = self.rho_stagyy if use_stagyy_rho else self.rho
         self.stagyy_rho_used = use_stagyy_rho
 
         K, G = self.K, self.G
@@ -522,7 +519,7 @@ class VelocityModel:
         _profs = [self.get_rprofile(v)[-1] for v in variables]
         if external is None:
             profs = _profs
-        elif isinstance(external, (tuple, list)):
+        elif isinstance(external, tuple | list):
             ext_z, ext_profs = external
             _, profs = get_prof_pert(ext_z, ext_profs, zprof_km, _profs,
                                      interp_kwargs)
@@ -635,7 +632,7 @@ class VelocityModel:
         """
         if isinstance(profs, str):
             zprem_km, _profs = get_ext_prof(profs, r_core_m, r_Earth_m)
-        elif isinstance(profs, (list, tuple)):
+        elif isinstance(profs, list | tuple):
             zprem_km, _profs = profs
 
         for ax, prof in zip(axs, _profs, strict=False):
@@ -654,10 +651,7 @@ class VelocityModel:
         r = np.reshape(self.r, shape)[0]
         data = np.reshape(getattrfrommod(self, var), shape).T
 
-        if demean:
-            _data = data - np.mean(data, axis=1)[:, np.newaxis]
-        else:
-            _data = data
+        _data = data - np.mean(data, axis=1)[:, np.newaxis] if demean else data
 
         spectrum_r = np.fft.rfft(_data, axis=1, **fft_kwargs)
         fax = np.fft.rfftfreq(len(lat), lat[1] - lat[0])
@@ -737,3 +731,4 @@ class VelocityModel:
                                                         normalization=norm)
 
             return (lmax_calc, clm_z, r * self.r_E_km, newlat, newlon)
+        return None

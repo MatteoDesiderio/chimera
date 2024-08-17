@@ -1,5 +1,5 @@
 """
-generate a list of names for the axisem runs that can be read with by the 
+generate a list of names for the axisem runs that can be read with by the
 runmanager provided here.
 """
 

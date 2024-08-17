@@ -15,6 +15,5 @@ def test_importer(tmp_path, example_dir):
     x, y = importer.convert_to_numpy(temporary_path)
     assert isinstance(x, np.ndarray)
     assert isinstance(y, np.ndarray)
-    # assert x.shape[-1] == 2
     assert exists(f"{temporary_path}/{importer.mesh_name}_x.npy")
     assert exists(f"{temporary_path}/{importer.mesh_name}_y.npy")

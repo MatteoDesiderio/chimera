@@ -1,5 +1,5 @@
 """This is the first step before creating the project."""
-from thermo_data import ThermoData
+from chimera.thermo_data import ThermoData
 
 # %% List of parameters
 thermo_var_names = ["T", "p_s"]                             # as read by stagyy

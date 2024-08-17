@@ -19,7 +19,6 @@ def test_field(example_dir):
     for var in "T", "p_s", "hz", "bs", "prim":
         f = load_field(sdat, var, -1)
         assert isinstance(f, np.ndarray)
-        # assert f.shape == (513, 96)
 
 def test_compositions_almost_one(example_dir):
     stag_path = f"{example_dir}/inputData/stagyyModel"

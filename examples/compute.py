@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from chimera_project import Project
-from functions import (
-    compute_vmodels,
-    export_vmodels,
-    geodynamic_to_thermoelastic,
-    initialize_vmodels,
+from chimera.chimera_project import Project
+from chimera.functions import (
+                               compute_vmodels,
+                               export_vmodels,
+                               geodynamic_to_thermoelastic,
+                               initialize_vmodels,
 )
 
 # %% input

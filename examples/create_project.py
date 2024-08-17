@@ -1,7 +1,7 @@
 """Here I show how to create a new project."""
 
 
-from chimera_project import Project
+from chimera.chimera_project import Project
 
 # %%
 proj = Project()

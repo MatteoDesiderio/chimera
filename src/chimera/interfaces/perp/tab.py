@@ -127,9 +127,9 @@ class Tab:
         else:
             vmin, vmax = None, None
 
-        if "vmin" not in kwargs.keys():
+        if "vmin" not in kwargs:
             kwargs["vmin"] = vmin
-        if "vmax" not in kwargs.keys():
+        if "vmax" not in kwargs:
             kwargs["vmax"] = vmax
         img = ax.pcolormesh(T, P, data.T, **kwargs)
         ax.set_title(self.tab["title"], loc="left")
@@ -176,7 +176,7 @@ class Tab:
 
     def remove_nans(self):
         for k, (f, n) in enumerate(zip(self.data, self.tab["fields"], strict=False)):
-            if n != "T(K)" and n != "P(bar)":
+            if n not in ("T(K)", "P(bar)"):
                 new = np.array(f)
                 for where in np.argwhere(np.isnan(f)):
                     i, j = where
