@@ -35,7 +35,7 @@ class ThermoData:
     def c_field_names(self, val):
         self._c_field_names = val
         cstagyy, cperplex = val
-        self.proj_names_dict = {k:v for k, v in zip(cstagyy, cperplex, strict=False)}
+        self.proj_names_dict = dict(zip(cstagyy, cperplex, strict=False))
 
     def import_tab(self):
         """

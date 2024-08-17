@@ -95,6 +95,14 @@ lint.ignore = [
     "ANN201", # return type annotation for functions 
     "ANN102", # return type annotation for classes as well
     "T201", # print found
+    "N806", # capital letters for variables deactivated for now
+    "N803", # in function args as well (will maybe change later)
+    "D100", # missing docstrings (ignore for now)
+    "D101", # missing docstrings (ignore for now)
+    "D102", # missing docstrings (ignore for now)
+    "D103", # missing docstrings (ignore for now)
+    "D104", # missing docstrings (ignore for now)
+    "D107", # missing docstrings (ignore for now)
 ]
 lint.per-file-ignores = {"tests*" = [
     "INP001", # File is part of an implicit namespace package.
