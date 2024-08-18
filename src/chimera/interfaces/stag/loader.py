@@ -86,4 +86,4 @@ def load_field(stagyydata, name, i):
                                         phyvars.FIELD_FILES,
                                         phyvars.FIELD_FILES_H5)
 
-    return snap_copy.fields[name].values.squeeze()
+    return snap_copy.fields[name].values.squeeze() # noqa: PD011

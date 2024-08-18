@@ -231,9 +231,10 @@ class Project:
                           np.ma.vstack(profiles["p_a"]["rms"])
 
             hets = {"z": z, "lims": ({"s_lim": s_lim, "p_lim": p_lim}),
-                        "t_indices": t_indices, "mod_name": vel_model_name,
-                        "prim": prim, "profs": profiles, "s": spr, "p": ppr, "rho": rho,
-                        "cor_b_s": cor_b_s, "r_sp_robust": r_sp_robust, "T": T, "T_a": T_a}
+                    "t_indices": t_indices, "mod_name": vel_model_name,
+                    "prim": prim, "profs": profiles, "s": spr, "p": ppr,
+                    "rho": rho, "cor_b_s": cor_b_s, "r_sp_robust": r_sp_robust,
+                    "T": T, "T_a": T_a}
 
             heterogeneity_dictionary[vel_model_name] = hets
 
@@ -250,6 +251,3 @@ class Project:
     def load(project_path):
         with open(project_path + "project_data.pkl", "rb") as f:
             return pickle.load(f)
-
-
-

@@ -42,7 +42,7 @@ class Field:
 
     @coords.setter
     def coords(self, value):
-        if len(value) != 2:
+        if len(value) != 2:            # noqa: PLR2004
             msg = "Coords must be a 2-elements tuple."
             raise TypeError(msg)
         self._coords = value
@@ -133,7 +133,7 @@ class Field:
             x, y = self.to_cartesian()
             old = np.c_[x, y]
             new = np.c_[xnew, ynew]
-            if self.proj._regular_rect_mesh:
+            if self.proj._regular_rect_mesh:                   # noqa: SLF001
                 r = self.coords[0]
                 theta = self.coords[1]
                 rnew, thetanew = to_polar(xnew, ynew)

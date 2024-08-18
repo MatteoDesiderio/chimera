@@ -3,6 +3,7 @@ from stagpy.stagyydata import StagyyData
 
 from chimera.interfaces.stag.loader import load_coords, load_field
 
+TOLERANCE_SUM_ONE = 0.01
 
 def test_coords(example_dir):
     stag_path = f"{example_dir}/inputData/stagyyModel"
@@ -30,4 +31,4 @@ def test_compositions_almost_one(example_dir):
         assert isinstance(f, np.ndarray)
         sum_compositional_fields += f
     difference = np.abs(np.mean(sum_compositional_fields) - 1)
-    assert  difference <= 0.01
+    assert  difference <= TOLERANCE_SUM_ONE

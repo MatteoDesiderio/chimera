@@ -30,8 +30,8 @@ def generate(n=200, min_max_lat=(-89, 89), min_max_lon=(-179, 179),
     names = [name + f"{k}" for k in range(len(lon_list))]
     nets = [network for k in range(len(lon_list))]
 
-    x = [f"{l:.3f}" for l in lat_list]
-    y = [f"{l:.3f}" for l in lon_list]
+    x = [f"{lat:.3f}" for lat in lat_list]
+    y = [f"{lat:.3f}" for lat in lon_list]
 
     z = ["0.0" for k in range(len(lon_list))]
 

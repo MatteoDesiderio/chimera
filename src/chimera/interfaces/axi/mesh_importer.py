@@ -59,8 +59,7 @@ class MeshImporter:
                         dtype=self.dtype)[:, :-1].T
         return x, y
 
-    def convert_to_numpy(self, path, autoname=True, exclude_core=True,
-                         r_core_km=3480.5):
+    def convert_to_numpy(self, path, autoname=True, r_core_km=3480.5):
         """
         Save the mesh as an array.
 
@@ -71,10 +70,6 @@ class MeshImporter:
         autoname : bool, optional
             If True the name of the .npy file is the same as the mesh name
             given by AxiSEM. Else, it can be specified. The default is True.
-        exclude_core : bool, optional
-            If True the point corresponding to the core are not saved.
-            if True, the radius of the core must be specified via r_core_km.
-            The default is True.
         r_core_km : float, optional
             The core radius in km. All points falling inside this radius will
             not be saved. The default is 3480.5

@@ -381,7 +381,7 @@ class VelocityModel:
     @staticmethod
     def load(vmodel_path):
         with open(vmodel_path + "v_model_data.pkl", "rb") as f:
-            return pickle.load(f)
+            return pickle.load(f) # noqa: S301
 
     def save(self, destination):
         with open(destination + "v_model_data.pkl", "wb") as outp:
@@ -436,12 +436,14 @@ class VelocityModel:
         fpath = destination + "/" + fname
         name, extension = fname.rsplit(".")
         if extension == "sph":
-            np.savetxt(fpath,data, header=str(len(data)), comments="", fmt=fmt)
+            np.savetxt(fpath,data, header=str(len(data)),
+                       comments="", fmt=fmt)
         elif os.path.exists(fpath):
             msg = "hdf5 file with this name already exists."
             raise OSError(msg)
         else:
-            for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"], strict=False):
+            for d, d_name in zip(data.T, ["r", "theta", "p", "s", "rho"],
+                strict=False):
                 with h5py.File(fpath, "a") as hf:
                     hf.create_dataset(d_name, data=d, dtype=dtype)
 
@@ -507,7 +509,8 @@ class VelocityModel:
         if plot_kwargs is None:
             plot_kwargs = {"color": "r"}
         if interp_kwargs is None:
-            interp_kwargs = {"kind": "linear", "bounds_error": False, "fill_value": "extrapolate"}
+            interp_kwargs = {"kind": "linear", "bounds_error": False,
+                             "fill_value": "extrapolate"}
         if variables is None:
             variables = ["s", "p", "rho"]
         if absolute:
@@ -571,7 +574,7 @@ class VelocityModel:
                     handle_mod = ax.plot(prof, zprof_km, **plot_kwargs)
 
         [ax.set_ylim((zprof_km.max(), zprof_km.min())) for ax in axs]
-        [ax.set_xlabel(l) for ax, l in zip(axs, labels, strict=False)]
+        [ax.set_xlabel(label) for ax, label in zip(axs, labels, strict=False)]
         axs[0].set_ylabel("Depth [km]")
         axs[-1].legend(handle_mod, ["Model"])
         plt.subplots_adjust(wspace=0)
@@ -653,7 +656,7 @@ class VelocityModel:
         r = np.reshape(self.r, shape)[0]
         data = np.reshape(getattrfrommod(self, var), shape).T
 
-        _data = data - np.mean(data, axis=1)[:, np.newaxis] if demean else data
+        _data = data - np.mean(data, axis=1)[:,np.newaxis] if demean else data
 
         spectrum_r = np.fft.rfft(_data, axis=1, **fft_kwargs)
         fax = np.fft.rfftfreq(len(lat), lat[1] - lat[0])

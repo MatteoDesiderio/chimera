@@ -31,7 +31,7 @@ discr                 format of heterogeneity reading: const, discr, funct, ica
 {}                     fname for discrete het., not used if not discr above
 iso                                                anisotropy: iso, radial, hex
 abs                     relative perturbations or absolute velocities: rel, abs
-200.   p value for inverse distance weighting (if > 100, only nearest neighbour interpolation: FAST)
+200. p value for inverse distance weighting. If>100, only nearest neighbour interp:FAST
 0.             maximum radius of inverse distance weighting (0 = infinite) [km]
 ######4###################
 ica                   format of heterogeneity reading: const, discr, funct, ica
