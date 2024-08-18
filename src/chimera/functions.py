@@ -23,7 +23,8 @@ def _checker(shape,
     T_[T_ == 1] = Tmax
     return T_
 
-def initialize_vmodels(proj, interp_type, checker_board_params=None):
+def initialize_vmodels(proj, interp_type,                      # noqa: C901
+                       checker_board_params=None):
 
     # load axisem high resolution grid, if wanted
     x, y = proj.get_mesh_xy()
@@ -355,7 +356,7 @@ def _check_all_exist(thermodata, save_path):
     for tab, _f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
         nm = save_path + tab.tab["title"]
         for v in ["rho", "K", "G"]:
-            exist.append(os.path.exists(nm + "_" + v + ".npy"))
+            exist.append(os.path.exists(nm + "_" + v + ".npy"))     # noqa: PERF401
     # conservatively, we will redo the look-up for all elastic
     # properties and all tab files if even a single 1 of these things
     # is missing

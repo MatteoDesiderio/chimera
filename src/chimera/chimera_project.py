@@ -74,7 +74,7 @@ class Project:
             self._custom_mesh_shape = None
             msg = ("Quick mode activated, but mesh shape provided: "
                    "custom_mesh_shape has been set to None.")
-            warnings.warn(msg)
+            warnings.warn(msg, stacklevel=2)
         else:
             self._custom_mesh_shape = val
 
@@ -151,14 +151,14 @@ class Project:
                     self._regular_rect_mesh = True
                     msg = ("Mesh reshaped into provided shape. "
                            "Please, check quality of result.")
-                    warnings.warn(msg)
+                    warnings.warn(msg, stacklevel=2)
                 except ValueError:
                     self._regular_rect_mesh = False
                     self.custom_mesh_shape = None
                     msg = ("cannot reshape mesh into provided shape."
                            "Continuing assuming non-rectangular, "
                            "axisem-like mesh: custom_mesh_shape set to None.")
-                    warnings.warn(msg)
+                    warnings.warn(msg, stacklevel=2)
 
         return mesh_x, mesh_y
 

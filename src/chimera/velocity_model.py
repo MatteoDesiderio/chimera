@@ -381,7 +381,7 @@ class VelocityModel:
     @staticmethod
     def load(vmodel_path):
         with open(vmodel_path + "v_model_data.pkl", "rb") as f:
-            return pickle.load(f) # noqa: S301
+            return pickle.load(f)
 
     def save(self, destination):
         with open(destination + "v_model_data.pkl", "wb") as outp:

@@ -29,7 +29,7 @@ class ThermoElasticField:
         self.K = None
         self.G = None
 
-    def extract(self, inds, model_name):
+    def extract(self, inds, model_name):               # noqa: ARG002
         """
 
 

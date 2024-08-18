@@ -85,34 +85,38 @@ testpaths = [
 fix = true
 force-exclude = true
 lint.ignore = [
-    "COM812", # trailing commas (ruff-format recommended)
-    "D100",   # missing docstrings (ignore for now)
-    "D101",   # missing docstrings (ignore for now)
-    "D102",   # missing docstrings (ignore for now)
-    "D103",   # missing docstrings (ignore for now)
-    "D104",   # missing docstrings (ignore for now)
-    "D107",   # missing docstrings (ignore for now)
-    "D205",   # no blank line between summary-description in doc
-    "D203",   # no-blank-line-before-class
-    "D212",   # multi-line-summary-first-line
-    "D401",   # non-imperative mood in doc string (ignore for now)
-    "D404",   # doc string begins with 'This'
-    "D407",   # removed dashes lines under sections
-    "D417",   # argument description in docstring (unreliable)
-    "ISC001", # simplify implicit str concatenation (ruff-format recommended)
-    "ANN001", # type annotation for function arguments 
-    "ANN201", # return type annotation for functions 
-    "ANN102", # return type annotation for classes as well
-    "T201",   # print found
-    "N802",   # function names should be lower case
-    "N803",   # argument names should be lower case
-    "N806",   # variable names should be lower case
-    "TD",     # all rules about badly formatted TODO
-    "FIX",    # HACK / TODO detected, consider fixing (ignore for now)
-    "SIM105", # suppressible exception
-    "FBT002", # boolean-default-value-positional-argument (for now)
-    "PTH",    # os and glob instead of recommended Path (ignore for now) 
-    "PLR0913" # too many arguments (>5) in function def (ignore for now)
+    "COM812",   # trailing commas (ruff-format recommended)
+    "D100",     # missing docstrings (ignore for now)
+    "D101",     # missing docstrings (ignore for now)
+    "D102",     # missing docstrings (ignore for now)
+    "D103",     # missing docstrings (ignore for now)
+    "D104",     # missing docstrings (ignore for now)
+    "D107",     # missing docstrings (ignore for now)
+    "D205",     # no blank line between summary-description in doc
+    "D203",     # no-blank-line-before-class
+    "D212",     # multi-line-summary-first-line
+    "D401",     # non-imperative mood in doc string (ignore for now)
+    "D404",     # doc string begins with 'This'
+    "D407",     # removed dashes lines under sections
+    "D417",     # argument description in docstring (unreliable)
+    "ISC001",   # simplify implicit str concatenation (ruff-format recommended)
+    "ANN001",   # type annotation for function arguments 
+    "ANN201",   # return type annotation for functions 
+    "ANN102",   # return type annotation for classes as well
+    "T201",     # print found
+    "N802",     # function names should be lower case
+    "N803",     # argument names should be lower case
+    "N806",     # variable names should be lower case
+    "N816",     # variable names should not be mixedCase
+    "TD",       # all rules about badly formatted TODO
+    "FIX",      # HACK / TODO detected, consider fixing (ignore for now)
+    "SIM105",   # suppressible exception
+    "FBT002",   # boolean-default-value-positional-argument (for now)
+    "PTH",      # os and glob instead of recommended Path (ignore for now) 
+    "PLR0913",  # too many arguments (>5) in function def (ignore for now)
+    "PLR0912",  # Too many branches (15 > 12) (will refactor later anyway)
+    "PLR0915",  # Too many statements (59 > 50) (ignore for now)
+    "S301"      # Suspicious-pickle-usage (will change this later)
 ]
 lint.per-file-ignores = {"tests*" = [
     "INP001", # File is part of an implicit namespace package.

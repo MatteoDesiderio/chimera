@@ -24,7 +24,7 @@ def set_renormalized_fields(list_of_fields):
     # TODO: fix case where sum_ = 0
     # (all molten: Bs=Hz=Pr=0)
     for f in list_of_fields:
-        sum_ += f.values
+        sum_ += f.values        # noqa: PD011
     for f in list_of_fields:
         f.values /= sum_
 
