@@ -37,7 +37,6 @@ repos:
         types: [python]
         exclude: |
             (?x)^(
-                examples/|
                 README.md|
                 .gitignore|
                 scripts/submit.csh
