@@ -460,5 +460,3 @@ echo $mainrundir
 echo ".... the post-processing input file param_post_processing is generated in the solver"
 echo ".... based on guesses. Edit please."
 echo " ~ ~ ~ ~ ~ ~ ~ h a n g   o n   &   l o o s e ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~"
-
-
