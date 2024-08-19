@@ -172,3 +172,6 @@ legacy_tox_ini = """
         py311
         py312
 """
+
+[tool.end_of_file_fixer]
+exclude = ["README.md"]
