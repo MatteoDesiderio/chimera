@@ -33,12 +33,12 @@ class Field:
         if len(value) != 2:            # noqa: PLR2004
             msg = "Coords must be a 2-elements tuple."
             raise TypeError(msg)
-        self._coords = value    
+        self._coords = value
 
     @property
     def values(self):
         return self._values
-        
+
     @values.setter
     def values(self, value):
         self._values = value
