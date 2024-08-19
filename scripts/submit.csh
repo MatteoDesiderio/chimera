@@ -84,7 +84,7 @@ set newqueue = 'false'
 if ( "$2" == '-q') then
     set queue = $3
     set newqueue = 'true'
-	echo "Submitting to queue type" $queue
+    echo "Submitting to queue type" $queue
 endif
 
 set multisrc = 'false'
@@ -318,7 +318,7 @@ foreach isim (${srcapp})
 
         ######## slurm  #######
         else if ( $queue == 'slurmlocal' ) then 
-        	aprun -n $nodnum ./axisem >& $outputname &
+            aprun -n $nodnum ./axisem >& $outputname &
         
         else if ( $queue == 'slurm' ) then 
 
@@ -343,7 +343,7 @@ foreach isim (${srcapp})
 
         ######## TORQUE/MAUI SCHEDULER #######
         else if ( $queue == 'torque' ) then 
-	        # this is a crazy line, but with pure integer division its hard to handle.
+            # this is a crazy line, but with pure integer division its hard to handle.
             #set nodes = `echo ${nodnum} | awk '{printf "%.0f\n", $1/16+0.49}'`
 
             echo "# Sample PBS for parallel jobs" > run_solver.pbs
