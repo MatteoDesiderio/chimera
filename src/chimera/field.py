@@ -28,9 +28,20 @@ class Field:
     def coords(self):
         return self._coords
 
+    @coords.setter
+    def coords(self, value):
+        if len(value) != 2:            # noqa: PLR2004
+            msg = "Coords must be a 2-elements tuple."
+            raise TypeError(msg)
+        self._coords = value    
+
     @property
     def values(self):
         return self._values
+        
+    @values.setter
+    def values(self, value):
+        self._values = value
 
     @property
     def polar(self):
@@ -40,16 +51,6 @@ class Field:
     def polar(self, value):
         self._polar = value
 
-    @coords.setter
-    def coords(self, value):
-        if len(value) != 2:            # noqa: PLR2004
-            msg = "Coords must be a 2-elements tuple."
-            raise TypeError(msg)
-        self._coords = value
-
-    @values.setter
-    def values(self, value):
-        self._values = value
 
     def to_cartesian(self):
         """

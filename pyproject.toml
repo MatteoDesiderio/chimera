@@ -70,6 +70,7 @@ paths.source = [
 
 [tool.mypy]
 explicit_package_bases = true
+allow_redefinition = true
 
 [tool.pytest.ini_options]
 addopts = [

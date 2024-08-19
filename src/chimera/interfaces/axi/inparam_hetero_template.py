@@ -20,7 +20,7 @@ funct                 format of heterogeneity reading: const, discr, funct, ica
 spher            function type: sinus, gauss, trian, gss1d, inclp, inclr, const
 .true.                   variation in elastic properties increasing with depth?
 .false.                                                                gradient
-300., 0.	       	       gradient width on top and at bottom of heterogeneity
+300., 0.                   gradient width on top and at bottom of heterogeneity
 3685000., 5685000.           minimum/maximum radius of heterogeneous region [m]
 30., 60.               minimum/maximum colatitude of heterogeneous region [deg]
 0.        delta rho (density perturbation) in % with respect to reference model
