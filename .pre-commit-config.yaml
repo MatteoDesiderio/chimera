@@ -34,6 +34,15 @@ repos:
         args:
           - --fix=lf
       - id: trailing-whitespace
+        types: [python]
+        exclude: |
+            (?x)^(
+                examples/|
+                README.md|
+                .gitignore|
+                scripts/submit.csh
+            )$
+
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.28.6
     hooks:
