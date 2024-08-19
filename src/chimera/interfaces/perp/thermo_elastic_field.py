@@ -10,8 +10,10 @@ def _TP_to_xy(T_tab, P_tab):
     x, y = np.meshgrid(T_tab, P_tab)
     return x.flatten(), y.flatten()
 
+
 def _gridder(x, y, T_axi, P_axi, field_tab, kwargs):
     return griddata(np.c_[x, y], field_tab.flatten(), (T_axi, P_axi), **kwargs)
+
 
 @njit(parallel=True)
 def _store(inds, fld):
@@ -21,6 +23,7 @@ def _store(inds, fld):
         arr[i] = fld[inds[i][0]]
     return arr
 
+
 class ThermoElasticField:
     def __init__(self, tab=None, label=None):
         self.tab = tab
@@ -29,7 +32,7 @@ class ThermoElasticField:
         self.K = None
         self.G = None
 
-    def extract(self, inds, model_name):               # noqa: ARG002
+    def extract(self, inds, model_name):  # noqa: ARG002
         """
 
 
@@ -54,7 +57,7 @@ class ThermoElasticField:
     def save(self, path):
         fname = path + self.tab.tab["title"] + "_"
         print(f"Saving as {fname}<parameter>.npy")
-        np.save(fname + "rho",  self.rho)
+        np.save(fname + "rho", self.rho)
         np.save(fname + "K", self.K)
         np.save(fname + "G", self.G)
         print("Done for rho [kg/m^3], Ks [bar], Gs [bar]")
@@ -75,8 +78,7 @@ class ThermoElasticField:
             DESCRIPTION.
 
         """
-        print("Creating a tree out of the P, T range of the thermodynamic",
-              "dataset")
+        print("Creating a tree out of the P, T range of the thermodynamic", "dataset")
         T, P = tab.data[:2]
         # since stagyy is in Pa, convert P [bar]->[Pa])
         P *= 1e5

@@ -36,11 +36,11 @@ repos:
       - id: trailing-whitespace
         types: [python]
         exclude: |
-            (?x)^(
-                README.md|
-                .gitignore|
-                scripts/submit.csh
-            )$
+          (?x)^(
+              README.md|
+              .gitignore|
+              scripts/submit.csh
+          )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.28.6

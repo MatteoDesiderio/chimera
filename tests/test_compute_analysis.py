@@ -3,6 +3,7 @@ Created on Fri Aug 16 12:08:51 2024.
 
 @author: matteo
 """
+
 from numpy import all as np_all
 from numpy import loadtxt
 
@@ -32,16 +33,15 @@ def test_correct_result(project_path, ground_truth_vel_anomaly_dir):
     temporary_path = project_path.as_posix()
 
     project = Project.load(f"{temporary_path}/temporary_project/")
-    new_sph_path = (f"{project.chimera_project_path}/temporary_project/"
-                     "/stagyyModel/2/seism_vel-fields/")
-
+    new_sph_path = (
+        f"{project.chimera_project_path}/temporary_project/"
+        "/stagyyModel/2/seism_vel-fields/"
+    )
 
     fname_sph = "geodynamic_hetfile.sph"
     print(f"{new_sph_path}/{fname_sph}")
     print("|" * 70)
-    newSph = loadtxt(f"{new_sph_path}/{fname_sph}",
-                     skiprows=1)
-    truthSph = loadtxt(f"{ground_truth_vel_anomaly_dir}/{fname_sph}",
-                       skiprows=1)
+    newSph = loadtxt(f"{new_sph_path}/{fname_sph}", skiprows=1)
+    truthSph = loadtxt(f"{ground_truth_vel_anomaly_dir}/{fname_sph}", skiprows=1)
 
-    assert(np_all(newSph == truthSph))
+    assert np_all(newSph == truthSph)

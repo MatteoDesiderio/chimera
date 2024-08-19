@@ -11,21 +11,23 @@ from .utils import set_renormalized_fields
 from .velocity_model import VelocityModel
 
 
-def _checker(shape,
-             a1=1.0, a2=0.0, freq1=10, freq2=10, Tmin=1600.0, Tmax=3100.0):
+def _checker(shape, a1=1.0, a2=0.0, freq1=10, freq2=10, Tmin=1600.0, Tmax=3100.0):
     a1 = min(1.0, np.abs(a1))
     a2 = min(1.0, np.abs(a2))
-    a = a1*np.sin( np.indices(shape)[0] / (shape[0] / freq1) )
-    b = a2*np.cos( np.indices(shape)[1] / (shape[1] / freq2) )
+    a = a1 * np.sin(np.indices(shape)[0] / (shape[0] / freq1))
+    b = a2 * np.cos(np.indices(shape)[1] / (shape[1] / freq2))
     T_ = (a + b) / (a1 + a2)
     T_ = np.ceil(T_)
     T_[T_ == 0] = Tmin
     T_[T_ == 1] = Tmax
     return T_
 
-def initialize_vmodels(proj, interp_type,                      # noqa: C901
-                       checker_board_params=None):
 
+def initialize_vmodels(
+    proj,
+    interp_type,
+    checker_board_params=None,
+):
     # load axisem high resolution grid, if wanted
     x, y = proj.get_mesh_xy()
 
@@ -34,20 +36,22 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
         print(f"Quick Mode on: overriding interp_type to '{interp_type}'.")
     else:
         print("Using external mesh.")
-        if proj._regular_rect_mesh:                          # noqa: SLF001
+        if proj._regular_rect_mesh:  # noqa: SLF001
             print("Provided mesh is rectangular.")
 
     if proj.test_mode_on:
         if checker_board_params is None:
             checker_board_params = [1.0, 0.0, 10, 10, 1600.0, 3100.0]
 
-        print("Test Mode: 'time_span_Gy' and 'stagyy_model_names' ",
-              "were used but bear no meaning. Stagyy model is used to load ",
-              "coordinates and P, but T field is a checkerboard, ",
-              "while the comp field is all pyrolitic")
-        for model_name, thermo_name in zip(proj.stagyy_model_names,
-                                           proj.thermo_data_names, strict=False):
-
+        print(
+            "Test Mode: 'time_span_Gy' and 'stagyy_model_names' ",
+            "were used but bear no meaning. Stagyy model is used to load ",
+            "coordinates and P, but T field is a checkerboard, ",
+            "while the comp field is all pyrolitic",
+        )
+        for model_name, thermo_name in zip(
+            proj.stagyy_model_names, proj.thermo_data_names, strict=False
+        ):
             print("Initializing variables and compositional fields")
             thermodata = ThermoData.load(proj.thermo_data_path + thermo_name)
             variables = [Field(proj, v) for v in thermodata.thermo_var_names]
@@ -65,7 +69,7 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                 sdat = stagyydata.StagyyData(proj.stagyy_path + model_name)
                 for v in variables:
                     v.coords = loader.load_coords(sdat)
-                    shape = ( len(v.coords[1]), len(v.coords[0]) )
+                    shape = (len(v.coords[1]), len(v.coords[0]))
                     if v.name == "T":
                         v.values = _checker(shape, *checker_board_params)
                     else:
@@ -76,15 +80,16 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                     if f.name == "prim":
                         f.values = np.zeros(shape)
                     elif f.name == "hz":
-                        f.values = np.ones(shape) * .8
+                        f.values = np.ones(shape) * 0.8
                     elif f.name == "bs":
-                        f.values = np.ones(shape) * .2
+                        f.values = np.ones(shape) * 0.2
 
                 # renormalize compositional fields
                 set_renormalized_fields(fields)
 
-                v_model = VelocityModel(model_name, i_t, t, x, y,
-                                        proj.c_field_names[0], proj)
+                v_model = VelocityModel(
+                    model_name, i_t, t, x, y, proj.c_field_names[0], proj
+                )
                 # interpolating stagyy fields on larger axisem grid
 
                 v_model.T = variables[0].interpolate(interp_type, x, y)
@@ -103,8 +108,7 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                 print()
 
     else:
-        zipnames = zip(proj.stagyy_model_names,
-                       proj.thermo_data_names, strict=False)
+        zipnames = zip(proj.stagyy_model_names, proj.thermo_data_names, strict=False)
         # load data from stagyy with stagpy into fields
         # TODO speed up the process by loading coords, fields at the same time
         for model_name, thermo_name in zipnames:
@@ -124,12 +128,18 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
             model_path = parent_path + model_name
             print("Data will be saved in", model_path)
             indices, years = proj.t_indices[model_name], proj.time_span_Gy
-            print("for each of time steps in", years,
-                  "Gy, corresponding to indices", indices)
+            print(
+                "for each of time steps in",
+                years,
+                "Gy, corresponding to indices",
+                indices,
+            )
 
             print(f"The thermodynamic dataset '{thermo_name}' will be used,")
-            print(f"located in {proj.thermo_data_path} "
-                   "and containing reference to the tab files:")
+            print(
+                f"located in {proj.thermo_data_path} "
+                "and containing reference to the tab files:"
+            )
             print(*thermodata.c_field_names[1])
             print()
             for i_t, t in zip(indices, years, strict=False):
@@ -139,14 +149,16 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                 for v, key in zip(variables, lims, strict=False):
                     a_min, a_max = lims[key]
                     v.coords = loader.load_coords(sdat)
-                    print(f"Clamping {key} between {a_min:.1e} "
-                           " and {a_max:.1e} [SI units]")
-                    v.values = np.clip(loader.load_field(sdat, v.name, i_t),
-                                       a_min, a_max)
+                    print(
+                        f"Clamping {key} between {a_min:.1e} "
+                        " and {a_max:.1e} [SI units]"
+                    )
+                    v.values = np.clip(
+                        loader.load_field(sdat, v.name, i_t), a_min, a_max
+                    )
 
                 rho_stagyy.coords = loader.load_coords(sdat)
-                rho_stagyy.values = loader.load_field(sdat, rho_stagyy.name,
-                                                      i_t)
+                rho_stagyy.values = loader.load_field(sdat, rho_stagyy.name, i_t)
 
                 for f in fields:
                     f.coords = loader.load_coords(sdat)
@@ -156,11 +168,11 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                 set_renormalized_fields(fields)
 
                 print("Initializing velocity model for", t, "Gy")
-                v_model = VelocityModel(model_name, i_t, t, x, y,
-                                        thermodata.c_field_names[0], proj)
+                v_model = VelocityModel(
+                    model_name, i_t, t, x, y, thermodata.c_field_names[0], proj
+                )
                 # interpolating stagyy fields on larger axisem grid
-                print("Interpolating stagyy variables",
-                      "and fields on axisem mesh")
+                print("Interpolating stagyy variables", "and fields on axisem mesh")
                 v_model.T = variables[0].interpolate(interp_type, x, y)
                 v_model.P = variables[1].interpolate(interp_type, x, y)
                 v_model.rho_stagyy = rho_stagyy.interpolate(interp_type, x, y)
@@ -177,6 +189,7 @@ def initialize_vmodels(proj, interp_type,                      # noqa: C901
                 print("Done")
                 print("-" * 50)
 
+
 def geodynamic_to_thermoelastic(proj):
     """
 
@@ -191,13 +204,11 @@ def geodynamic_to_thermoelastic(proj):
     None.
 
     """
-    zip_names = zip(proj.stagyy_model_names,
-                    proj.thermo_data_names, strict=False)
+    zip_names = zip(proj.stagyy_model_names, proj.thermo_data_names, strict=False)
     # in principle, there might be a different thermo data set 4 each model
     if _all_equals(proj.thermo_data_names):
         print("The same thermodynamic dataset was assigned to all models")
-        _thermodata = ThermoData.load(proj.thermo_data_path +
-                                      proj.thermo_data_names[0])
+        _thermodata = ThermoData.load(proj.thermo_data_path + proj.thermo_data_names[0])
         _tree = ThermoElasticField.get_tree(_thermodata.tabs[0])
     else:
         _tree, _thermodata = None, None
@@ -211,8 +222,7 @@ def geodynamic_to_thermoelastic(proj):
         print(proj.thermo_data_path + thermo_name)
         print()
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
-        print("Time steps: ", years,
-              "Gy, corresponding to indices", indices)
+        print("Time steps: ", years, "Gy, corresponding to indices", indices)
         print()
 
         if _thermodata is _tree is None:
@@ -235,19 +245,23 @@ def geodynamic_to_thermoelastic(proj):
                 print("Loading P, T from velocity model saved in\n", v_path)
                 T, P = v_model.T, v_model.P
                 inds = ThermoElasticField.get_indices(tree, T, P)
-                for tab,f in zip(thermodata.tabs,
-                                 thermodata.c_field_names[0], strict=False):
+                for tab, f in zip(
+                    thermodata.tabs, thermodata.c_field_names[0], strict=False
+                ):
                     print(f"... working on {f} ...")
                     thermo_field = ThermoElasticField(tab, f)
                     thermo_field.extract(inds, model_name)
                     thermo_field.save(save_path)
             else:
-                print("It looks like everything was already done for",
-                      "this model at time step %i." % i_t)
+                print(
+                    "It looks like everything was already done for",
+                    "this model at time step %i." % i_t,
+                )
 
             print("Done")
             print("-" * 76)
-        print("+"*76)
+        print("+" * 76)
+
 
 def compute_vmodels(proj, use_stagyy_rho=False):
     """
@@ -277,8 +291,9 @@ def compute_vmodels(proj, use_stagyy_rho=False):
         print("Loading velocity models obtained from", model_path)
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
         print("using the perplex tables saved as ", thermo_path)
-        print("for each of time steps in", years,
-              "Gy, corresponding to indices", indices)
+        print(
+            "for each of time steps in", years, "Gy, corresponding to indices", indices
+        )
         print()
 
         thermodata = ThermoData.load(thermo_path)
@@ -290,8 +305,9 @@ def compute_vmodels(proj, use_stagyy_rho=False):
 
             moduli_location = snap_path + proj.elastic_path
             print("Averaging rho, K, G")
-            v_model.average(*v_model.load_moduli(moduli_location,
-                                                 thermodata.proj_names_dict))
+            v_model.average(
+                *v_model.load_moduli(moduli_location, thermodata.proj_names_dict)
+            )
 
             print("Computing seismic velocities")
             v_model.compute_velocities(use_stagyy_rho)
@@ -300,15 +316,21 @@ def compute_vmodels(proj, use_stagyy_rho=False):
             v_model.save(v_path)
 
             print("Done")
-            print("-"*76)
+            print("-" * 76)
 
-        print("%i/%i models done" % (count,
-                                     len(proj.stagyy_model_names)))
-        print("+"*76)
+        print("%i/%i models done" % (count, len(proj.stagyy_model_names)))
+        print("+" * 76)
     return v_model_paths
 
-def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
-                                               fname="geodynamic_hetfile.sph"):
+
+def export_vmodels(
+    proj,
+    absolute=True,
+    fac=100,
+    fmt="%.2f",
+    dtype="float32",
+    fname="geodynamic_hetfile.sph",
+):
     """
 
     Parameters
@@ -336,8 +358,9 @@ def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
         model_path = parent_path + model_name
         print("Loading velocity models from", model_path)
         indices, years = proj.t_indices[model_name], proj.time_span_Gy
-        print("for each of time steps in", years,
-              "Gy, corresponding to indices", indices)
+        print(
+            "for each of time steps in", years, "Gy, corresponding to indices", indices
+        )
         print()
         for i_t, _t in zip(indices, years, strict=False):
             snap_path = model_path + f"/{i_t}/"
@@ -350,16 +373,18 @@ def export_vmodels(proj, absolute=True, fac=100, fmt="%.2f", dtype="float32",
             print("----------------------------------------------------------")
             print()
 
+
 def _check_all_exist(thermodata, save_path):
     exist = []
     for tab, _f in zip(thermodata.tabs, thermodata.c_field_names[0], strict=False):
         nm = save_path + tab.tab["title"]
         for v in ["rho", "K", "G"]:
-            exist.append(os.path.exists(nm + "_" + v + ".npy"))     # noqa: PERF401
+            exist.append(os.path.exists(nm + "_" + v + ".npy"))  # noqa: PERF401
     # conservatively, we will redo the look-up for all elastic
     # properties and all tab files if even a single 1 of these things
     # is missing
     return np.all(exist)
+
 
 def _all_equals(x):
     return x.count(x[0]) == len(x)

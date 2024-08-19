@@ -30,7 +30,7 @@ class Field:
 
     @coords.setter
     def coords(self, value):
-        if len(value) != 2:            # noqa: PLR2004
+        if len(value) != 2:  # noqa: PLR2004
             msg = "Coords must be a 2-elements tuple."
             raise TypeError(msg)
         self._coords = value
@@ -51,7 +51,6 @@ class Field:
     def polar(self, value):
         self._polar = value
 
-
     def to_cartesian(self):
         """
 
@@ -68,7 +67,7 @@ class Field:
         x, y = np.real(z).flatten(), np.imag(z).flatten()
         return x, y
 
-# TODO remove split, because you need both halves actually. AxiSEM rotates.
+    # TODO remove split, because you need both halves actually. AxiSEM rotates.
     def split(self, edge_pad_perc=0.25):
         """
         Splits the model in two portions (a left one and right one).
@@ -95,17 +94,17 @@ class Field:
         # then i take a portion of that half defined by my percentage
         dx_2 = int(edge_pad_perc * nth_2)
         # the stuff that's on top appears at the bottom and viceversa
-        left_half = np.roll(self.values, -dx_2, axis=0)[nth_2 - 2 * dx_2:]
-        right_half = np.roll(self.values, dx_2, axis=0)[:nth_2 + 2 * dx_2]
+        left_half = np.roll(self.values, -dx_2, axis=0)[nth_2 - 2 * dx_2 :]
+        right_half = np.roll(self.values, dx_2, axis=0)[: nth_2 + 2 * dx_2]
         r, theta = self.coords
         # I need to decide whether I want to tak that from the existing
         # attributes or if I want to recreate them
-        theta_r = np.roll(theta, -dx_2)[nth_2 - 2 * dx_2:]
-        theta_l = np.roll(theta, dx_2)[:nth_2 + 2 * dx_2]
+        theta_r = np.roll(theta, -dx_2)[nth_2 - 2 * dx_2 :]
+        theta_l = np.roll(theta, dx_2)[: nth_2 + 2 * dx_2]
         fields = [Field(), Field()]
-        for fld, half, coord in zip(fields,
-                                    [left_half, right_half],
-                                    [(r, theta_l), (r, theta_r)], strict=False):
+        for fld, half, coord in zip(
+            fields, [left_half, right_half], [(r, theta_l), (r, theta_r)], strict=False
+        ):
             fld.values = half
             fld.coords = coord
 
@@ -134,16 +133,16 @@ class Field:
             x, y = self.to_cartesian()
             old = np.c_[x, y]
             new = np.c_[xnew, ynew]
-            if self.proj._regular_rect_mesh:                   # noqa: SLF001
+            if self.proj._regular_rect_mesh:  # noqa: SLF001
                 r = self.coords[0]
                 theta = self.coords[1]
                 rnew, thetanew = to_polar(xnew, ynew)
                 rnew = rnew.reshape(self.proj.custom_mesh_shape)[0]
-                thetanew = thetanew.reshape(self.proj.custom_mesh_shape)[:,0]
-                x_is_coarse = (np.abs(np.diff(r).min()) <
-                               np.abs(np.diff(rnew).min()) )
-                y_is_coarse = (np.abs(np.diff(theta).min()) <
-                               np.abs(np.diff(thetanew).min()) )
+                thetanew = thetanew.reshape(self.proj.custom_mesh_shape)[:, 0]
+                x_is_coarse = np.abs(np.diff(r).min()) < np.abs(np.diff(rnew).min())
+                y_is_coarse = np.abs(np.diff(theta).min()) < np.abs(
+                    np.diff(thetanew).min()
+                )
                 if x_is_coarse or y_is_coarse:
                     downsampler = Downsampler(r, theta, rnew, thetanew)
                     old, z = downsampler.downsample(z)
@@ -155,8 +154,7 @@ class Field:
                     # otherwise, the result is already sampled
                     # In the future I will pick one method and delete this if
                     if old is not None:
-                        interpolated = griddata(old, z,
-                                                new, method=interp_type)
+                        interpolated = griddata(old, z, new, method=interp_type)
                     else:
                         interpolated = z
                 else:

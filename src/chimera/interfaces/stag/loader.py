@@ -2,6 +2,7 @@
 Simple wrappers to load coordinates and field data via stagpy.
 This assumes 2D yz spherical geometry.
 """
+
 from types import MappingProxyType
 
 from stagpy import phyvars
@@ -80,10 +81,12 @@ def load_field(stagyydata, name, i):
     snap = stagyydata.snaps[i]
     snap_copy = Step(snap.istep, snap.sdat)
 
-    snap_copy.fields = CustomStagFields(snap,
-                                        phyvars.FIELD,
-                                        phyvars.FIELD_EXTRA,
-                                        phyvars.FIELD_FILES,
-                                        phyvars.FIELD_FILES_H5)
+    snap_copy.fields = CustomStagFields(
+        snap,
+        phyvars.FIELD,
+        phyvars.FIELD_EXTRA,
+        phyvars.FIELD_FILES,
+        phyvars.FIELD_FILES_H5,
+    )
 
-    return snap_copy.fields[name].values.squeeze() # noqa: PD011
+    return snap_copy.fields[name].values.squeeze()  # noqa: PD011

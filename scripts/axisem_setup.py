@@ -2,6 +2,7 @@
 generate a list of names for the axisem runs that can be read with by the
 runmanager provided here.
 """
+
 import sys
 
 from numpy import savetxt
@@ -11,15 +12,17 @@ from chimera.chimera_project import Project
 
 def collect_arguments():
     if sys.argv[1] in ("--help", "-h"):
-        message = ("1st argument)  Absolute path to AxiSEM SOLVER folder\n"
-                   "2nd argument)  Absolute path to chimera project\n"
-                   )
+        message = (
+            "1st argument)  Absolute path to AxiSEM SOLVER folder\n"
+            "2nd argument)  Absolute path to chimera project\n"
+        )
 
         print(message)
 
         return None
 
     return sys.argv[1:]
+
 
 def run(SOLVER_path, proj_path):
     proj = Project.load(proj_path)
@@ -34,10 +37,19 @@ def run(SOLVER_path, proj_path):
         name = key.rstrip("/")
         indices = proj.t_indices[key]
         for year, index in zip(years, indices, strict=False):
-            line1 = (proj_path + "/%s/%i" % (name, index) +
-                    vel_model_path + "geodynamic_hetfile.sph")
-            line2 = "%s-%s-%s-%1.2f-%i" % (proj.bg_model, name, thermo_info,
-                                        year, index)
+            line1 = (
+                proj_path
+                + "/%s/%i" % (name, index)
+                + vel_model_path
+                + "geodynamic_hetfile.sph"
+            )
+            line2 = "%s-%s-%s-%1.2f-%i" % (
+                proj.bg_model,
+                name,
+                thermo_info,
+                year,
+                index,
+            )
             lines += [line1 + " " + line2]
 
     listname = proj.project_name + "-runList"
@@ -56,6 +68,7 @@ def run(SOLVER_path, proj_path):
     #./submit.csh $run_name
     done
     """)
+
 
 if __name__ == "__main__":
     arguments = collect_arguments()

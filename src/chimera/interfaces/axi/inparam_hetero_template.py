@@ -4,8 +4,7 @@ Created on Thu Sep 15 16:39:26 2022.
 @author: matteo
 """
 
-inparam_hetero = (
-"""3                                                  number of heterogeneities
+inparam_hetero = """3                                 number of heterogeneities
 .false.            overlapping heterogeneities: true - add up, false - use last
 ######1###################
 rndm                  format of heterogeneity reading: const, discr, funct, ica
@@ -41,4 +40,4 @@ ica                   format of heterogeneity reading: const, discr, funct, ica
 -0.0028, -0.0185, 0.0537                                    a, b, c first slice
 0., 0.                              fast axis direction theta, phi, first slice
 0., 0., 0.                                                 a, b, c second slice
-""")
+"""

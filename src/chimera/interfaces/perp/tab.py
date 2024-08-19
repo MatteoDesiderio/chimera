@@ -6,13 +6,17 @@ from numpy import ma
 
 MIN_I_FIELD_INDEX = 2
 
+
 def _fix_i_field(i_field):
     if i_field < MIN_I_FIELD_INDEX:
-        msg = ("The specified index pointed to the independent "
-               "variables. The index has been automatically "
-               "to the minimum acceptable value")
+        msg = (
+            "The specified index pointed to the independent "
+            "variables. The index has been automatically "
+            "to the minimum acceptable value"
+        )
         raise Warning(msg)
     return max(2, i_field)
+
 
 def _interp_nans(arr, x, y):
     nr, nc = arr.shape
@@ -20,14 +24,14 @@ def _interp_nans(arr, x, y):
     dist = 1
     x1, x2 = max(0, x - dist), min(nr, x + 1 + dist)
     y1, y2 = max(0, y - dist), min(nc, y + 1 + dist)
-    square = np.array(arr[x1: x2, y1:y2])
+    square = np.array(arr[x1:x2, y1:y2])
 
     # if all elements in this square are NaNs, make it larger
     while np.all(np.isnan(square)):
         dist += 1
         x1, x2 = max(0, x - dist), min(nr, x + 1 + dist)
         y1, y2 = max(0, y - dist), min(nc, y + 1 + dist)
-        square = np.array(arr[x1: x2, y1:y2])
+        square = np.array(arr[x1:x2, y1:y2])
 
     square = ma.masked_array(square, mask=np.isnan(square))
     return square.mean()
@@ -66,8 +70,7 @@ class Tab:
         self.tab["nvar"] = nvar
         self.tab["fields"] = fields
 
-        print("dT: ", dT, ", dP: ", dP, ", nT: ",
-              nT, ", nP: ", nP, ", nvar: ", nvar)
+        print("dT: ", dT, ", dP: ", dP, ", nT: ", nT, ", nP: ", nP, ", nvar: ", nvar)
         self.data = []  # could parallelize method, but need 2 initialize data
 
     def load(self):
@@ -97,9 +100,7 @@ class Tab:
         with open(fname, "wb") as f:
             pickle.dump(self.tab, f)
 
-
     def plot(self, i_field, ax=None, exclude_range=None, kwargs=None):
-
         if kwargs is None:
             kwargs = {}
         i_field = _fix_i_field(i_field)
@@ -165,12 +166,12 @@ class Tab:
 
         for i, (T_, P_) in enumerate(zip(T, P, strict=False)):
             iT = np.argmin(np.abs(T_ - Tax))
-            iP = np.argmin(np.abs(P_ - Pax*1e5))
+            iP = np.argmin(np.abs(P_ - Pax * 1e5))
             profile[i] = data[iT, iP]
 
         return profile
 
-    def plot_contour_TP(self ):
+    def plot_contour_TP(self):
         pass
 
     def remove_nans(self):

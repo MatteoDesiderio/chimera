@@ -3,6 +3,7 @@ Created on Wed Jun  8 18:31:11 2022.
 
 @author: matteo
 """
+
 import os
 
 import numpy as np
@@ -24,9 +25,10 @@ class MeshImporter:
 
     """
 
-    def __init__(self, axisem_path, mesh_path="PREM_ISO_2s", rE_km=6371.0,
-                 dtype="float32"):
-        self.dtype=dtype
+    def __init__(
+        self, axisem_path, mesh_path="PREM_ISO_2s", rE_km=6371.0, dtype="float32"
+    ):
+        self.dtype = dtype
         self.axisem_path = axisem_path
         self.mesh_name = mesh_path
         self.x, self.y = self.loader()
@@ -53,10 +55,12 @@ class MeshImporter:
         data_type = points.GetDataType()
         # TODO raise an error if choice is not consistent
         # or better, load directly in double precision
-        print("The data_type of the vtk points is %i." % data_type,
-              "Double-check if consistent with your choice of", self.dtype)
-        x, y = np.array(points.GetData(),
-                        dtype=self.dtype)[:, :-1].T
+        print(
+            "The data_type of the vtk points is %i." % data_type,
+            "Double-check if consistent with your choice of",
+            self.dtype,
+        )
+        x, y = np.array(points.GetData(), dtype=self.dtype)[:, :-1].T
         return x, y
 
     def convert_to_numpy(self, path, autoname=True, r_core_km=3480.5):

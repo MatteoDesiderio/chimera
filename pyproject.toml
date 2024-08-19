@@ -92,6 +92,7 @@ lint.ignore = [
     "ANN001", # type annotation for function arguments
     "ANN102", # return type annotation for classes as well
     "ANN201", # return type annotation for functions
+    "C901", # too complex (ignore for now)
     "COM812", # trailing commas (ruff-format recommended)
     "D100", # missing docstrings (ignore for now)
     "D101", # missing docstrings (ignore for now)

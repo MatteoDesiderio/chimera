@@ -61,7 +61,6 @@ def run(arguments):
 
         # %% a useful function to visualize the data as normal in paraview
 
-
         def make_visible(model, lookupTable):
             SetActiveSource(model)
             representation = Show()
@@ -69,7 +68,6 @@ def run(arguments):
             representation.ColorArrayName = ("POINT_DATA", "data")
             representation.LookupTable = lookupTable
             return representation
-
 
         # %% loop over fields
         for run_dir in run_dirs:
@@ -99,7 +97,7 @@ def run(arguments):
                     model = LegacyVTKReader(FileNames=[path])
                     models.append(model)
 
-                    if not(fast):
+                    if not (fast):
                         rep = make_visible(model, GetLookupTableForArray("data", 1))
                         representations.append(rep)
 
@@ -112,7 +110,6 @@ def run(arguments):
                 avg = np.zeros((radial_resolution + 1, 2))
                 # create n radial profiles
                 for i, th in enumerate(thetas):
-
                     x2, y2 = R * np.cos(th), R * np.sin(th)
 
                     # create line
@@ -135,25 +132,42 @@ def run(arguments):
                     rep.UseIndexForXAxis = 0  # do not use indices
                     rep.XArrayName = "arc_length"
                     # hide all garbage
-                    rep.SeriesVisibility = ["", "", "", "", "", "", "", "",
-                                            "data", "1",                  # data
-                                            "vtkValidPointMask", "0",     # boh
-                                            "arc_length", "0",            # dist in m
-                                            "Points (0)", "0",            # dist in m
-                                            "Points (1)", "0",            # boh
-                                            "Points (2)", "0",            # boh
-                                            "Points (Magnitude)", "0",    # dist in m
-                                            "vtkOriginalIndices", "0"]  # indices
+                    rep.SeriesVisibility = [
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "data",
+                        "1",  # data
+                        "vtkValidPointMask",
+                        "0",  # boh
+                        "arc_length",
+                        "0",  # dist in m
+                        "Points (0)",
+                        "0",  # dist in m
+                        "Points (1)",
+                        "0",  # boh
+                        "Points (2)",
+                        "0",  # boh
+                        "Points (Magnitude)",
+                        "0",  # dist in m
+                        "vtkOriginalIndices",
+                        "0",
+                    ]  # indices
 
                     # write each profile into a csv file
                     args = (lateral_resolution, radial_resolution, i)  # create name
                     fname = "/data_{}_{}_{}.csv".format(*args)
                     writer = CreateWriter(output_path + fname)  # create writer
-                    writer.UpdatePipeline()                    # and it's written
+                    writer.UpdatePipeline()  # and it's written
                     # load the csv again. We need values and r coord
-                    data, _, arc, _, _, _ = np.genfromtxt(output_path + fname,
-                                                          delimiter=",",
-                                                          skip_header=1, unpack=True)
+                    data, _, arc, _, _, _ = np.genfromtxt(
+                        output_path + fname, delimiter=",", skip_header=1, unpack=True
+                    )
                     # add vel values
                     avg[:, 0] += data
 
@@ -169,6 +183,7 @@ def run(arguments):
                 # clean up paraview
                 _ = [Delete(proxy) for proxy in GetSources().values()]
                 _ = [Delete(rep) for rep in representations]
+
 
 if __name__ == "__main__":
     run(collect_arguments())

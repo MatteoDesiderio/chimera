@@ -5,6 +5,7 @@ from chimera.interfaces.stag.loader import load_coords, load_field
 
 TOLERANCE_SUM_ONE = 0.01
 
+
 def test_coords(example_dir):
     stag_path = f"{example_dir}/inputData/stagyyModel"
     sdat = StagyyData(stag_path)
@@ -13,6 +14,7 @@ def test_coords(example_dir):
     assert isinstance(r, np.ndarray)
     assert isinstance(th, np.ndarray)
 
+
 def test_field(example_dir):
     stag_path = f"{example_dir}/inputData/stagyyModel"
     sdat = StagyyData(stag_path)
@@ -20,6 +22,7 @@ def test_field(example_dir):
     for var in "T", "p_s", "hz", "bs", "prim":
         f = load_field(sdat, var, -1)
         assert isinstance(f, np.ndarray)
+
 
 def test_compositions_almost_one(example_dir):
     stag_path = f"{example_dir}/inputData/stagyyModel"
@@ -31,4 +34,4 @@ def test_compositions_almost_one(example_dir):
         assert isinstance(f, np.ndarray)
         sum_compositional_fields += f
     difference = np.abs(np.mean(sum_compositional_fields) - 1)
-    assert  difference <= TOLERANCE_SUM_ONE
+    assert difference <= TOLERANCE_SUM_ONE
