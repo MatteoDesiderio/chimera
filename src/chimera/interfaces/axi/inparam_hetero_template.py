@@ -1,0 +1,43 @@
+"""
+Created on Thu Sep 15 16:39:26 2022.
+
+@author: matteo
+"""
+
+inparam_hetero = """3                                 number of heterogeneities
+.false.            overlapping heterogeneities: true - add up, false - use last
+######1###################
+rndm                  format of heterogeneity reading: const, discr, funct, ica
+2Dgll                                              1Delem, 1Dgll, 2Delem, 2Dgll
+44800., 47000.               minimum/maximum radius of heterogeneous region [m]
+10., 20.               minimum/maximum colatitude of heterogeneous region [deg]
+0.        delta rho (density perturbation) in % with respect to reference model
+0.          delta vp (P vel. perturbation) in % with respect to reference model
+0.          delta vs (S vel. perturbation) in % with respect to reference model
+######2###################
+funct                 format of heterogeneity reading: const, discr, funct, ica
+spher            function type: sinus, gauss, trian, gss1d, inclp, inclr, const
+.true.                   variation in elastic properties increasing with depth?
+.false.                                                                gradient
+300., 0.                   gradient width on top and at bottom of heterogeneity
+3685000., 5685000.           minimum/maximum radius of heterogeneous region [m]
+30., 60.               minimum/maximum colatitude of heterogeneous region [deg]
+0.        delta rho (density perturbation) in % with respect to reference model
+0.          delta vp (P vel. perturbation) in % with respect to reference model
+0.          delta vs (S vel. perturbation) in % with respect to reference model
+######3###################
+discr                 format of heterogeneity reading: const, discr, funct, ica
+{}                     fname for discrete het., not used if not discr above
+iso                                                anisotropy: iso, radial, hex
+abs                     relative perturbations or absolute velocities: rel, abs
+200. p value for inverse distance weighting. If>100, only nearest neighbour interp:FAST
+0.             maximum radius of inverse distance weighting (0 = infinite) [km]
+######4###################
+ica                   format of heterogeneity reading: const, discr, funct, ica
+2                                                        number of theta slices
+0., 50., 180.                                          thetas separating slices
+0., 0.                              fast axis direction theta, phi, first slice
+-0.0028, -0.0185, 0.0537                                    a, b, c first slice
+0., 0.                              fast axis direction theta, phi, first slice
+0., 0., 0.                                                 a, b, c second slice
+"""

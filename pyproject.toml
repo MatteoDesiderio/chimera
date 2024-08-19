@@ -1,0 +1,178 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
+
+[project]
+authors = [
+    {email = "ucfbmde@ucl.ac.uk", name = "Matteo Desiderio"},
+]
+classifiers = [
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+dependencies = [
+    "h5py",
+    "matplotlib",
+    "numba",
+    "numba_kdtree",
+    "numpy",
+    "pyshtools",
+    "scipy",
+    "stagpy==0.17.0",
+    "vtk",
+]
+description = "A package to translate StagYY output to seismic velocities."
+dynamic = [
+    "version",
+]
+keywords = [
+]
+name = "chimera"
+optional-dependencies = {dev = [
+    "build",
+    "mypy",
+    "pre-commit",
+    "ruff",
+    "tox",
+    "twine",
+], docs = [
+    "mkdocs",
+    "mkdocs-include-markdown-plugin",
+    "mkdocs-material",
+    "mkdocstrings",
+    "mkdocstrings-python",
+], test = [
+    "pytest",
+    "pytest-cov",
+]}
+readme = "README.md"
+requires-python = ">=3.10"
+license.file = "LICENSE.md"
+urls.homepage = "https://github.com/MatteoDesiderio/chimera"
+
+[tool.coverage]
+report = {sort = "cover"}
+run = {branch = true, parallel = true, source = [
+    "chimera",
+]}
+paths.source = [
+    "src",
+    ".tox*/*/lib/python*/site-packages",
+]
+
+[tool.mypy]
+allow_redefinition = true
+explicit_package_bases = true
+
+[tool.pre-commit]
+trailing-whitespace.exclude = ["examples/"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--color=yes",
+    "--import-mode=importlib",
+    "--verbose",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.ruff]
+fix = true
+force-exclude = true
+lint.ignore = [
+    "ANN001", # type annotation for function arguments
+    "ANN102", # return type annotation for classes as well
+    "ANN201", # return type annotation for functions
+    "C901", # too complex (ignore for now)
+    "COM812", # trailing commas (ruff-format recommended)
+    "D100", # missing docstrings (ignore for now)
+    "D101", # missing docstrings (ignore for now)
+    "D102", # missing docstrings (ignore for now)
+    "D103", # missing docstrings (ignore for now)
+    "D104", # missing docstrings (ignore for now)
+    "D107", # missing docstrings (ignore for now)
+    "D203", # no-blank-line-before-class
+    "D205", # no blank line between summary-description in doc
+    "D212", # multi-line-summary-first-line
+    "D401", # non-imperative mood in doc string (ignore for now)
+    "D404", # doc string begins with 'This'
+    "D407", # removed dashes lines under sections
+    "D417", # argument description in docstring (unreliable)
+    "FBT002", # boolean-default-value-positional-argument (for now)
+    "FIX", # HACK / TODO detected, consider fixing (ignore for now)
+    "ISC001", # simplify implicit str concatenation (ruff-format recommended)
+    "N802", # function names should be lower case
+    "N803", # argument names should be lower case
+    "N806", # variable names should be lower case
+    "N816", # variable names should not be mixedCase
+    "PLR0912", # Too many branches (15 > 12) (will refactor later anyway)
+    "PLR0913", # too many arguments (>5) in function def (ignore for now)
+    "PLR0915", # Too many statements (59 > 50) (ignore for now)
+    "PTH", # os and glob instead of recommended Path (ignore for now)
+    "S301", # Suspicious-pickle-usage (will change this later)
+    "SIM105", # suppressible exception
+    "T201", # print found
+    "TD", # all rules about badly formatted TODO
+]
+lint.per-file-ignores = {"tests*" = [
+    "INP001", # File is part of an implicit namespace package.
+    "S101", # Use of `assert` detected
+]}
+lint.select = [
+    "ALL",
+]
+lint.flake8-annotations.ignore-fully-untyped = true
+lint.isort.known-first-party = [
+    "chimera",
+]
+lint.mccabe.max-complexity = 18
+lint.pep8-naming.classmethod-decorators = [
+    "classmethod",
+]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/chimera/_version.py"
+
+[tool.tomlsort]
+all = true
+spaces_indent_inline_array = 4
+trailing_comma_inline_array = true
+overrides."project.classifiers".inline_arrays = false
+overrides."tool.coverage.paths.source".inline_arrays = false
+
+[tool.tox]
+legacy_tox_ini = """
+    [gh-actions]
+    python =
+        3.10: py310
+        3.11: py311
+        3.12: py312
+
+    [testenv]
+    commands =
+        pytest --cov --cov-report=xml
+    extras =
+        test
+
+    [testenv:docs]
+    commands =
+        mkdocs build --strict
+    extras =
+        docs
+
+    [tox]
+    env_list =
+        py310
+        py311
+        py312
+"""

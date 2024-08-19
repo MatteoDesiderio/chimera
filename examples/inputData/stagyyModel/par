@@ -1,0 +1,492 @@
+! par.sed file guanna 12-2018
+! This uses P-dependent rheology, hence total_pressure is needed
+!  Also the new option, P-dependent Vact, with H(p) based on Ammann et al.
+!  and deta_p_correct_jumps
+! This has updated parameters for the eclogite transition 
+! This has 7 phase systems (ol,pxgt,melt-ol,melt-pxgt,prim,ccrust,metal)
+
+&switches
+     verbose=.false.
+     try_continue=.false.
+     compressible=.true.
+     dens_strat=.true.
+     tracers=.true.
+     cont_tracers=.false.
+     composition=.false.
+     phase_changes=.true.
+     melting=.true.
+     multig_solve=.false.
+     total_pressure=.true.
+     dimensional_units=.true.
+     plates_analyse=.true.
+     quiet=.true. ! limits stag's outputs to avoid reaching disk quota in home folder
+     atmosphere=.false.
+     prim_sph = .false.
+     tracer_count =.true.
+  &end
+
+!this new switch is not read by stag, only its postprocessing version
+ &postprocessing
+     keep_freq=1                            ! will keep only frames every keep_frequency
+     keep_freq_tra=5                        ! will keep only frames every keep_frequency
+     read_only=.false.                 ! will not create the +hdf5_PostPro folder, just reads
+     whilerunning=.false.     ! will not create the +hdf5_PostPro folder, just reads
+     ! which fields should be treated
+    PostPro_t=.false.         ! temperature
+     PostPro_c=.false.        ! composition
+     PostPro_cont=.false.      !continents
+     PostPro_rheo=.false.     ! rheology (diffusion vs dislocation)
+     PostPro_ph= .false.      ! phase field
+     PostPro_bs=.false.       ! basalt fraction
+     PostPro_hz=.false.       ! harzburgite fraction
+     PostPro_primordial=.false. ! primordial fraction
+     PostPro_f=.false.        ! melt fraction
+     PostPro_rho = .false.    ! density
+     PostPro_svel = .false.   ! seismic velocities
+     PostPro_pvel = .false.
+     PostPro_bvel = .false.
+     PostPro_vp=.true.        ! velocity & pressure
+     PostPro_vd=.false.       ! viscous dissipation
+     PostPro_eta=.false.      ! viscosity
+     PostPro_edot=.false.     ! strain rate (!! used in some averaging!!)
+     PostPro_age=.false.      ! age (since last melted)
+     PostPro_stress = .false. !CCC
+     PostPro_topo=.false.     ! topography (CMB & surface)
+     PostPro_crust=.false.    !CCC ! crustal thickness
+     PostPro_g=.false.         !geoid and topography corrected for self-gravitation
+     PostPro_hpe=.false.
+     PostPro_tra=.false.      ! tracers
+     PostPro_water = .false.
+     PostPro_GrainSize=.false.
+     PostPro_trapercell=.false.
+  &end
+
+ &geometry     
+     shape='spherical'
+     anti_squeeze=.true.      
+     D_dimensional=2890.e3   
+     r_cmb=3480.e3
+     D_dim_top=0.
+     nxtot=1 !32
+     nytot=192 !192
+     nztot=32 !32
+     aspect_ratio(1)=3.15 !6.30
+     aspect_ratio(2)=6.4 !6.30
+     zspacing_mode='function_exp'
+     dresl_topbot=1.0 !1.5
+     dresl_surf=2.0 
+     wresl_surf=0.05               ! these are still normalized to D
+     dresl_cmb=2.0
+     wresl_cmb=0.05
+     dresl_400=2.0
+     wresl_400=0.1
+     dresl_660=2.0  !2.0 !5.0 !10.0
+     wresl_660=0.1
+  &end    
+
+&phase
+
+     effective_cp_alpha=.true.
+     scale_PCdepths=.true.         !Scale depths with gravity     
+     g0_dimensional_PCdepths=9.81  
+ 
+     nphase_systems=7
+     sys_ol       =1               ! phase system meanings (also apply to viscosity parameters)
+     sys_pxgt     =2
+     sys_melt_ol  =3
+     sys_melt_pxgt=4
+     sys_prim     =5
+     sys_ccrust   =6
+     sys_metal    =7
+     nphase(:)=4,4,0,0,4,0,0
+
+     Tp0(:,1)=2300, 1900., 1900., 1600.                     ! in K
+     Tp0(:,2)=2300, 1900., 1600., 1000.
+     Tp0(:,3)=0.
+     Tp0(:,4)=0.
+     Tp0(:,5)=2300, 1900., 1600., 1000.
+     Tp0(:,6)=0.
+     Tp0(:,7)=0.
+     phase_mode(:,1)='function', 'eff_alpha', 'discont','discont ' 
+     phase_mode(:,2)='function', 'eff_alpha', 'eff_alpha','function'
+     phase_mode(:,3)='none'
+     phase_mode(:,4)='none'
+     phase_mode(:,5)='function', 'eff_alpha ','eff_alpha ','function'
+     phase_mode(:,6)='none'
+     phase_mode(:,7)='none'
+     dp0(:,1)=2740.e3, 720.e3, 660.e3, 410.e3               ! in km
+     dp0(:,2)=2740.e3, 720.e3, 300.e3, 40.e3
+     dp0(:,5)=2740.e3, 660.e3, 380.e3, 40.e3
+     drho_p(:,1)= 61.6, 0.0, 435.,  180.                    ! in kg/m3
+     drho_p(:,2)=61.6, 350., 100., 350.
+     drho_p(:,5)=61.6, 450., 130., 260.
+     clap(:,1)=10.e6,  1.0e6, -2.5e6, 2.5e6                 ! in Pa/K
+     clap(:,2)=10.e6,  1.0e6, 1.0e6, 0
+     clap(:,5)=10.e6,  0, 1.675e6, 0
+     w_p(:,1)=25.e3, 75.e3, 25.e3, 25.e3                    ! in m
+     w_p(:,2)=25.e3, 75.e3, 75.e3, 25.e3
+     w_p(:,5)=25.e3, 75.e3, 50.e3, 25.e3
+
+     Ol_frac_ref      = 0.6375 !0.6
+     basalt_frac_ref  = 0.15   !0.2
+
+
+  &end
+
+ &refstate
+     perplex_properties=.false.
+     perplex_bs_file='../../../V27_ReferenceModel_iGEO/+PERPLEX/MORB-Hirose_CFMASN_z1km-T5K_stx11_hr_08Mar2012.bse'
+     perplex_hz_file='../../../V27_ReferenceModel_iGEO/+PERPLEX/Harzburgite-Hirose_CFMAS_z1km-T5K_stx11_08Mar2012.bse'
+     perplex_pr_file='../../../V27_ReferenceModel_iGEO/+PERPLEX/MORB-Hirose_CFMASN_z1km-T5K_stx11_hr_08Mar2012.bse'
+
+     Birch_Murnaghan=.true.
+     ! in Parameters for 3rd-order BM eq of state (dimensional)
+     ! & exponent for kappa dependence on compression
+     K0(1,1)=210.e9      Kp(1,1)=3.9  gr_s(1,1)=1.3  ex_tkappa(1,1)=1.0 ! ppv
+     K0(1,2)=210.e9      Kp(1,2)=3.9  gr_s(1,2)=1.3  ex_tkappa(1,2)=1.0 ! 
+     K0(1,5)=210.e9      Kp(1,5)=3.9  gr_s(1,5)=1.3  ex_tkappa(1,5)=1.0 ! 
+     K0(1,6)=210.e9      Kp(1,6)=3.9  gr_s(1,6)=1.3  ex_tkappa(1,6)=1.0 ! 
+
+     K0(2,1)=210.e9      Kp(2,1)=3.9  gr_s(2,1)=1.3  ex_tkappa(2,1)=1.0 ! pv
+     K0(2,2)=210.e9      Kp(2,2)=3.9  gr_s(2,2)=1.3  ex_tkappa(2,2)=1.0 ! 
+     K0(2,5)=230.e9     Kp(2,5)=3.9  gr_s(2,5)=1.3  ex_tkappa(2,5)=1.0 ! 
+     K0(2,6)=210.e9      Kp(2,6)=3.9  gr_s(2,6)=1.3  ex_tkappa(2,6)=1.0 ! 
+
+     K0(3,1)=210.e9      Kp(3,1)=3.9  gr_s(3,1)=1.3  ex_tkappa(3,1)=1.0 ! tz
+     K0(3,2)= 85.e9      Kp(3,2)=4.0  gr_s(3,2)=0.85 ex_tkappa(3,2)=1.0 ! 
+     K0(3,5)= 85.e9      Kp(3,5)=4.0  gr_s(3,5)=0.85 ex_tkappa(3,5)=1.0 ! 
+     K0(3,6)= 85.e9      Kp(3,6)=4.0  gr_s(3,6)=0.85 ex_tkappa(3,6)=1.0 ! 
+
+     K0(4,1)= 85.e9      Kp(4,1)=4.0  gr_s(4,1)=0.85 ex_tkappa(4,1)=1.0 ! um
+     K0(4,2)=125.e9      Kp(4,2)=4.0  gr_s(4,2)=1.3  ex_tkappa(4,2)=1.0 ! 
+     K0(4,5)=140.e9      Kp(4,5)=4.0  gr_s(4,5)=1.3  ex_tkappa(4,5)=1.0 ! 
+     K0(4,6)=163.e9      Kp(4,6)=4.0  gr_s(4,6)=1.3  ex_tkappa(4,6)=1.0 !
+
+     K0(5,1)=163.e9      Kp(5,1)=4.0  gr_s(5,1)=1.3  ex_tkappa(5,1)=1.0 ! uum
+     K0(5,2)=163.e9      Kp(5,2)=4.0  gr_s(5,2)=1.3  ex_tkappa(5,2)=1.0 ! 
+     K0(5,5)=163.e9      Kp(5,5)=4.0  gr_s(5,5)=1.3  ex_tkappa(5,5)=1.0 ! 
+     K0(5,6)=163.e9      Kp(5,6)=4.0  gr_s(5,6)=1.3  ex_tkappa(5,6)=1.0 ! 
+
+     K0(1,3)=30.e9  Kp(1,3)=6.0  gr_s(1,3)=0.6  ex_tkappa(2,3)=1.0 ! melt-ol
+     K0(1,4)=30.e9  Kp(1,4)=6.0  gr_s(1,4)=0.6  ex_tkappa(2,4)=1.0 ! melt-pxgt
+
+     K0(1,7)=210.e9 Kp(1,7)=3.9  gr_s(1,7)=1.3  ex_tkappa(1,7)=1.0 ! metal ???
+
+     rhoref_surf=3240. 3080. 2900. 2900. 3074.9 3080. 7000.    ! in kg/m3
+
+     q_gamma=1.            ! dependence of gruneisen parameter on compression
+     q_gamma(1,3)=-1.3     ! for melt
+     q_gamma(1,4)=-1.3     ! for melt
+
+     ! ------ 
+
+     Tref_surf=1600.               ! in K
+
+     drho_cmb=4337.                ! in kg/m3
+     drho_surf=3300.
+
+     phase_assemblage_varies_with_C=.true.
+     c_dependent_heating=.false.   ! whether internal heating rate depends on C
+     dHeat_dbasalt=1.
+     dHeat_dprim=1.
+
+     delT0_expan=6.                     ! related to expansivity pressure-dependence
+     ak_expan=1.4                       !  ditto
+
+  core_cooling=.false.
+     core_model='Buffett'
+     core_superheat=0.0                 ! leave this at 0, change botT_val instead ?
+     core_Kppm=0.0       ! K ppm in core
+
+     tcond_dimensional=3.0
+     deltaT_dimensional=2500.0 !2500.0
+     g_dimensional=9.81
+     dens_dimensional=3300.             ! used in thermal conductivity, viscosity p calc
+     Cp_dimensional=1200.               ! specific heat capacity W/kg/K
+     expan_dimensional=3.e-5 !5.e-5  ! expansivity in K^-1
+  &end    
+
+
+ &boundaries
+     x_bc='ww'
+     y_bc='ww'
+     topT_mode='iso' !'TidallyLocked'
+     topT_val=300.0 !1300.0
+     atmosphere_heatloss_factor=1.0
+     botT_mode='iso'
+     botT_val=4000.0    !0. !6000.0 !5500.
+     topV_mode='free-slip'
+     botV_mode='free-slip'
+  &end
+
+ &t_init
+     imode_t='bndry_layers' !'step_deg210' !'step_deg21'!'bndry_layers' !'cells' !'startsub' !'degree4' !'bndry_layers'
+     amp_t=20.0 !100.0        ! in K
+     blthick=30.e3 !50.e3          ! in km
+     T0_init=1900. !1917 !1900.0 !1700.           ! initial potential temperature in K
+  &end
+
+ &timein
+     finish_at_time=3.0e9    ! in years
+     dt_write=1.0e9          ! in years
+     nwrite=34000
+        nsteps=102000
+        PBSTimeRequested=96              !in hours (the code will save/stop 15min before to avoid output pb)
+     alpha_adv=0.7 !1.0
+     advection_scheme='MPDATA'
+     iord=2
+     diffusion_implicit=.false.
+     diffusion_beta=1.0
+     diffusion_errmax=1.e-6
+     diffusion_alpha=0.7
+     diffusion_nrelax=3
+  &end
+
+ &viscosity
+     ietalaw=1                   ! Arrhenius
+     PressureDepRheology=.true.  ! P- not depth-dependent ! P-dep does not work in YY geom!!
+     PressureDepVact=.true.      ! Vact decreases with pressure
+
+     diffusion_creep=.true.
+     dislocation_creep=.false.
+     plasticity=.true.
+     phase_dep_Eeta=.true.
+
+     eta0=5.e20             ! in Pa s
+     T0_eta=1600.
+     d0_eta=0.0
+     stress0_eta=1.0e6        ! in Pa
+     Ts_eta=-1.              ! negative sets it to surface T
+
+     ! Olivine system, diffusion creep, in J/mol & m3/mol. (disl/duff,layer,phase system)
+        E_eta(1,5,1)=140.0e3    V_eta(1,5,1)=1.8e-6  Pdecay_V(1,5,1)=   1.0e30 ! Ol
+        E_eta(1,4,1)=140.0e3    V_eta(1,4,1)=1.8e-6  Pdecay_V(1,4,1)=   1.0e30 ! TZ
+        E_eta(1,3,1)=140.0e3    V_eta(1,3,1)=1.8e-6  Pdecay_V(1,3,1)= 200.0e9  ! PV
+        E_eta(1,2,1)=140.0e3    V_eta(1,2,1)=1.8e-6  Pdecay_V(1,2,1)= 200.0e9  ! PV
+        E_eta(1,1,1)=100.0e3    V_eta(1,1,1)=1.4e-6  Pdecay_V(1,1,1)=1610.0e9  ! PPV
+
+        ! pyroxene-garnet system, diffusion creep
+        E_eta(1,5,2)=140.0e3    V_eta(1,5,2)=1.8e-6   Pdecay_V(1,5,2)=   1.0e30 ! Bs
+        E_eta(1,4,2)=140.0e3    V_eta(1,4,2)=1.8e-6   Pdecay_V(1,4,2)=   1.0e30 ! Px
+        E_eta(1,3,2)=140.0e3    V_eta(1,3,2)=1.8e-6   Pdecay_V(1,3,2)=   1.0e30 ! Gt
+        E_eta(1,2,2)=140.0e3    V_eta(1,2,2)=1.8e-6   Pdecay_V(1,2,2)= 200.0e9  ! PV
+        E_eta(1,1,2)=100.0e3    V_eta(1,1,2)=1.0e-6   Pdecay_V(1,1,2)=1610.0e9  ! PPV
+
+        ! primordial system, diffusion creep
+        E_eta(1,5,5)=135.0e3    V_eta(1,5,5)=1.8e-6   Pdecay_V(1,5,5)=   1.0e30 ! Bs
+        E_eta(1,4,5)=135.0e3    V_eta(1,4,5)=1.8e-6   Pdecay_V(1,4,5)=   1.0e30 ! Px
+        E_eta(1,3,5)=135.0e3    V_eta(1,3,5)=1.8e-6   Pdecay_V(1,3,5)=   1.0e30 ! Gt
+        E_eta(1,2,5)=135.0e3    V_eta(1,2,5)=1.8e-6   Pdecay_V(1,2,5)= 200.0e9  ! PV
+        E_eta(1,1,5)=100.0e3    V_eta(1,1,5)=1.4e-6   Pdecay_V(1,1,5)=1610.0e9  ! PPV     
+
+
+     eta_max=1.e26  
+     eta_min=1.e18  
+     visc_interp_law='g'
+
+
+     deta_p_correct_jumps=.true.
+        deta_p(5,1)=1.     ! garnet (instead of plag) (eclogite<->basalt)
+        deta_p(5,2)=1.
+        deta_p(5,5)=1.     ! primordial material (phase #5)
+        deta_p(4,1)=1.     ! shallow mantle
+        deta_p(4,2)=1.
+        deta_p(4,5)=1.
+        deta_p(3,1)=1.     ! transition zone (was 1)
+        deta_p(3,2)=1.
+        deta_p(3,5)=1.
+        deta_p(2,1)=1.     ! perovskite
+        deta_p(2,2)=1.
+        deta_p(2,5)=100
+        deta_p(1,1)=0.001      ! pPv ! cannot yet be different than perovskite if using GS evolution
+        deta_p(1,2)=0.001
+        deta_p(1,5)=0.1
+
+   !...Compositional modulation of viscosity
+        deta_basalt                                     = 1.
+        deta_primordial                                 = 1.           
+        deta_archean                                    = 30.0          !dehydration of cratonic lithosphere  
+     deta_proterozoic                   = 0.01
+     deta_phanerozoic                   = 1.
+     deta_ccrust                        = 0.1     !1.0 !0.01     !1.  
+     etalaw_basalt                      = 1
+     etalaw_primordial                  = 1
+     etalaw_archean                     = 1
+     etalaw_proterozoic                 = 1
+     etalaw_phanerozoic                 = 1
+     
+     !...Plastic yielding parameters
+     stressY_eta=30e6              !1e7 !4e7 !100.e6 !50.e6           ! MPa constant ('ductile') yld stress @p=0
+     dstressY_eta_dp=0.01          !0.01 !0.005 !0.01                 ! gradient of the ductile yield stress
+     frictionCoeff_eta=0.5                                            ! Byerlee's law friction coefficient
+
+     stressY_archean          = 4e8              !5.1891e+04     !3.3e7         !1.e5  ! ('ductile') yld stress @p=0
+     dstressY_archean    = 0.005            !0.0079         !0.079        ! gradient of the ductile yield stress
+     frictionCoeff_archean    = 1.e12        ! Byerlee's law friction coefficient
+     cohesion_archean    = 1.e12
+
+     stressY_proterozoic           = 3.e6         ! ('ductile') yld stress @p=0
+     dstressY_proterozoic          = 0.0     ! gradient of the ductile yield stress
+     frictionCoeff_proterozoic     = 0.5     ! Byerlee's law friction coefficient
+     cohesion_proterozoic          = 0.0     
+     
+     stressY_phanerozoic           = 5.e4         ! ('ductile') yld stress @p=0
+     dstressY_phanerozoic          = 0.0     ! gradient of the ductile yield stress
+     frictionCoeff_phanerozoic     = 0.5     ! Byerlee's law friction coefficient
+     cohesion_phanerozoic          = 0.0     
+     
+     !...Simple melt viscosity reduction
+     deta_melt = 0.01         !Tackley 2000, G3
+
+     eta_conv     = 0.01
+     maxits_eta   = 200
+     alpha_eta    = 1.             !0.3  relaxation parameter for nonlinear viscosity iterations
+  &end
+
+ &grainsize
+  &end
+
+
+ &iteration
+     maxits=100
+     normalize_res_by_eta=.true.
+     errmax=1.e-3
+     relax_kernel='direct'    !'classc'
+     alpha_mom=0.7
+     alpha_cont=0.8 !0.9
+     redblack=.false.
+  &end
+
+ &multi 
+     nrelax1=15
+     nrelax2=15
+     maxcoarseits=200
+     alpha_multi=1.0
+     nhmin=4
+     nzmin=4
+     nzpnmin=1
+     more_coarse_its=.true.
+     f_cycle=.true.
+     matrix_dep_pinterp=.true.
+  &end
+
+ &ioin
+     ! only if try_continue=.true.
+     hdf5_input_folder="+hdf5"
+     restart_from_meshed_fields_only=.false.                !
+     hdf5_output_folder="+hdf5"              ! no "/" at the end please
+     output_file_stem='+op/earthDIM'    ! This is not used anymore because of hdf5 output
+     MaxFileSizeAllowed=1000000              ! bits
+     MaxFileSizeAllowedTra=10000000          ! bits
+
+  t_write=.true.         ! temperature
+     tpot_write=.false.  ! AG! potential temperature 
+     c_write=.true.      ! composition
+     cont_write=.false.  ! continents
+     rheo_write=.false.  ! rheology (diffusion vs dislocation)
+     ph_write = .false.  ! phase field
+     bs_write=.true.          ! basalt fraction
+     hz_write=.true.          ! harzburgite fraction
+     primordial_write=.true. ! primordial fraction
+     f_write=.false.          ! melt fraction
+     rho_write = .true.  ! density
+     svel_write = .false. ! seismic velocities
+     pvel_write = .false.
+     bvel_write = .false.
+     vp_write=.true.     ! velocity & pressure
+     vd_write=.false.         ! viscous dissipation
+     eta_write=.false.        ! viscosity
+     edot_write=.false.       ! strain rate
+     age_write=.false.        ! age (since last melted)
+     stress_write = .false. !CCC
+     topo_write=.false.       ! topography (CMB & surface)
+     crust_write=.false.      !CCC ! crustal thickness
+     g_write=.false.    ! geoid and topography corrected for self-gravitation
+     hpe_write=.false.
+     tra_write=.true.    ! tracers
+     water_write = .false.
+     GrainSize_write=.false.
+     delete_old_trafiles=.true.
+     trapercell_write=.false.
+  &end
+
+ &compin
+  &end
+
+ &melt
+     melt_phase_systems=.false.
+     harzburgite_melts=.false.
+     fractional_xtallisation_n_melting=.false.
+     melt_segregation=.false.
+     K0_dimensional=1.e-9
+     magma_effective_tcond=.false.
+     magma_tcond_max=1.e5
+     solidus_function='simple'
+     latent_heat=600e3                       ! in J/kg
+     c_dependent_solidus=.true.              ! increases solidus due to depletion
+     Cf_dependent_Tmelting=.true.
+     p_dependent_solidus=.false.             ! whether depends on pressure rather than depth
+     eruption=.true. 
+     erupt_fraction=1.0 !0.3  
+     erupt_mode='all'
+     intrusion=.false.
+     intrude_fraction=0.0 !0.7     
+     intrude_position='base_crust'   ! 'surface', 'base_crust', 'mid_crust', 'd_intrude'
+     d_erupt_Earth=300.e3              ! maximum eruption depth in meters 
+     trackTTGsource=.false. ! checks if conditions for TTG formations are fulfilled (Moyen 2011)
+  &end
+
+
+ &continents
+         fourier_coeff = .false.
+  &end
+
+ &atm_stuff
+  &end
+
+ &tracersin
+     basalt_harzburgite=.true.
+     primordial_layer=.true.
+     prim_noise =.true.
+     noise_lim =0.05
+     ntracers_per_cell=25          !20
+     imode_tra='even+ran'          !'continents+ran' !'even+ran'
+     tracers_everywhere=.true.
+     primMelt_solidus=.true.
+        
+     d_crust=2890.e3               ! in meters
+     d_primordial=1650e3           !289.0e3 ![Nakagawa and Tackley 2014] !660.0e3 !440.0e3
+     track_GrainSize   = .false.
+
+
+     tracers_temperature = .true.
+     tracers_timemelt = .true.
+     tracers_advord = 4
+     tracers_interp2ord = .true.
+     traceelement_hpe=.false.
+     Dpartition_hpe=0.01
+  &end
+
+ &plot
+     npix=500000
+     plot_file_stem='+im/im'
+     dots=.false.
+     t_plot=.false.
+     auto_t_scale=.false.
+     t_superadiabatic=.false.
+     p_plot=.false.
+     pd_plot=.false.
+     !c_plot=.false.
+     bs_plot=.false.
+     hz_plot=.false.
+     f_plot=.false.
+     v_plot=.false.
+     eta_plot=.false.
+     stress_plot=.false.
+     tcond_plot=.false.
+     ph_plot=.false.
+     hpe_plot=.false.
+     tra_plot=.false.
+     trapercell_plot=.false.
+     primordial_plot=.false.
+  &end

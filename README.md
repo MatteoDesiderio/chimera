@@ -1,69 +1,159 @@
-# Chimera
+# chimera
 
-A simple python package that allows stagyy, stagpy, axisem, perplex talk to 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Tests status][tests-badge]][tests-link]
+[![Linting status][linting-badge]][linting-link]
+[![Documentation status][documentation-badge]][documentation-link]
+[![License][license-badge]](./LICENSE.md)
+
+<!--
+[![PyPI version][pypi-version]][pypi-link]
+[![Conda-Forge][conda-badge]][conda-link]
+[![PyPI platforms][pypi-platforms]][pypi-link]
+-->
+
+<!-- prettier-ignore-start -->
+[tests-badge]:              https://github.com/MatteoDesiderio/chimera/actions/workflows/tests.yml/badge.svg
+[tests-link]:               https://github.com/MatteoDesiderio/chimera/actions/workflows/tests.yml
+[linting-badge]:            https://github.com/MatteoDesiderio/chimera/actions/workflows/linting.yml/badge.svg
+[linting-link]:             https://github.com/MatteoDesiderio/chimera/actions/workflows/linting.yml
+[documentation-badge]:      https://github.com/MatteoDesiderio/chimera/actions/workflows/docs.yml/badge.svg
+[documentation-link]:       https://github.com/MatteoDesiderio/chimera/actions/workflows/docs.yml
+[conda-badge]:              https://img.shields.io/conda/vn/conda-forge/chimera
+[conda-link]:               https://github.com/conda-forge/chimera-feedstock
+[pypi-link]:                https://pypi.org/project/chimera/
+[pypi-platforms]:           https://img.shields.io/pypi/pyversions/chimera
+[pypi-version]:             https://img.shields.io/pypi/v/chimera
+[license-badge]:            https://img.shields.io/badge/License-MIT-yellow.svg
+<!-- prettier-ignore-end -->
+
+A package to translate StagYY output to seismic velocities.
+
+This project is developed in collaboration with the
+[Centre for Advanced Research Computing](https://ucl.ac.uk/arc), University
+College London.
+
+## About
+This simple python package allows StagYY, StagPy, axiSEM, Perple_X talk to 
 each other. 
 
-It uses stagpy to load the Pressure (P), Temperature (P), 
+It uses StagPy to load the Pressure (P), Temperature (P), 
 Compositional (C) and Density fields ouptut by the geodynamic modeling code 
 StagYY. Then, these fields are interpolated on the finer AxiSEM grid.
 Then, it translates the P, T fields into thermoelastic properties for 
 each composition (Adiabatic K, G moduli and Density). It does so based on 
-PerpleX thermodynamic tables supplied for each composition (a modified version
+Perple_X thermodynamic tables supplied for each composition (a modified version
 of the phempg is used to import the tab file). 
-Then, the thermoelastic properties are averaged via a Voigt-Reuss scheme to 
+Then, the thermoelastic properties are averaged via a Voigt-Reuss-Hill scheme to 
 create a geodynamically self-consistent seismic velocity model that can be 
 later fed into AxiSEM as lateral heterogeneities. 
 
-## Installation
+### Project Team
 
+Matteo Desiderio ([ucfbmde@ucl.ac.uk](mailto:ucfbmde@ucl.ac.uk))
 
-```bash
-echo HELLO WORLD
+<!-- TODO: how do we have an array of collaborators ? -->
+
+### Research Software Engineering Contact
+
+Centre for Advanced Research Computing, University College London
+([arc.collaborations@ucl.ac.uk](mailto:arc.collaborations@ucl.ac.uk))
+
+## Built With
+
+<!-- TODO: can cookiecutter make a list of frameworks? -->
+
+- [Framework 1](https://something.com)
+- [Framework 2](https://something.com)
+- [Framework 3](https://something.com)
+
+## Getting Started
+
+### Prerequisites
+
+<!-- Any tools or versions of languages needed to run code. For example specific Python or Node versions. Minimum hardware requirements also go here. -->
+
+`chimera` requires Python 3.10&ndash;3.12.
+
+### Installation
+
+<!-- How to build or install the application. -->
+
+We recommend installing in a project specific virtual environment created using
+a environment management tool such as
+[Conda](https://docs.conda.io/projects/conda/en/stable/). To install the latest
+development version of `chimera` using `pip` in the currently active
+environment run
+
+```sh
+pip install git+https://github.com/MatteoDesiderio/chimera.git
 ```
 
-## Usage
+Alternatively create a local clone of the repository with
 
-```python
-
-import xyz
-
-print("hello")
+```sh
+git clone https://github.com/MatteoDesiderio/chimera.git
 ```
 
-## TO-DO
--Save Perplex tab file directly into project folder
+and then install in editable mode by running
 
--Make Perplex tab reading faster maybe via parallelization
+```sh
+pip install -e .
+```
 
--Make coords and fields loading from stagyy faster
+### Running Locally
 
--Make K, G, rho extraction from tab files (based on geodynamic model P, T) 
-faster using kdtrees
+How to run the application on your local system.
 
--Give option to compute seismic velocities using densities obtained either via 
-tab file reading or stagyy
-(curently only perplex available)
+### Running Tests
 
--Convert coordinates of velocity models to radial coordinates
+<!-- How to run tests on your local system. -->
 
--Compute seismic velocity anomaly
+Tests can be run across all compatible Python versions in isolated environments
+using [`tox`](https://tox.wiki/en/latest/) by running
 
--Export to .sph file readable by axisem
+```sh
+tox
+```
 
--Complete readme file
+To run tests manually in a Python environment with `pytest` installed run
 
--Make a package
+```sh
+pytest tests
+```
 
-## References
+again from the root of the repository.
+
+### Building Documentation
+
+The MkDocs HTML documentation can be built locally by running
+
+```sh
+tox -e docs
+```
+
+from the root of the repository. The built documentation will be written to
+`site`.
+
+Alternatively to build and preview the documentation locally, in a Python
+environment with the optional `docs` dependencies installed, run
+
+```sh
+mkdocs serve
+```
+
+## Roadmap
+
+- [x] Initial Research
+- [ ] Minimum viable product <-- You are Here
+- [ ] Alpha Release
+- [ ] Feature-Complete Release
+
+
+### References
 - stagyy
 - stagpy
 - numbakdtree
 - axisem
 - perplex
 - phempg
-
-## Contributing
-
-## License
-
-
