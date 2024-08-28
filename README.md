@@ -151,9 +151,7 @@ mkdocs serve
 
 
 ### References
-- stagyy
-- stagpy
-- numbakdtree
-- axisem
-- perplex
-- phempg
+- Tackley, P.J. (2008) 'Modelling compressible mantle convection with large viscosity contrasts in a three-dimensional spherical shell using the yin-yang grid', Physics of the Earth and Planetary Interiors, 171(1), pp. 7–18. Available at: https://doi.org/10.1016/j.pepi.2008.08.005.
+- Connolly, J.A.D. (2005) 'Computation of phase equilibria by linear programming: A tool for geodynamic modeling and its application to subduction zone decarbonation', Earth and Planetary Science Letters, 236(1–2), pp. 524–541. Available at: https://doi.org/10.1016/j.epsl.2005.04.033.
+- Morison, A.; Ulvrova, M.; Labrosse S. ; B4rsh; theofatou; tfrass49 (2022) 'StagPython/StagPy': Zenodo. Available at: https://doi.org/10.5281/ZENODO.6388133.
+- Nissen-Meyer, T.; van Driel, M.; Stähler, S. C.; Hosseini, K.; Hempel, S.; Auer, L.; Colombi, A. and Fournier, A. (2014) 'AxiSEM: broadband 3-D seismic wavefields in axisymmetric media', Solid Earth, 5(1), pp. 425–445. Available at: https://doi.org/10.5194/se-5-425-2014.
